@@ -1,0 +1,62 @@
+<%-include('../layout/header')-%>
+<body>
+    
+    <div class="container py-5 h-100 sub-cl">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div
+              class="card bg-white bg-opacity-10 text-white card-sec"
+              style="border-radius: 1rem"
+            >
+              <div class="card-body p-5 text-center">
+                <div class="mt-md-4">
+                  <% if(locals.errmsg) {%>
+                    <div id="errorDiv" class="alert alert-danger">
+                      <strong><%=errmsg%>
+                      </strong>
+                    </div>
+                  <%}%>
+                  <h2 class="fw-bold mb-2 text-uppercase p-5">SignUp</h2>
+                  <form action="/user/signUp" method="POST">
+                    <div class="form-outline form-primary mb-4">
+                      <input
+                        name="name"
+                        type="text"
+                        id="typeTextX"
+                        class="form-control form-control-lg"
+                        placeholder="Full Name"
+                        required
+                      />
+                    </div>
+                    <div class="form-outline form-primary mb-4">
+                      <input
+                        name="email"
+                        type="email"
+                        id="typeEmailX"
+                        class="form-control form-control-lg"
+                        placeholder="Email"
+                        required
+                      />
+                    </div>
+                    <div class="form-outline form-white mb-4">
+                      <input
+                      name="password"
+                        type="password"
+                        id="typePasswordX"
+                        class="form-control form-control-lg"
+                        placeholder="Password"
+                        required
+                      />
+                    </div>
+                    <br />
+                    <br />
+                    <button class="btn btn-outline-light btn-lg px-5" type="submit">
+                      Sign Up
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>ut/footer')-%>

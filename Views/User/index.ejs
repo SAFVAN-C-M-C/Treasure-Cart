@@ -1,0 +1,66 @@
+<%-include('../layout/header')-%>
+<body id="main">
+    <div class="container py-5 h-100 sub-cl">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div
+              class="card bg-white bg-opacity-10 text-white card-sec"
+              style="border-radius: 1rem"
+            >
+              <div class="card-body p-5 text-center">
+                <div class="mt-md-4">
+                  <!-- <%=locals.errmsg?errmsg:"USER"%> -->
+                  <% if(locals.errmsg) {%>
+                    <div id="errorDiv" class="alert alert-danger">
+                      <strong><%=errmsg%>
+                      </strong>
+                    </div>
+                  <%}%>
+                  <h2 class="log-shadow fw-bold mb-4 text-uppercase">Login</h2>
+                  <form action="/user/login" method="POST">
+                    <br>
+                    <div class="form-outline form-primary mb-4">
+                      <input
+                        name="email"
+                        type="email"
+                        id="typeEmailX"
+                        class="form-control form-control-lg"
+                        placeholder="Email"
+                        required
+                      />
+                    </div>
+                    <br>
+                    <div class="form-outline form-white mb-4">
+                      <input
+                      name="password"
+                        type="password"
+                        id="typePasswordX"
+                        class="form-control form-control-lg"
+                        placeholder="Password"
+                        required
+                      />
+                    </div>
+                    <br />
+                    <br />
+                    <button class="btn btn-outline-light btn-lg px-5" type="submit">
+                      Login
+                    </button>
+                    <a href="/user/SignUp" class="no-under">
+                      <button class="btn btn-outline-light btn-lg px-5" type="button" >
+                        Sign Up
+                      </button>
+                    </a>
+                    <br>
+                    <br>
+                    <div >
+                      <a class="text-light no-under" href="/admin">Admin login</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<%-include('../layout/footer')-%>
