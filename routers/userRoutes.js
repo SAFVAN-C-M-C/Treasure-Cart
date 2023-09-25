@@ -47,4 +47,14 @@ user.get("/user/logout",(req,res)=>{
 })
 
 
+
+
+//product listing
+user.get("/user/products",(req,res)=>{
+    if(req.session.logged){
+        res.render("./User/products",{title:"products"})
+    }
+})
+
+
 module.exports=user;
