@@ -8,6 +8,7 @@ const session =require("express-session");
 const { v4: uuidv4 } = require("uuid");
 const cors=require("cors");
 const passport=require("passport");
+const OTProutes=require("./util/otpindex")
 
 
 app.set("view engine", "ejs");
@@ -31,6 +32,7 @@ app.use(
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use('/',userRouter)
+app.use("/otp",OTProutes);
 
 
 

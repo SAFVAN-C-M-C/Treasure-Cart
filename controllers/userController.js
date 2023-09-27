@@ -1,5 +1,7 @@
 const user=require("../Models/user")
-const bcrypt=require("bcrypt")
+const bcrypt=require("bcrypt");
+const sendOTP = require("./otpController");
+require("../util/otpindex")
 
 const userSignup=async(req,res)=>{
     console.log(req.body);
@@ -13,13 +15,16 @@ const userSignup=async(req,res)=>{
         Email:req.body.email,
         Password:pass,
     }
-    const result=await user.insertMany([data])
-    if(result){
-        res.redirect('/')
-    }
-    else{
-        res.redirect('/user/signup')
-    }
+    req.session.data=data;
+    // const otp=sendOTP({email:data.Email})
+    res.redirect("/user/otp-sent");
+    // const result=await user.insertMany([data])
+    // if(result){
+    //     res.redirect('/')
+    // }
+    // else{
+    //     res.redirect('/user/signup')
+    // }
 }else{
     req.session.errmsgsign="user already exist"
     res.redirect('/user/signup')

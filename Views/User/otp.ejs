@@ -1,0 +1,36 @@
+<%-include('../layout/header')-%>
+
+<body>
+    
+
+<div class="otp-form">
+
+  <!-- Email OTP Form -->
+  <form class="email-otp" action="/user/otp" method="post">
+      <h2>Email OTP</h2>
+      <div class="email-otp-container">
+        
+          <!-- Six input fields for OTP digits -->
+          <input type="text" class="email-otp-input" pattern="\d" maxlength="1">
+          <input type="text" class="email-otp-input" pattern="\d" maxlength="1" disabled>
+          <input type="text" class="email-otp-input" pattern="\d" maxlength="1" disabled>
+          <input type="text" class="email-otp-input" pattern="\d" maxlength="1" disabled>
+          <input type="text" class="email-otp-input" pattern="\d" maxlength="1" disabled>
+          <input type="text" class="email-otp-input" pattern="\d" maxlength="1" disabled>
+
+     </div>
+      
+      <!-- Field to display entered OTP -->
+      <input type="text" id="emailverificationCode" name="code" placeholder="Enter verification code" value="dsjhgfahcbhjasdb" style="display: none;">
+      <!-- Button to verify OTP -->
+      <button type="submit" id="verifyEmailOTP" class="btn btn-info">VERIFY</button>
+    </form>
+  
+</div>
+<!-- <form action="/user/otp" method="post">
+  <input type="text" name="sample">
+  <input type="submit" class="btn btn-info">
+</form> -->
+
+
+<%-include('../layout/footer')-%>
