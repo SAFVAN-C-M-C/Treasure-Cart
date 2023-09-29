@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hello</title>
+    <link rel="stylesheet" href="/static/css/Style.css" />
+    <link rel="stylesheet" href="/static/css/product.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    
+  </head>
+  <body>
+    <main class="index pt-5 bg-main">
+      <!-- <div class="container search"> -->
+    
+      <div class="option d-flex align-items-center justify-content-around ">
+          <form action="/search" method="post">
+            <div class="input-group">
+              <div class="form-outline d-flex p-3">
+                <input type="search" class="form-control " name="search" placeholder="Search">
+                    <button id="search-button" type="submit" class="btn btn-primary bg-custom-nav mx-2" style="background-color: rgba(9,9,121,1);">
+                      
+                      <lord-icon
+                      src="https://cdn.lordicon.com/rlizirgt.json"
+                      trigger="hover"
+                      colors="primary:#ffffff"
+                      style="width:25px;height:25px">
+                  </lord-icon>
+                    </button>
+              </div>
+              
+            </div>
+          </form>
+          <a href="/add"><lord-icon
+            src="https://cdn.lordicon.com/mrdiiocb.json"
+            trigger="hover"
+            colors="primary:#090979"
+            style="width:40px;height:40px">
+        </lord-icon></a>
+      </div>
+    <!-- </div> -->
+      
+    
+      <table class="table table-info container table-bordered my-0 mx-auto">
+          <thead>
+    
+              <tr>
+                  <th class="table-primary" scope="col">product ID</th>
+                  <th class="table-primary" scope="col">Image</th>
+                  <th class="table-primary" scope="col">Name</th>
+                  <th class="table-primary" scope="col">Price</th>
+                  <th class="table-primary" scope="col">Edit</th>
+                  <th class="table-primary" scope="col">Delete</th>
+              </tr>
+          </thead>
+          <tbody>
+          
+                  <tr>
+                      <td>
+    
+                          asdfg
+                      </td>
+                      <td>
+                          kkkkk
+                      </td>
+                      <td>
+                      knjn
+                      </td>
+                      <td>
+                          <a href="#" class="text-white">
+                              <lord-icon src="https://cdn.lordicon.com/qtqvorle.json" style="width: 30px;height:30px"
+                                  trigger="hover" delay="2000"
+                                  colors="outline:#121331,primary:#646e78,secondary:#ebe6ef,tertiary:#4cb4fd"
+                                  style="width:250px;height:250px">
+                              </lord-icon>
+                          </a>
+                      </td>
+                      <td>
+                          <a href="#" class="text-white"
+                              onclick="return confirm('Do you want to Remove  ?')">
+                              <lord-icon src="https://cdn.lordicon.com/exkbusmy.json" style="width: 30px;height:30px"
+                                  trigger="hover" delay="2000"
+                                  colors="outline:#121331,primary:#646e78,secondary:#4bb3fd,tertiary:#ebe6ef"
+                                  style="width:250px;height:250px">
+                              </lord-icon>
+                              </i></a>
+                      </td>
+                  </tr>
+               
+      </table>
+    
+    </main>
+<%-include('../layout/footer')-%>
+  

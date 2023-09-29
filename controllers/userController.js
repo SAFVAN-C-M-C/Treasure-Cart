@@ -1,6 +1,7 @@
 const user=require("../Models/user")
 const bcrypt=require("bcrypt");
 const sendOTP = require("./otpController");
+const { use } = require("../routers/adminRoutes");
 require("../util/otpindex")
 
 const userSignup=async(req,res)=>{
@@ -16,6 +17,7 @@ const userSignup=async(req,res)=>{
         Password:pass,
     }
     req.session.data=data;
+    req.session.email=data.Email
     // const otp=sendOTP({email:data.Email})
     res.redirect("/user/otp-sent");
     // const result=await user.insertMany([data])
@@ -33,8 +35,23 @@ const userSignup=async(req,res)=>{
 }catch(e){
     console.log(e);
 }
-    
 }
+
+const forgotPass=async(req,res)=>{
+    try{
+        console.log(req.body);
+        const email=req.body.email;
+        const check =await user.findOne({Email:email})
+        if(check.length>0){
+            req.session.email=email;
+            res.redirect("/user/otp-sent");
+        }
+    }catch(err){
+        console.log(err);
+    }
+
+}
+
 const userLogin=async(req,res)=>{
     try{
         const check=await user.findOne({Email:req.body.email})

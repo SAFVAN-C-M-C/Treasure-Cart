@@ -1,0 +1,143 @@
+#body {
+  background-color: #e3e6e6;
+}
+.nav-container {
+  display: flex;
+  z-index: 1;
+  /* justify-content: flex-end; */
+  /* align-items: center; */
+}
+.logo-div {
+  position: fixed;
+  top: 17px;
+  left: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.option-div {
+  position: fixed;
+  top: 12px;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+.nav-bg {
+  background-color: #020d2a;
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+}
+.nav-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.nav-item iconify-icon {
+  margin-top: 3px;
+}
+.nav-bg a {
+  text-decoration: none;
+  color: #f0f0f0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.logo a {
+  font-size: 1.5rem;
+}
+
+.nav-options ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin-top: 18px;
+}
+.nav-options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-options li {
+  margin-right: 10px;
+}
+.nav-options a {
+  font-size: 1rem;
+}
+.custom-text {
+  color: #f0f0f0;
+}
+.nav-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 5px;
+  border-radius: 25px;
+  background-color: #f0f0f0;
+  width: 192px;
+  height: 27px;
+  overflow: hidden;
+}
+.nav-search form {
+  width: 85%;
+}
+.find {
+  border-style: none;
+  width: 100px;
+  border-color: #f0f0f0;
+  background-color: #f0f0f0;
+}
+
+/* filter */
+
+.filter {
+  width: 17%;
+  height: auto;
+  position: fixed;
+  left: 0;
+  top: 70px;
+}
+
+.filter-body {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+  width: 350px;
+  height: 100vh;
+  background: white;
+  box-shadow: 4px -9px 7px 5px rgba(0, 0, 0, 0.25);
+}
+.Brand{
+
+
+            color: #0a183d;
+            font-size: 1.4rem;
+            font-family: Poppins;
+            font-weight: 600;
+            word-wrap: break-word;
+}
+.FilterCategory{
+	width: 325px;
+    height: 39px;
+}
+.Brand-item{
+	color: #0a183d;
+              font-size: 26px;
+              font-family: Poppins;
+              font-weight: 700;
+              word-wrap: break-word;
+}
+.checkBox{
+	width: 36px;
+              height: 36px;
+
+              background: rgba(217, 217, 217, 0);
+              border-radius: 7px;
+              border: 3px #0a183d solid;
+}

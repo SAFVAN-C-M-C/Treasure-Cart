@@ -1,63 +1,74 @@
-<%-include('../layout/header')-%>
-<body id="main">
-    <div class="container py-5 h-100 sub-cl">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-            <div
-              class="card bg-white bg-opacity-10 text-white card-sec"
-              style="border-radius: 1rem"
-            >
-              <div class="card-body p-5 text-center">
-                <div class="mt-md-4">
-                  <!-- <%=locals.errmsg?errmsg:"USER"%> -->
-                  <% if(locals.errmsg) {%>
-                    <div id="errorDiv" class="alert alert-danger">
-                      <strong><%=errmsg%>
-                      </strong>
-                    </div>
-                  <%}%>
-                  <h2 class="log-shadow fw-bold mb-4 text-uppercase">Login</h2>
-                  <form action="/user/login" method="POST">
-                    <br>
-                    <div class="form-outline form-primary mb-4">
-                      <input
-                        name="email"
-                        type="email"
-                        id="typeEmailX"
-                        class="form-control form-control-lg"
-                        placeholder="Email"
-                        required
-                      />
-                    </div>
-                    <br>
-                    <div class="form-outline form-white mb-4">
-                      <input
-                      name="password"
-                        type="password"
-                        id="typePasswordX"
-                        class="form-control form-control-lg"
-                        placeholder="Password"
-                        required
-                      />
-                    </div>
-                    <br />
-                    <br />
-                    <button class="btn btn-outline-light btn-lg px-5" type="submit">
-                      Login
-                    </button>
-                    <a href="/user/SignUp" class="no-under btn btn-outline-light btn-lg px-5">Sign Up</a>
-                    <br>
-                    <a href="/user/google" class="no-under btn btn-outline-light btn-lg px-5">Sign in with google</a>
-                    <br>
-                    <div >
-                      <a class="text-light no-under" href="/admin/login">Admin login</a>
-                    </div>
-                  </form>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/static/css/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="ocean">
+    <div class="wave"></div>
+    <div class="wave"></div>
+</div>
+  <div class="main">
+    <div class="container">
+      <div class="row">
+        <div class="col-0 col-sm-0 col-md-0 col-lg-6 img"></div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+          <div class="container d-flex justify-content-center align-items-center">
+            <div class="row d-flex justify-content-center align-items-center">
+              <div class="col-12">
+                <div class="card login-card p-2">
+                  <h1 class="mt-5"><b>Login</b></h1>
+                  <div class="d-flex justify-content-center align-items-center form-body">
+                    <form action="/user/login" method="POST">
+                        <div class="textfield mt-5">
+                            <iconify-icon icon="mdi:email-outline" style="color: #787878;" width="28" height="28"></iconify-icon>
+                            <input type="email" placeholder="Email" id="name" name="email">
+                        </div>
+                        <div class="textfield mt-4">
+                            <iconify-icon icon="mdi:password-outline" style="color: #787878;" width="28" height="28"></iconify-icon>
+                            <input type="password" placeholder="Password" id="password" name="password">
+                            <!-- <iconify-icon icon="mdi:show-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
+                             -->
+                            <i class="fa-regular fa-eye" id="eye" style="color: #787878;"></i>
+                        </div>
+                        <div class="forgot-pass d-flex justify-content-end">
+                          <a href="/user/forgot-pass">Forgot password?</a>
+                        </div>
+                        <div class="button mt-4 mb-2">
+                          <button class="btn-custom" type="submit">Sign in</button>
+                        </div>
+                        
+                        <div class="or d-flex justify-content-center align-items-center">
+                          or 
+                        </div>
+                        <div class="google-button mb-3 d-flex justify-content-center align-items-center">
+                          <a href="/user/google" class="btn-google"><i class="fab fa-google"></i> Signin with google</a>
+                        </div>
+                        <div class="register mb-2 d-flex justify-content-center align-items-center">
+                          Don't have an account?<a href="/user/signUp">Sign up</a>
+                        </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
+    </div>
+  </div>
+  <style>
+    a{
+      text-decoration: none;
+    }
+  </style>
+  <script src="/static/js/login.js"></script>
 <%-include('../layout/footer')-%>

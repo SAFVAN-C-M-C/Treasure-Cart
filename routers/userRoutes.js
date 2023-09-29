@@ -69,6 +69,15 @@ user.post("/user/otp",async(req,res)=>{
     }
 })
 
+//forgot password
+
+user.get("/user/forgot-pass",(req,res)=>{
+    res.render("./User/forgot-pass")
+})
+user.post("/user/forgot-pass",(req,res)=>{
+    
+})
+
 //user logged home page
 user.get("/user/home",(req,res)=>{
     if(req.session.logged||req.user){

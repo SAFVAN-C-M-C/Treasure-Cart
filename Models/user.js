@@ -4,7 +4,7 @@ const connection=require("../config/connection")
 const { Schema, ObjectId } = mongoose;
 
 const UsersSchema = new Schema({
-  UserName: { type: String, required: true, enum: [ ] },
+  UserName: { type: String, required: true,  },
   Password: { type: String, required: true },
   Email: { type: String, required: true },
   Phone: { type: String },

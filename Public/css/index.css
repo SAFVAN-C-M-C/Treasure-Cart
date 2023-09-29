@@ -1,0 +1,132 @@
+/* wave animation */
+html, body {
+    width: 100%;
+    height: 100%;
+}
+body {
+    background:radial-gradient(ellipse at center, rgba(255,254,234,1) 20%, rgba(255,254,234,1) 25%, #B7E8EB 100%);
+    overflow: hidden;
+}
+a{
+  text-decoration:none ;
+}
+
+.ocean {
+    height: 5%;
+    width:100%;
+    position:absolute;
+    bottom:0;
+    left:0;
+    background: #015871;
+}
+
+.wave {
+    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x;
+    position: absolute;
+    top: -198px;
+    width: 6400px;
+    height: 198px;
+    animation: wave 5s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
+    transform: translate3d(0, 0, 0);
+}
+
+.wave:nth-of-type(2) {
+    top: -175px;
+    animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
+    opacity: 1;
+}
+
+@keyframes wave {
+    0% {
+        margin-left: 0;
+    }
+    100% {
+        margin-left: -1600px;
+    }
+}
+
+@keyframes swell {
+    0%, 100% {
+        transform: translate3d(0,-25px,0);
+    }
+    50% {
+        transform: translate3d(0,5px,0);
+    }
+}
+  .main{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .img{
+    background-image: url("/static/images/bg.png");
+    background-repeat: no-repeat;
+    background-attachment: cover;
+  }
+  .login-card{
+    border: none;
+    outline: none;
+    /* box-shadow: 5px 5px 10px rgb(45, 45, 45); */
+    background-color: rgb(255, 255, 255)!important;
+    /* opacity: 0.3; */
+    width: 450px;
+    height: 500;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px!important;
+}
+.textfield{
+    width: 290px;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button{
+    width: 290px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.form-body form{
+    width: 290px;
+}
+.form-body input[type="text"], input[type="password"],input[type="email"]{
+    outline: none;
+    border: none;
+    width: 90%;
+    height: 100%;
+}
+.btn-custom{
+
+	display: block;
+	width: 50%;
+	height: 50px;
+	border-radius: 50px;
+	outline: none;
+	border: none;
+	background-image: linear-gradient(to right, #444BEF, #7b7ee3, #444BEF);
+	background-size: 200%;
+	font-size: 1.2rem;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	/* margin: 1rem 0; */
+	cursor: pointer;
+	transition:ease 1s;
+}
+.btn-custom:hover{
+	background-position: right;
+}
+
+.textfield i:hover{
+    cursor: pointer;
+}
