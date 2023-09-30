@@ -20,63 +20,31 @@ user.get('/',(req,res)=>{
 })
 user.post("/user/login",userControl.userLogin);
 
+
 //user sign up
 user.get("/user/SignUp",(req,res)=>{
     res.render("./User/Signup",{title:"Signup"})
 })
 user.post("/user/signUp",userControl.userSignup)
-user.get("/user/otp-sent",async(req,res)=>{
-    try{
-        console.log("otp route");
-        const email=req.session.data.Email;
-        const createdOTP=await sendOTP({email})
-        res.status(200).redirect("/User/otp")
-    }catch(err){
-        console.log(err);
-    }
-})
+
+
+//otp
+user.get("/user/otp-sent",userControl.otpSender)
+
+//otp page
 user.get("/user/otp",(req,res)=>{
-    // if(req.session.logged){
     res.render("./User/otp");
-
-    // }else{
-    //     res.redirect("/");
-    // }
 })
-user.post("/user/otp",async(req,res)=>{
-    console.log(req.body)
-    try{
-        const data =req.session.data;
-        console.log(req.session.data);
-        const Otp= await OTP.findOne({email:data.Email})
-        console.log(Otp.expireAt);
-        if(Date.now()>Otp.expiredAt){
-            await OTP.deleteOne({email});
-        }else{
-            const hashed=Otp.otp
-            const match=await bcrypt.compare(req.body.code,hashed);
-            if(match){
-                const result=await USER.insertMany([data])
-                req.session.logged=true;
-                res.redirect("/user/home")
-
-            }
-        }
-        
-        
-    }catch(err){
-        throw err;
-    }
-})
+user.post("/user/forgot/otp",userControl.forgotPassOTPConfirmation)
+user.post("/user/otp",userControl.signUpOtpConfirmation)
 
 //forgot password
-
 user.get("/user/forgot-pass",(req,res)=>{
+    req.session.forgot=true
     res.render("./User/forgot-pass")
 })
-user.post("/user/forgot-pass",(req,res)=>{
-    
-})
+user.post("/user/forgot-pass",userControl.forgotPass)
+
 
 //user logged home page
 user.get("/user/home",(req,res)=>{
@@ -92,16 +60,7 @@ user.get("/user/home",(req,res)=>{
 
 
 //user logout
-user.get("/user/logout",(req,res)=>{
-    req.session.destroy((err)=>{
-        if(err){
-            console.log(err);
-            res.send('Error');
-        }else{
-            res.redirect('/');
-        }
-    });
-})
+user.get("/user/logout",userControl.logout)
 
 
 

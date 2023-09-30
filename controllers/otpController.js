@@ -4,7 +4,7 @@ const sendEmail=require("../util/mail");
 const bcrypt=require("bcrypt");
 const {AUTH_EMAIL}=process.env;
 const hashData=require("../util/hashOTP")
-const sendOTP=async ({email})=>{
+const sendOTP=async (email)=>{
     try{
         if(!(email)){
             throw Error("provide values for email,subject,message")

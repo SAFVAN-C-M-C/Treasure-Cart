@@ -1,4 +1,4 @@
-require("dotenv").config({path:'config.env'})
+require("dotenv").config()
 const express=require("express");
 const app =express();
 const userRouter=require("./routers/userRoutes")
@@ -13,6 +13,8 @@ const adminRouter=require("./routers/adminRoutes");
 
 app.set("view engine", "ejs");
 app.use("/static", express.static(path.join(__dirname, "Public")));
+
+
 app.use(
     session({
       secret: uuidv4(),
