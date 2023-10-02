@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Times New Roman:ital,wght@0,400;0,700;1,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=SF Pro Text:wght@600&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Public Sans:wght@400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Spartan:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM Sans:wght@700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Doppio One:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto Slab:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Abhaya Libre:wght@700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Tenor Sans:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inder:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Imprima:wght@400&display=swap"
+    />
+
+<aside id="sidebar" class="sidebar col-md-2 position-fixed" style="top:5rem;">
+  <div class="list-group vh-100 border-end icons" style="border-radius: 0; background-color: rgb(217, 248, 234);">
+    <a href="/admin/dashboard" class="list-group-item border-0" style="background-color: rgb(217, 248, 234);">
+      <i class="fas fa-house"></i>
+      <span class="m-2 d-none d-lg-inline">Dashboard</span>
+    </a>
+    <a href="/admin/products" class="list-group-item border-0" style="background-color: rgb(217, 248, 234);">
+      <i class="fas fa-bag-shopping"></i>
+      <span class="m-2 d-none d-lg-inline">Products</span>
+    </a>
+    <a href="" class="list-group-item border-0" style="background-color: rgb(217, 248, 234);">
+      <!-- {{!-- /admin/orders --}} -->
+      <i class="fas fa-cart-shopping"></i>
+      <span class="m-2 d-none d-lg-inline">Orders</span>
+    </a>
+    <a href="/admin/users-list" class="list-group-item border-0" style="background-color: rgb(217, 248, 234);">
+      <i class="fas fa-users"></i>
+      <span class="m-2 d-none d-lg-inline">Customers</span>
+    </a>
+    <a href="" class="list-group-item border-0 pt-2" style="background-color: rgb(217, 248, 234);">
+      <!-- {{!-- /admin/coupons --}} -->
+      <i class="fas fa-id-card"></i>
+      <span class="m-2 d-none d-lg-inline">Coupons</span>
+    </a>
+    <a href="" class="list-group-item border-0 pt-2" style="background-color: rgb(217, 248, 234);">
+      <!-- {{!-- /admin/banners --}} -->
+      <i class="fas fa-flag"></i>
+      <span class="m-2 d-none d-lg-inline">Banners</span>
+    </a>
+    <a href="/admin/sub-admins" class="list-group-item border-0 pt-2" style="background-color: rgb(217, 248, 234);">
+      <i class="fas fa-user-plus"></i>
+      <span class="m-2 d-none d-lg-inline">Sub-Admins</span>
+    </a>
+    <a href="/admin/categories" class="list-group-item border-0 pt-2" style="background-color: rgb(217, 248, 234);">
+      <i class="fas fa-list"></i>
+      <span class="m-2 d-none d-lg-inline">Categories And Brands</span>
+    </a>
+    <a href="/admin/payments" class="list-group-item border-0 pt-2" style="background-color: rgb(217, 248, 234);">
+      <i class="fas fa-money-bill"></i>
+      <span class="m-2 d-none d-lg-inline">Payments</span>
+    </a>
+  </div>
+</aside>
+<div class="container" style="margin-left: 17%;width: 82%; margin-top: 6%;">
+  <div class="d-flex justify-content-between align-items-center">
+      <h2>PRODUCT LIST</h2>
+      <button class="btn btn-primary" id="addProduct">Add Product</button>
+  </div>
+
+  
+      <div class="d-flex justify-content-end align-items-center">
+          <div class="form-group me-2">
+              <input type="text" class="form-control" placeholder="Search">
+          </div>
+      </div>
+
+      <table class="table table-bordered table-shadow mt-3">
+          <thead>
+              <tr>
+                  <th>Product</th>
+                  <th>Stock</th>
+                  <th>Price</th>
+                  <th>Discount Price</th>
+                  <th>Status</th>
+                  <th>Updated Date</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              
+                  <tr>
+                    <td> product.ProductName </td>
+                    <td> product.AvailableQuantity </td>
+                    <td> product.Price </td>
+                    <td> product.DiscountAmount </td>
+                    <td> product.Status </td>
+                    <td> product.UpdatedOn </td>
+                    <td>
+                      <button class="btn btn-primary btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+              
+          </tbody>
+      </table>
+  </div>
+
+<style>
+  #sidebar {
+    float: left;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>

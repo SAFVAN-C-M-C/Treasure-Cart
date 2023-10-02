@@ -15,5 +15,8 @@ admin.get("/Dashbord",(req,res)=>{
 admin.get("/products",(req,res)=>{
     res.render("./Admin/admin-product");
 })
+admin.get("/add-product",(req,res)=>{
+    res.render("./Admin/add-products");
+})
 
 module.exports=admin;

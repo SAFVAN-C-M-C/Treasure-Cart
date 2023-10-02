@@ -35,8 +35,8 @@ user.get("/user/otp-sent",userControl.otpSender)
 user.get("/user/otp",(req,res)=>{
     res.render("./User/otp");
 })
-user.post("/user/forgot/otp",userControl.forgotPassOTPConfirmation)
-user.post("/user/otp",userControl.signUpOtpConfirmation)
+// user.post("/user/forgot/otp",userControl.forgotPassOTPConfirmation)
+user.post("/user/otp",userControl.OtpConfirmation)
 
 //forgot password
 user.get("/user/forgot-pass",(req,res)=>{

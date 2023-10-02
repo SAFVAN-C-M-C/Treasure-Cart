@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/static/css/add-product.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+  <%-include('../partials/admin-nav')-%>
+    <section class="main">
+      <h2>Add Product</h2>
+      <div class="container">
+        <form action="/admin/addproduct" method="post" enctype="multipart/form-data" class="bg-white">
+          <div class="form-group">
+            <label for="productName">Product Name:</label>
+            <input type="text" name="ProductName" class="form-control bg-light" id="productName"
+              placeholder="Enter product name" required />
+          </div>
+          <br>
+
+          <div class="form-group">
+            <label for="productDescription">Product Description:</label>
+            <textarea class="form-control bg-light" name="Description" id="productDescription" rows="4"
+              placeholder="Enter product description" required></textarea>
+          </div>
+          <br>
+          <!-- <div class="form-group">
+            <label for="productSpecification">Product Specification:</label>
+            <textarea class="form-control bg-light" name="" id="productSpecification1"
+              placeholder="Enter product Specification" required></textarea>
+            <label for="productSpecification2">Product Specification:</label>
+            <textarea class="form-control bg-light" name="" id="productSpecification"
+              placeholder="Enter product Specification" required></textarea>
+            <label for="productSpecification3">Product Specification:</label>
+            <textarea class="form-control bg-light" name="" id="productSpecification"
+              placeholder="Enter product Specification" required></textarea>
+            <label for="productSpecification4">Product Specification:</label>
+            <textarea class="form-control bg-light" name="" id="productSpecification"
+              placeholder="Enter product Specification" required></textarea>
+          </div> -->
+          <br>
+
+          <div class="border p-3 mb-3 bg-light "> <!-- Added bg-light and text-center classes -->
+            <h3>Media</h3>
+            <div class="form-group text-center ">
+              <label for="productImage">Drag and drop or click to upload an image:</label>
+              <br><br><br><br>
+              <input type="file" name="images" class="form-control-file" id="productImage" accept="image/*" multiple
+                style="display: none;" required />
+            </div>
+            <!-- uploaded images -->
+            <div class="row">
+              <div class="col-md-4">
+                <div class="uploaded-image">
+                  <img src="" alt="Uploaded Image 1" id="uploadedImage1" class="img-fluid" data-index="1">
+                  <button class="btn btn-danger btn-sm delete-image" style="display: none;"
+                    data-index="1">Delete</button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="uploaded-image">
+                  <img src="" alt="Uploaded Image 2" id="uploadedImage2" class="img-fluid" data-index="2">
+                  <button class="btn btn-danger btn-sm delete-image" style="display: none;"
+                    data-index="2">Delete</button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="uploaded-image">
+                  <img src="" alt="Uploaded Image 3" id="uploadedImage3" class="img-fluid" data-index="3">
+                  <button class="btn btn-danger btn-sm delete-image" style="display: none;"
+                    data-index="3">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="border p-3 mb-3">
+            <h2>Pricing</h2>
+            <div class="form-group">
+              <label for="basePrice">Base Price:</label>
+              <input type="number" name="Price" class="form-control bg-light" id="basePrice"
+                placeholder="Enter base price" required />
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="discountAmount">Discount Amount:</label>
+              <input type="number" name="DiscountAmount" class="form-control bg-light" id="discountAmount"
+                placeholder="Enter discount amount" required />
+            </div>
+          </div>
+
+
+          <div class="border p-3 mb-3">
+            <h2>Variations</h2>
+            <div>
+              <input type="radio" name="productType" id="watchesRadio" value="watches"> Watches
+              <input type="radio" name="productType" id="perfumesRadio" value="perfumes"> Perfumes
+            </div>
+            <div id="watchColorInput" style="display: none;">
+              <label for="watchColors">Enter Watch Colors:</label>
+              <input type="text" name="watches" id="watchColors">
+            </div>
+            <div id="perfumeQuantityDropdown" style="display: none;">
+              <label for="perfumeQuantity">Select Perfume Quantity:</label>
+              <select id="perfumeQuantity" name="perfumes">
+                <option value="50 ML">50ML</option>
+                <option value="100 ML">100ML</option>
+                <option value="150 ML">150ML</option>
+                <!-- Add more options as needed -->
+              </select>
+            </div>
+          </div>
+
+
+
+          <div class="border p-3 mb-3">
+            <h2>Stock</h2>
+
+            <div class="form-group">
+              <label for="quantity">Quantity:</label>
+              <input type="number" name="AvailableQuantity" class="form-control bg-light" id="quantity"
+                placeholder="Enter quantity" required />
+            </div>
+          </div>
+
+
+      </div>
+
+      <div class="col-md-4 my-5">
+        <div class="bg-white p-3">
+          <div class="form-group">
+            <br>
+            <label for="category">Category:</label>
+            <select class="form-select bg-light" id="category" name="Category" required>
+              <option value="" selected disabled>Select a category</option>
+              <option value="MEN'S WATCHES">MEN'S WATCHES</option>
+              <option value="KID'S WATCHES">KID'S WATCHES</option>
+              <option value="WOMEN'S WATCHES">WOMEN'S WATCHES</option>
+              <option value="PERFUMES">PERFUMES</option>
+              <option value="WALLETS">WALLETS</option>
+            </select>
+          </div><br>
+          <div class="form-group">
+            <br>
+            <label for="brandName">Brand Name:</label>
+            <select name="BrandName" class="form-select bg-light" id="brand" required>
+              <option value="" selected disabled>Select a Brand</option>
+              <option value="FASTRACK">FASTRACK</option>
+              <option value="TITAN">TITAN</option>
+              <option value="ROLEX">ROLEX</option>
+              <option value="FOGG">FOGG</option>
+
+            </select>
+          </div><br>
+          <div class="form-group">
+            <label for="tags">Tags:</label>
+            <input type="text" class="form-control bg-light" name="Tags" id="tags" placeholder="Enter tags" required />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary ms-3">Add Product</button>
+      </div>
+      </form>
+      </div>
+    </section>
+
+
+    <%-include("../layout/footer")-%>

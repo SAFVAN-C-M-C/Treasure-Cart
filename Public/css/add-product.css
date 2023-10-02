@@ -1,0 +1,75 @@
+*{
+    margin: 0;
+    padding: 0;
+    /* background-color: #E3E6E6; */
+  }
+
+  a{
+    text-decoration: none;
+    color: #191919;
+  }
+  body{
+    background-color: #E3E6E6;
+    display: flex;
+
+  }
+
+  .main{
+    width: 80%;
+    margin-top: 20px;
+    background-color: #fff;
+    /* padding: 15px; */
+  }
+  .header{
+    display: flex;
+    justify-content: space-between;
+  }
+  .btn-custom{
+
+display: flex;
+justify-content: center;
+align-items: center;
+width: 120px;
+height: 50px;
+border-radius: 50px;
+outline: none;
+border: none;
+background-image: linear-gradient(to right, #444BEF, #7b7ee3, #444BEF);
+background-size: 200%;
+font-size: 0.7rem;
+color: #fff;
+font-family: 'Poppins', sans-serif;
+text-transform: uppercase;
+/* margin: 1rem 0; */
+cursor: pointer;
+transition:ease 1s;
+}
+.btn-custom:hover{
+background-position: right;
+}
+.general-information{
+    border-radius: 15px;
+    width: 80%;
+    height: auto;
+    background-color: #f0f0f0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.form-main-heading{
+    /* margin-top: 10px;
+    margin-bottom: 10px; */
+    font-size: 1rem;
+    font-weight: 700;
+}
+.input-text{
+    width: 90%;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 15px;
+    padding-left: 10px;
+}
+input[type="text"], input[type="password"], textarea, select { 
+    outline: none;
+    border: none;
+}

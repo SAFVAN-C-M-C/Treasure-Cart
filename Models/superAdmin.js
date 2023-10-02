@@ -3,9 +3,9 @@ const connection=require("../config/connection")
 // const { Schema, ObjectId } = mongoose;
 
 const SuperAdminSchema = mongoose.Schema({
-  Email:  String ,
-  UserName: String ,
-  Password: String ,
+  email:  String ,
+  userName: String ,
+  password: String ,
 });
 
 const SuperAdmin = mongoose.model('SuperAdmin', SuperAdminSchema);

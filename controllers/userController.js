@@ -7,45 +7,56 @@ const OTP = require("../Models/otp");
 
 
 const userSignup = async (req,res) => {
+    console.log("user sign up");
     console.log(req.body);
     try {
-        const check = await user.find({ Email: req.body.email })
+        const check = await user.find({ email: req.body.email })
         console.log(typeof (check));
         if (check.length == 0) {
             const pass = await bcrypt.hash(req.body.password, 10);
             const data = {
-                UserName: req.body.name,
-                Email: req.body.email,
-                Password: pass,
+                userName: req.body.name,
+                email: req.body.email,
+                password: pass,
             }
             req.session.data = data;
-            req.session.email = data.Email
+            req.session.email = data.email
+            req.session.signotp=true;
             res.redirect("/user/otp-sent");
         } else {
-            req.session.errmsgsign = "user already exist"
+            req.session.errmsg = "user already exist"
             res.redirect('/user/signup')
             console.log("user already exist");
         }
     } catch (e) {
         console.log(e);
+        req.session.errmsg = "something went wrong"
+        res.redirect('/user/signup')
+        console.log("user already exist");
     }
 }
 
 
 const otpSender = async(req,res)=>{
-    try{
-        console.log("otp route");
-        const email=req.session.email;
-        console.log(email.email);
-        const createdOTP=await sendOTP(email.email)
-        res.status(200).redirect("/User/otp")
-    }catch(err){
-        console.log(err);
-        req.session.errmsg="Sorry at this momment we can't sent otp";
-        if(req.session.forgot){
-            res.redirect("/user/forgot-pass")
+    if(req.session.signotp || req.session.forgot){
+        try{
+            console.log(req.session.email);
+            console.log("otp route");
+            const email=req.session.email;
+            console.log(email);
+            const createdOTP=await sendOTP(email)
+            req.session.email=email;
+            console.log("session before verifiying otp :",req.session.email);
+            res.status(200).redirect("/User/otp")
+        }catch(err){
+            console.log(err);
+            req.session.errmsg="Sorry at this momment we can't sent otp";
+            console.log(req.session.errmsg);
+            if(req.session.forgot){
+                res.redirect("/user/forgot-pass")
+            }
+            res.redirect("/user/SignUp");
         }
-        res.redirect("/user/SignUp");
     }
 }
 
@@ -54,10 +65,19 @@ const otpSender = async(req,res)=>{
 const forgotPass = async (req, res) => {
     try{
         console.log(req.body);
-        const check=await user.findOne({Email:req.body.email})
-        if(check.length > 0){
-            console.log(check);
-            req.session.email=req.body;
+        const check=await user.findOne({email:req.body.email})
+        if(check){
+            console.log("good to go:",check);
+            const userdata={
+                email:check.email,
+                userName:check.userName,
+                _id:check._id,
+            }
+            const email=req.body.email
+            console.log("Email::: ",email);
+            req.session.userdata=userdata;
+            req.session.email=email.toString();
+            console.log("Sessiosiiii: ",req.session.email)
            res.redirect("/user/otp-sent") 
         }
         else{
@@ -73,40 +93,16 @@ const forgotPass = async (req, res) => {
 
 }
 
-const forgotPassOTPConfirmation= async (req,res) => {
-    console.log(req.body);
-    try{
-        const data=req.session.email
-        console.log(data);
-        const Otp= await OTP.findOne({email:data})
 
-        if(Date.now()>Otp,expireAt){
-            await OTP.deleteOne({data});
-
-        }else{
-            const hashed=Otp.otp
-            const match=await bcrypt.compare(req.body.code,hashed);
-            if(match){
-                res.redirect("/user/home");
-            }
-            else{
-                req.session.errmsg="Invalid OTP"
-            }
-        }
-    }catch(err){
-        console.log(err);
-        req.session.errmsg="Email not found";
-    }
-}
 
 const userLogin = async (req, res) => {
     try {
-        const check = await user.findOne({ Email: req.body.email })
+        const check = await user.findOne({ email: req.body.email })
         console.log(check);
         console.log(req.body);
         let isMatch = await bcrypt.compare(
             req.body.password,
-            check.Password
+            check.password
         );
         if (isMatch) {
             req.session.name = check.name;
@@ -126,35 +122,68 @@ const userLogin = async (req, res) => {
     }
 }
 
-//sign up otp verification
-const signUpOtpConfirmation = async (req,res) => {
-    console.log(req.body)
+// otp verification
+const OtpConfirmation = async (req,res) => {
+    if(req.session.forgot){
+        console.log(req.body);
     try{
-        const data =req.session.data;
-        console.log(req.session.data);
-        const Otp= await OTP.findOne({email:data.Email})
-        console.log(Otp.expireAt);
-        if(Date.now()>Otp.expiredAt){
-            await OTP.deleteOne({email});
+        const email=req.session.email
+        console.log("forgot confirmation :",email);
+        const Otp= await OTP.findOne({email:email})
+
+        if(Date.now()>Otp.expireAt){
+            await OTP.deleteOne({data});
+
         }else{
             const hashed=Otp.otp
             const match=await bcrypt.compare(req.body.code,hashed);
             if(match){
-                const result=await USER.insertMany([data])
                 req.session.logged=true;
-                res.redirect("/user/home")
-
+                req.session.forgot=false;
+                res.redirect("/user/home");
             }
             else{
+                console.log("no match");
+                req.session.userdata="";
                 req.session.errmsg="Invalid OTP"
                 res.redirect("/user/otp")
             }
         }
-        
-        
     }catch(err){
         console.log(err);
-        res.redirect("/user/otp")
+        req.session.errmsg="Email not found";
+    }
+    }
+    else if(req.session.signotp){
+        console.log(req.body)
+        try{
+            const data =req.session.data;
+            console.log(req.session.data);
+            const Otp= await OTP.findOne({email:data.email})
+            console.log(Otp.expireAt);
+            if(Date.now()>Otp.expiredAt){
+                await OTP.deleteOne({email});
+            }else{
+                const hashed=Otp.otp
+                const match=await bcrypt.compare(req.body.code,hashed);
+                if(match){
+                    const result=await user.insertMany([data])
+                    req.session.logged=true;
+                    req.session.signotp=false
+                    res.redirect("/user/home")
+    
+                }
+                else{
+                    req.session.errmsg="Invalid OTP"
+                    res.redirect("/user/otp")
+                }
+            }
+            
+            
+        }catch(err){
+            console.log(err);
+            res.redirect("/user/otp")
+        }
     }
 }
 
@@ -174,8 +203,7 @@ module.exports = {
     userSignup,
     forgotPass,
     otpSender,
-    forgotPassOTPConfirmation,
     logout,
-    signUpOtpConfirmation
+    OtpConfirmation
 
 }

@@ -1,0 +1,155 @@
+<aside id="sidebar" class="sidebar col-md-2">
+
+    <div class="nav-side-main">
+      <div class="logo-main">
+        <div class="nav-logo">
+          <div class="logo"></div>
+        </div>
+        <div class="name"><span>ADMIN NAME</span></div>
+      </div>
+      <div class="nav-option">
+        <div class="nav-option-item ">
+          <div class="option-logo "><iconify-icon icon="akar-icons:dashboard" style="color: #787878;" width="25" height="25"></iconify-icon></div>
+          <div class="option-title"><a href="#"><span>Dashboard</span></a></div>
+        </div>
+        <div class="nav-option-item selected">
+          <div class="option-logo"><iconify-icon icon="tabler:packages" style="color: #787878;" width="25" height="25"></iconify-icon></div>
+          <div class="option-title"><span>Products</span></div>
+        </div>
+        <div class="nav-option-item">
+          <div class="option-logo"><iconify-icon icon="carbon:collapse-categories" style="color: #787878;" width="25" height="25"></iconify-icon></div>
+          <div class="option-title">Category</div>
+        </div>
+        <div class="nav-option-item">
+          <div class="option-logo"><iconify-icon icon="subway:admin-1" style="color: #787878;" width="25" height="25"></iconify-icon></div>
+          <div class="option-title">Admins</div>
+        </div>
+        <div class="nav-option-item">
+          <div class="option-logo"><iconify-icon icon="icon-park-outline:peoples" style="color: #787878;" width="25" height="25"></iconify-icon></div>
+          <div class="option-title">Customers</div>
+        </div>
+        <div class="nav-option-item">
+          <div class="option-logo"><iconify-icon icon="mdi:cart" style="color: #787878;" width="25" height="25"></iconify-icon></div>
+          <div class="option-title">Orders</div>
+        </div>
+        <div class="nav-option-item">
+          <div class="option-logo"><iconify-icon icon="mdi:coupon-outline" style="color: #787878;" width="25" height="25"></iconify-icon></div>
+          <div class="option-title">Coupons</div>
+        </div>
+        <div class="nav-option-item">
+          <div class="option-logo"><iconify-icon icon="game-icons:vertical-banner" style="color: #787878;" width="25" height="25"></iconify-icon></div>
+          <div class="option-title">Banners</div>
+        </div>
+        <div class="nav-option-item">
+          <div class="option-logo"><iconify-icon icon="ic:baseline-logout" style="color: #787878;" width="25" height="25"></iconify-icon></div>
+          <div class="option-title">Logout</div>
+        </div>
+
+      </div>
+    </div>
+  </aside>
+  <style>
+    #sidebar{
+        float: left;
+    }
+        *{
+    margin: 0;
+    padding: 0;
+    /* background-color: #E3E6E6; */
+  }
+  #sidebar{
+    float: left;
+  }
+  a{
+    text-decoration: none;
+    color: #191919;
+  }
+  body{
+    background-color: #E3E6E6;
+    display: flex;
+
+  }
+  .nav-side-main{
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    /* margin-right: auto; */
+    margin-right: 15px;
+    width: 200px;
+    height: 100vh;
+    box-shadow: 3px 3px 7px rgba(0, 64, 64, 0.2);
+    background-color: #fff;
+  }
+  .logo-main{
+    height: 200px;
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-logo{
+    height: 100px;
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .logo{
+    width: 90%;
+    height: 50%;
+    background-color: #fff;
+    background-image: url("/static/images/logo.png");
+    background-size:100% 100% ;
+
+  }
+  .name{
+    margin-top: 15px;
+    height: 25px;
+    width: 100%;
+    font-size: 1 rem;
+    font-weight: 800;
+    /* background-color: yellow; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-option{
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .selected{
+    background-color: #d1d1d1;
+    height: 55px;
+    width: 100%;
+  }
+  .nav-option-item{
+    height: 55px;
+    width: 100%;
+    /* background-color: #313131; */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .option-logo{
+    height: 25px;
+    width: 25px;
+    /* background-color: brown; */
+  }
+  .option-title{
+    width: 100px;
+    height: 25px;
+    /* background-color: yellowgreen; */
+    display: flex;
+    justify-content:center ;
+    align-items: center;
+  }
+  
+    
+</style>
