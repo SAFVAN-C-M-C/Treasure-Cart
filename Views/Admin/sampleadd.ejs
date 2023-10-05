@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+  <%-include('../partials/admin-nav')-%>
+  <div class="container">
+<div class="add_product_section" id="adp">
+    <img src="/images/close.png" style="width:20px;height: 20px;position:absolute;top:5%;right:2%;cursor:pointer" alt="" id="clsbtn">
+    <form action="/admin/products/add-products" method="post" class="form_section" enctype="multipart/form-data">
+        <div class="images">
+            <div class="preview_imgs">
+                <div class="secondary">
+                    <input type="file" name="image1" accept="image/*" id="imag1" required onchange="previewImage('imag1', 'im1','1l')">
+                    <label for="imag1">
+                        <p id="1l">
+                            Upload Preview image 1
+                        </p>
+                        <img src="" alt="" id="im1">
+                    </label>
+                    <input type="file" name="image2" accept="image/*" id="imag2" required onchange="previewImage('imag2', 'im2','l2')">
+                    <label for="imag2">
+                        <p id="l2">
+                            Upload Preview image 2
+                        </p>
+                        <img src="" alt="" id="im2">
+                    </label>
+                    <input type="file" name="image3" accept="image/*" id="imag3" required onchange="previewImage('imag3', 'im3','l3')">
+                    <label for="imag3">
+                        <p id="l3">
+                            Upload Preview image 3
+                        </p>
+                        <img src="" alt="" id="im3">
+                    </label>
+                    <input type="file" name="image4" accept="image/*" id="imag4" required onchange="previewImage('imag4', 'im4','l4')">
+                    <label for="imag4">
+                        <p id="l4">
+                            Upload Preview image 4
+                        </p>
+                        <img src="" alt="" id="im4">
+                    </label>
+                </div>
+                <div class="main">
+                    <input type="file" name="main"  accept="image/*" id="main" required onchange="previewImage('main', 'mn','ml')">
+                    <label for="main">
+                        <p id="ml">
+                            Main image
+                        </p>
+                        <img src="" alt="" id="mn">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="inputs">
+            <div class="all_inp">
+                <div class="head">
+                    <h4>Add product</h4>
+                </div>
+                <div class="control_section">
+                    <p for="">product name</p>
+                    <input type="text"  name="productname" required>
+                </div>
+                <div class="control_section " id="sp">
+                    <div class="p">
+
+                        <p for="">Price</p>
+                        <input type="number" name="price" required>
+                    </div>
+                    <div class="dsp">
+
+                        <p for="">Discountedprice</p>
+                        <input type="number" name="discount">
+                    </div>
+                </div>
+                <div class="control_section " id="sp">
+                    <div class="p">
+
+                        <p for="">Brand</p>
+                        <input type="text" name="brand" required>
+                    </div>
+                    <div class="dsp">
+
+                        <p for="">Category</p>
+                        <select name="category" id="">
+                                <%categories.forEach((value)=>{%>
+                                    <option value="<%-value.categoryname%>"><%-value.categoryname%></option>
+                           <% })%>
+                        </select>
+                    </div>
+                </div>
+                <div class="control_section " id="sp">
+                    <div class="p" id="spc">
+                        <p for="" style="position: absolute;top:0;left:0">Specifications</p>
+                        <input type="text" name="spec1">
+                        <input type="text" name="spec2">
+                        <input type="text" name="spec3" placeholder="optional">
+                        <input type="text" name="spec4" placeholder="optional">
+                    </div>
+    
+                </div>
+                <div class="control_section">
+                    <p for="">Description</p>
+                    <textarea name="description" id="" required></textarea>
+                </div>
+                <div class="control_section end">
+                    <button type="submit">submit</button>
+                    <button type="reset">cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>

@@ -4,8 +4,8 @@ const connection=require("../config/connection")
 const { Schema, ObjectId } = mongoose;
 
 const UsersSchema = new Schema({
-  userName: { type: String, required: true,  },
-  password: { type: String, required: true },
+  userName: { type: String, required: true, },
+  password: { type: String, },
   email: { type: String, required: true },
   phone: { type: String },
   status: { type: String },
@@ -20,6 +20,8 @@ const UsersSchema = new Schema({
   }],
   dob: { type: Date },
   gender: { type: String },
+  joined:{type:Date},
+  profile:{type:String}
 });
 
 const Users = mongoose.model('Users', UsersSchema);

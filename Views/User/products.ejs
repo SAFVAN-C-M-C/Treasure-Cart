@@ -4,167 +4,123 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hello</title>
-    <link rel="stylesheet" href="/static/css/Style.css" />
     <link rel="stylesheet" href="/static/css/product.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"
-    ></script>
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+
   </head>
   <body id="body">
-    <div class="nav-bg d-flex justify-content-center align-items-center">
-      <div class="container nav-container">
-        <div class="row d-flex justify-content-center">
-          <div class="col-6 col-md-2 logo-div">
-            <div class="logo"><a href="#">Treaseure cart</a></div>
-          </div>
-          <div class="col-6 col-md-10 option-div">
-            <div
-              class="nav-controllers d-flex justify-content-end align-items-center"
-            >
-              <div class="nav-options">
-                <div class="nav-item"><a href="">Home</a></div>
-                <div class="nav-item"><a href="">Explore</a></div>
-                <div class="nav-item"><a href="">My Accounts</a></div>
-                <div class="nav-item"><a href="">Contact Us</a></div>
-                <div class="nav-search">
-                  <form action="">
-                    <input class="find" placeholder="find..." type="text" />
-                  </form>
-                  <i
-                    class="fa-solid fa-magnifying-glass"
-                    style="color: #020d2a"
-                  ></i>
-                </div>
-                <div class="nav-item">
-                  <a href=""
-                    ><iconify-icon
-                      icon="iconamoon:profile-circle-light"
-                      style="color: #f0f0f0"
-                      width="32"
-                      height="32"
-                    ></iconify-icon
-                  ></a>
-                </div>
-                <div class="nav-item">
-                  <a href=""
-                    ><iconify-icon
-                      icon="ph:heart-duotone"
-                      style="color: #f0f0f0"
-                      width="32"
-                      height="32"
-                    ></iconify-icon
-                  ></a>
-                </div>
-                <div class="nav-item">
-                  <a href=""
-                    ><iconify-icon
-                      icon="tdesign:cart"
-                      style="color: #f0f0f0"
-                      width="32"
-                      height="32"
-                    ></iconify-icon
-                  ></a>
-                </div>
+    <%-include('../partials/header')-%>
+    <div class="py-3 py-md-5 bg-light">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                  <h4 class="mb-4">Our Products</h4>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <section class="main d-flex">
-        <div class="filter">
-            <div class="filter-body">
-              <div class="tiltle"><u><h3>Filter</h3></u></div>
-      
-              <div class="Brand">Brand:</div>
-              <div class="FilterCategory">
-                <div class="Brand-item">SkullCandy</div>
-                <div class="checkBox"></div>
-              </div>
-              <div class="FilterCategory">
-                  <div class="Brand-item">SkullCandy</div>
-                  <div class="checkBox"></div>
-              </div>
-            </div>
-        </div>
-        <div class="container product mt-5">
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    <div class="card bg-info" style="width: 80%">
-                      <img src="" class="card-img-top" alt="..."  height="200px" />
-                      <div class="card-body">
-                        <h5 class="card-title">asdfghjkl</h5>
+              <div class="col-md-3">
+                  <div class="product-card">
+                      <div class="product-card-img">
+                          <label class="stock bg-success">In Stock</label>
+                          <img src="hp-laptop.jpg" alt="Laptop">
                       </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4">
-                  <div class="card bg-info" style="width: 80%">
-                    <img src="" class="card-img-top" alt="..."  height="200px" />
-                    <div class="card-body">
-                      <h5 class="card-title">asdfghjkl</h5>
-                    </div>
+                      <div class="product-card-body">
+                          <p class="product-brand">HP</p>
+                          <h5 class="product-name">
+                             <a href="">
+                                  HP Laptop 
+                             </a>
+                          </h5>
+                          <div>
+                              <span class="selling-price">$500</span>
+                              <span class="original-price">$799</span>
+                          </div>
+                          <div class="mt-2">
+                              <a href="" class="btn btn1">Add To Cart</a>
+                              <a href="" class="btn btn1"> <i class="fa fa-heart"></i> </a>
+                              <a href="" class="btn btn1"> View </a>
+                          </div>
+                      </div>
                   </div>
               </div>
-              <div class="col-12 col-md-4">
-                <div class="card bg-info" style="width: 80%">
-                  <img src="" class="card-img-top" alt="..."  height="200px" />
-                  <div class="card-body">
-                    <h5 class="card-title">asdfghjkl</h5>
+              <div class="col-md-3">
+                  <div class="product-card">
+                      <div class="product-card-img">
+                          <label class="stock bg-success">In Stock</label>
+                          <img src="mobile-redmi-note-8.jpg" alt="Red MI Note 8">
+                      </div>
+                      <div class="product-card-body">
+                          <p class="product-brand">MI</p>
+                          <h5 class="product-name">
+                             <a href="">
+                                  Red MI Note 8
+                             </a>
+                          </h5>
+                          <div>
+                              <span class="selling-price">$200</span>
+                              <span class="original-price">$300</span>
+                          </div>
+                          <div class="mt-2">
+                              <a href="" class="btn btn1">Add To Cart</a>
+                              <a href="" class="btn btn1"> <i class="fa fa-heart"></i> </a>
+                              <a href="" class="btn btn1"> View </a>
+                          </div>
+                      </div>
                   </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-              <div class="card bg-info" style="width: 80%">
-                <img src="" class="card-img-top" alt="..."  height="200px" />
-                <div class="card-body">
-                  <h5 class="card-title">asdfghjkl</h5>
-                </div>
               </div>
-          </div>
-          <div class="col-12 col-md-4">
-            <div class="card bg-info" style="width: 80%">
-              <img src="" class="card-img-top" alt="..."  height="200px" />
-              <div class="card-body">
-                <h5 class="card-title">asdfghjkl</h5>
+              <div class="col-md-3">
+                  <div class="product-card">
+                      <div class="product-card-img">
+                          <label class="stock bg-success">In Stock</label>
+                          <img src="casual-shirt.jpg" alt="Mens Shirt">
+                      </div>
+                      <div class="product-card-body">
+                          <p class="product-brand">Levis</p>
+                          <h5 class="product-name">
+                             <a href="">
+                                  Mens Shirt 
+                             </a>
+                          </h5>
+                          <div>
+                              <span class="selling-price">$299</span>
+                              <span class="original-price">$359</span>
+                          </div>
+                          <div class="mt-2">
+                              <a href="" class="btn btn1">Add To Cart</a>
+                              <a href="" class="btn btn1"> <i class="fa fa-heart"></i> </a>
+                              <a href="" class="btn btn1"> View </a>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </div>
-        </div>
-        <div class="col-12  col-md-4">
-          <div class="card bg-info" style="width: 80%">
-            <img src="" class="card-img-top" alt="..."  height="200px" />
-            <div class="card-body">
-              <h5 class="card-title">asdfghjkl</h5>
-            </div>
+              <div class="col-md-3">
+                  <div class="product-card">
+                      <div class="product-card-img">
+                          <label class="stock bg-success">In Stock</label>
+                          <img src="headphone.jpg" alt="Head Phone">
+                      </div>
+                      <div class="product-card-body">
+                          <p class="product-brand">Asus</p>
+                          <h5 class="product-name">
+                             <a href="">
+                              Head Phone
+                             </a>
+                          </h5>
+                          <div>
+                              <span class="selling-price">$399</span>
+                              <span class="original-price">$499</span>
+                          </div>
+                          <div class="mt-2">
+                              <a href="" class="btn btn1">Add To Cart</a>
+                              <a href="" class="btn btn1"> <i class="fa fa-heart"></i> </a>
+                              <a href="" class="btn btn1"> View </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </div>
       </div>
-      <div class="col-12 col-md-4">
-        <div class="card bg-info" style="width: 80%">
-          <img src="/static/uploads/Audio-Technica-removebg-preview.png" class="card-img-top" alt="..."  height="200px" />
-          <div class="card-body">
-            <h5 class="card-title">asdfghjkl</h5>
-          </div>
-        </div>
-    </div>
-            </div>
-        </div>
-    </section>
-    <%-include('../layout/header')-%>
+  </div>
+    <%-include('../layout/footer')-%>
   </body>
 </html>

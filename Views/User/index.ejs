@@ -24,32 +24,39 @@
             <div class="row d-flex justify-content-center align-items-center">
               <div class="col-12">
                 <div class="card login-card p-2">
+                  <%if(errmsg.length>0){%>
+                    <span id="err" class="alert-danger"><%=errmsg%></span>
+                  <%}%>
                   <h1 class="mt-5"><b>Login</b></h1>
                   <div class="d-flex justify-content-center align-items-center form-body">
-                    <form action="/user/login" method="POST">
+                    <form action="/user/login" method="POST" id="loginForm" onsubmit="return validateForm()">
                         <div class="textfield mt-5">
                             <iconify-icon icon="mdi:email-outline" style="color: #787878;" width="28" height="28"></iconify-icon>
-                            <input type="email" placeholder="Email" id="name" name="email">
+                            <input required type="email" placeholder="Email" id="email" name="email">
+                            
                         </div>
+                        <span id="emailError" class="error"></span>
                         <div class="textfield mt-4">
                             <iconify-icon icon="mdi:password-outline" style="color: #787878;" width="28" height="28"></iconify-icon>
-                            <input type="password" placeholder="Password" id="password" name="password">
+                            <input required type="password" placeholder="Password" id="password" name="password">
                             <!-- <iconify-icon icon="mdi:show-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
                              -->
                             <i class="fa-regular fa-eye" id="eye" style="color: #787878;"></i>
                         </div>
+                        <span id="passwordError" class="error"></span>
                         <div class="forgot-pass d-flex justify-content-end">
                           <a href="/user/forgot-pass">Forgot password?</a>
                         </div>
                         <div class="button mt-4 mb-2">
-                          <button class="btn-custom" type="submit">Sign in</button>
+                          <input class="btn-custom" type="submit" value="Login"></button>
+
                         </div>
                         
                         <div class="or d-flex justify-content-center align-items-center">
                           or 
                         </div>
                         <div class="google-button mb-3 d-flex justify-content-center align-items-center">
-                          <a href="/user/google" class="btn-google"><i class="fab fa-google"></i> Signin with google</a>
+                          <a href="/auth/login" class="btn-google"><i class="fab fa-google"></i> Signin with google</a>
                         </div>
                         <div class="register mb-2 d-flex justify-content-center align-items-center">
                           Don't have an account?<a href="/user/signUp">Sign up</a>

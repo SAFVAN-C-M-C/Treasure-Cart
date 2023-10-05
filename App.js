@@ -10,6 +10,7 @@ const cors=require("cors");
 const passport=require("passport");
 const OTProutes=require("./util/otpindex")
 const adminRouter=require("./routers/adminRoutes");
+const flash=require("connect-flash")
 
 app.set("view engine", "ejs");
 app.use("/static", express.static(path.join(__dirname, "Public")));
@@ -17,11 +18,14 @@ app.use("/static", express.static(path.join(__dirname, "Public")));
 
 app.use(
     session({
+      
       secret: uuidv4(),
+      cookie:{maxAge:60000},
       resave: false,
       saveUninitialized: false,
     })
   );
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(

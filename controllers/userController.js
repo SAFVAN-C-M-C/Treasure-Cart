@@ -24,12 +24,14 @@ const userSignup = async (req,res) => {
             req.session.signotp=true;
             res.redirect("/user/otp-sent");
         } else {
+            req.flash("errmsg","*User with this email Already exist")
             req.session.errmsg = "user already exist"
             res.redirect('/user/signup')
             console.log("user already exist");
         }
     } catch (e) {
         console.log(e);
+        req.flash("errmsg","Sorry!!Something went wrong please try again after some times!!")
         req.session.errmsg = "something went wrong"
         res.redirect('/user/signup')
         console.log("user already exist");
@@ -99,6 +101,7 @@ const userLogin = async (req, res) => {
     try {
         const check = await user.findOne({ email: req.body.email })
         console.log(check);
+        if(check){
         console.log(req.body);
         let isMatch = await bcrypt.compare(
             req.body.password,
@@ -111,12 +114,21 @@ const userLogin = async (req, res) => {
             res.redirect("/user/home");
         }
         else {
+            req.flash("errmsg","*invalid password")
+
             req.session.errmsg = "invalid password"
             res.redirect('/')
             console.log("invalid password");
+        }}else{
+            req.flash("errmsg","*User not found")
+            res.redirect('/')
+            req.session.errmsg = "User not found"
+            console.log("User not found");
+
         }
     } catch {
-        req.session.errmsg = "user not found"
+        req.flash("errmsg","*invalid user name or password")
+        req.session.errmsg = "invalid user name or password"
         res.redirect('/')
         console.log("user not found");
     }

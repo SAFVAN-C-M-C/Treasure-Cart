@@ -26,15 +26,21 @@
                 <div class="card login-card p-2">
                   <h1 class="mt-5"><b>Sign Up</b></h1>
                   <div class="d-flex justify-content-center align-items-center form-body">
-                    <form action="/user/signUp" method="POST">
+                    <form action="/user/signUp" method="POST" onsubmit="return validateForm()" id="signupform">
                       <div class="textfield mt-5">
                         <iconify-icon icon="solar:user-linear" style="color: #787878;" width="26" height="26"></iconify-icon>
                         <input type="text" placeholder="Full Name" id="name" name="name">
                     </div>
+                    <span id="nameError" class="error"></span>
                         <div class="textfield mt-4">
                             <iconify-icon icon="mdi:email-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
                             <input type="email" placeholder="Email" id="email" name="email">
                         </div>
+                        <span id="emailError" class="error"></span>
+                        <%if(errmsg.length>0){%>
+                          <span id="err" class="alert-danger"><%=errmsg%></span>
+                        <%}%>
+                        
                         <div class="textfield mt-4">
                             <iconify-icon icon="mdi:password-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
                             <input type="password" placeholder="Password" id="password" name="password">
@@ -42,8 +48,9 @@
                              -->
                             <i class="fa-regular fa-eye" id="eye" style="color: #787878;"></i>
                         </div>
+                        <span id="passwordError" class="error"></span>
                         <div class="button mt-5 mb-2">
-                          <button class="btn-custom" type="submit">Sign up</button>
+                          <input class="btn-custom" type="submit" value="Sign up"></button>
                         </div>
                         <div class="or d-flex justify-content-center align-items-center">
                           or 
@@ -70,5 +77,5 @@
       text-decoration: none;
     }
   </style>
-  <script src="/static/js/login.js"></script>
+  <script src="/static/js/sign-up.js"></script>
 <%-include('../layout/footer')-%>
