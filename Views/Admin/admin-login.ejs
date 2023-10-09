@@ -32,16 +32,19 @@
         <div class="row d-flex justify-content-center align-items-center">
           <div class="col-12">
             <div class="card login-card p-2">
+              <%if(errmsg.length>0){%>
+                <span id="err" class="alert-danger"><%=errmsg%></span>
+              <%}%>
               <h1 class="mt-5"><b>Login</b></h1>
               <div class="d-flex justify-content-center align-items-center form-body">
-                <form action="/admin/login" method="POST">
+                <form action="/admin/login" method="POST" onsubmit="return validateForm()">
                     <div class="textfield mt-5">
                         <iconify-icon icon="mdi:email-outline" style="color: #787878;" width="28" height="28"></iconify-icon>
-                        <input type="email" placeholder="Email" id="name" name="email">
+                        <input type="email" placeholder="Email" id="email" name="email" required>
                     </div>
                     <div class="textfield mt-4">
                         <iconify-icon icon="mdi:password-outline" style="color: #787878;" width="28" height="28"></iconify-icon>
-                        <input type="password" placeholder="Password" id="password" name="password">
+                        <input type="password" placeholder="Password" id="password" name="password" required>
                         <!-- <iconify-icon icon="mdi:show-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
                          -->
                         <i class="fa-regular fa-eye" id="eye" style="color: #787878;"></i>
@@ -56,6 +59,7 @@
         </div>
       </div>
     </section>
-    <script  src="/static/js/admin-login.js"></script>
+    <script src="/static/js/login.js"></script>
+
 
     <%-include('../layout/footer')-%>

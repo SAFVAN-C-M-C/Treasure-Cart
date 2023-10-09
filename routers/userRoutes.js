@@ -10,6 +10,9 @@ const USER=require("../Models/user")
 const {sendOTP}=require("../controllers/otpController");
 const OTP = require("../Models/otp");
 const Users = require("../Models/user");
+const Products = require("../Models/product");
+const { ObjectId } = require('mongodb')
+
 
 
 //user login 
@@ -49,10 +52,15 @@ user.post("/user/forgot-pass",userControl.forgotPass)
 
 
 //user logged home page
-user.get("/user/home",(req,res)=>{
+user.get("/user/home",async(req,res)=>{
     if(req.session.logged||req.user){
         console.log(req.session.logged);
-        res.render("./User/home",{title:"Home"})
+        const find=await Users.findOne({email:req.session.email})
+        console.log(find);
+      const data=find.userName
+      req.session.name=data
+      console.log(data);
+        res.render("./User/home",{title:"Home",user:data})
     }
     else{
         console.log(req.session.logged);
@@ -64,16 +72,25 @@ user.get("/user/home",(req,res)=>{
 //user logout
 user.get("/user/logout",userControl.logout)
 
-
-//get wish list
-user.get("/user/wishlist",(req,res)=>{
-  res.render("./User/user-wishlist")
+user.get("/user/product/details/:id",async(req,res)=>{
+  // if(req.session.admin){
+    const id=req.params.id;
+const data = await Products.findOne({ _id: new ObjectId(id) });
+res.render("./User/product-detail",{data});
+// }else{
+//     res.redirect('/admin')
+// }
+  
 })
 
+
 //product listing
-user.get("/user/products",(req,res)=>{
+user.get("/user/products",async(req,res)=>{
     // if(req.session.logged){
-        res.render("./User/products",{title:"products"})
+        const products=await Products.find();
+        console.log(products);
+        const data=req.session.name
+        res.render("./User/products",{title:"products",products:products,user:data})
     // }
     // else{
     //     res.redirect("/")
@@ -83,10 +100,42 @@ user.get("/user/products",(req,res)=>{
 
 
 
-
-
-
-
+//contact us
+user.get("/user/contact-us",(req,res)=>{
+  res.render("./User/contact-us")
+})
+//profile
+user.get('/user/profile',(req,res)=>{
+  res.render("./User/profile")
+})
+//get wish list
+user.get("/user/wishlist",(req,res)=>{
+  const data=req.session.name
+  res.render("./User/user-wishlist",{user:data})
+})
+//manage
+user.get("/user/manage-address",(req,res)=>{
+  res.render("./User/address-manage")
+})
+//my order
+user.get("/user/order",(req,res)=>{
+  res.render("./User/orders")
+})
+//history order
+user.get("/user/order-history",(req,res)=>{
+  res.render("./User/history");
+})
+//reset
+user.get("/user/reset",(req,res)=>{
+  res.render("./User/reset");
+})
+//expolre
+user.get("/user/explore",(req,res)=>{
+  res.render("./User/explore");
+})
+user.get("/user/cart",(req,res)=>{
+  res.render("./User/cart")
+})
 
 
 

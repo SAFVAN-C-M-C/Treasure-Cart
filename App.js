@@ -4,6 +4,7 @@ const app =express();
 const userRouter=require("./routers/userRoutes")
 const connection=require("./config/connection")
 const path = require("path");
+const fs=require("fs")
 const session =require("express-session");
 const { v4: uuidv4 } = require("uuid");
 const cors=require("cors");
@@ -11,7 +12,7 @@ const passport=require("passport");
 const OTProutes=require("./util/otpindex")
 const adminRouter=require("./routers/adminRoutes");
 const flash=require("connect-flash")
-
+const multer=require("multer");
 app.set("view engine", "ejs");
 app.use("/static", express.static(path.join(__dirname, "Public")));
 
@@ -20,11 +21,12 @@ app.use(
     session({
       
       secret: uuidv4(),
-      cookie:{maxAge:60000},
+      cookie:{maxAge:60000000},
       resave: false,
       saveUninitialized: false,
     })
   );
+
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());

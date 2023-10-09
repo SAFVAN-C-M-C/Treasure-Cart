@@ -11,15 +11,18 @@ function validateForm() {
     var name = document.getElementById('name').value;
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
-
+    var confirm = document.getElementById('confirm-password').value;
     var nameError = document.getElementById('nameError');
     var emailError = document.getElementById('emailError');
     var passwordError = document.getElementById('passwordError');
+    var confirmError = document.getElementById('confirmError');
+
 
     // Reset previous errors
     nameError.innerHTML = "";
     emailError.innerHTML = "";
     passwordError.innerHTML = "";
+    confirmError.innerHTML = "";
 
     // Validate Name
     if (name.trim() === "") {
@@ -39,6 +42,11 @@ function validateForm() {
       passwordError.innerHTML = "Password must not be empty or contain only spaces";
       return false; // Prevent form submission
     }
+    if(password!==confirm){
+      confirmError.innerHTML = "Password doesn't match!"
+      return false
+    }
+
 
     return true; // Allow form submission
   }

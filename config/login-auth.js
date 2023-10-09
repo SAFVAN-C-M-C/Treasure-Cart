@@ -28,7 +28,7 @@ passport.use(
         console.log("databaaase: ",existingUser);
 
         if (!existingUser) {
-            req.flash("errmsg","not registered")
+            // req.flash("errmsg","not registered")
           // If the user is not registered, you can handle this case as needed.
           // You can redirect them to a signup page or show an error message.
           return done(null, false, { message: "User not registered." });

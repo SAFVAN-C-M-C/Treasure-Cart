@@ -6,86 +6,163 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="/static/css/add-product.css">
+  <link rel="stylesheet" href="/static/css/sample.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
-<%-include('../partials/admin-nav')-%>
-<div class="add-product-main">
-  <div class="header mt-3 mb-4">
-    <span>Add product</span>
-  </div>
-  <form action="">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="general mt-3 mb-2">
-          <div class="container p-3">
-            <div class="fields mb-3">
-              <div class="lable mb-2"><span>Product Name</span></div>
-              <div class="input"><input type="text" name="productName"></div>
-            </div>
-            <div class="fields mt-3">
-              <div class="lable mb-2"><span>Product Name</span></div>
-              <div class="input"><textarea name="description" id="descriptionid"  rows="5"></textarea></div>
+  <%-include('../partials/sample-nav')-%>
+    <div class="main">
+      <div class="topbar">
+        <div class="toggle">
+          <iconify-icon icon="fontisto:nav-icon-a" width="25" height="25"></iconify-icon>
+        </div>
+
+      </div>
+      <div class="form-main m-2 pb-2">
+        <form action="/admin/products/add-products" enctype="multipart/form-data" method="post">
+          <div class="container">
+            <div class="row pt-4">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="general-main">
+                  <span class="mt-2" style="font-size: 1.5rem;font-weight: 700;">General Main</span>
+                  <div class="textfield mt-5">
+                    <input required type="text" placeholder="Product Name" id="Product_Name" name="Product_Name">
+                  </div>
+                  <div class="textfield mt-5">
+                    <input required type="Text" placeholder="Description" id="Description" name="Description">
+                  </div>
+                  <div class="textfield mt-5">
+                    <input required type="number" placeholder="stock" id="stock" name="stock">
+                  </div>
+                  <div class="textfield mt-5">
+                    <input required type="number" placeholder="basePrice" id="basePrice" name="basePrice">
+                  </div>
+                  <div class="textfield mt-5">
+                    <input required type="number" placeholder="descountedPrice" id="descountedPrice"
+                      name="descountedPrice">
+                  </div>
+                  <div class="textfield mt-5 ">
+                    <select name="brand" id="brand">
+                      <option value="">Select Brand</option>
+                      <%if(brand){%>
+                        <%brand.forEach((data)=>{%>
+                          <option value="<%=data.name%>">
+                            <%=data.name%>
+                          </option>
+                          <%})%>
+                            <%}%>
+                    </select>
+                  </div>
+                  <div class="textfield mt-5 mb-5">
+                    <select name="category" id="category">
+                      <option value="">Select Category</option>
+                      <%if(category){%>
+                        <%category.forEach((data)=>{%>
+                          <option value="<%=data.name%>">
+                            <%=data.name%>
+                          </option>
+                          <%})%>
+                            <%}%>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="images-main container">
+                  <div class="row">
+                    <div class="division-header">
+                      <span style="font-size: 1rem;font-weight: 700; ">Media</span>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="images">
+                      <input type="file" name="main" accept="image/*" id="main" required
+                        onchange="previewImage('main', 'mn')">
+                      <label for="main">
+
+                        <div class="img-main">
+                          <img class="priview" src="/static/images/img-bg.jpg"  id="mn">
+                        </div>
+                      </label>
+                      <input type="file" name="image1" accept="image/*" id="imag1" required
+                        onchange="previewImage('imag1', 'im1')">
+                      <label for="imag1">
+                        <div class="img1">
+                          <img class="priview" src="/static/images/img-bg.jpg"  id="im1">
+                        </div>
+                      </label>
+                      <input type="file" name="image2" accept="image/*" id="imag2" required
+                        onchange="previewImage('imag2', 'im2')">
+                      <label for="imag2">
+                        <div class="img2 ">
+                          <img class="priview" src="/static/images/img-bg.jpg"   id="im2">
+                        </div>
+                      </label>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="action-buttons">
+                  <div class="cancel-btn">
+                    <a href="#" class="btn btn-outline" >Cancel</a>
+                  </div>
+                  <div class="save-btn">
+                   <input type="submit" class="btn btn-info text-white" value="SAVE">
+                  </div>
+
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="media mt-3 mb-2"></div>
-        <div class="pricing mt-3 mb-2">adsd</div>
-        <div class="category mt-3 mb-2">ada</div>
-        <div class="brand mt-3 mb-2">AD</div>
+        </form>
       </div>
     </div>
-  </div>
-</form>
-</div>
-<style>
-  
-  .add-product-main{
-    width: 90%;
-    border-radius: 25px;
-    height: auto;
-  }
-  .general{
-    border-radius: 25px;
+    <script>
+      let list = document.querySelectorAll(".navigation_nav li");
 
-    width: 80%;
-    height: auto;
-    background-color: aqua;
-  }
-  .media{
-    border-radius: 25px;
-    border-radius: 25px;
-    width: 80%;
-    height:350px;
-    background-color: aliceblue;
-  }
-  .pricing{
-    width: 80%;
-    border-radius: 25px;
-    height: 150px;
-    background-color: brown;
-  }
-  .category{
-    width: 80%;
-    border-radius: 25px;
-    height: 150px;
-    background-color: green;
-  }
-  .brand{
-    width: 80%;
-    border-radius: 25px;
-    height: 150px;
-    background-color: yellow;
-  }
-  .fields{
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-  }
-</style>
+      function activeLink() {
+        list.forEach((item) => {
+          item.classList.remove("hovered");
+        });
+        this.classList.add("hovered");
+      }
 
-<%-include("../layout/footer")-%>
+      list.forEach((item) => item.addEventListener("mouseover", activeLink));
+
+      // Menu Toggle
+      let toggle = document.querySelector(".toggle");
+      let navigation = document.querySelector(".navigation_nav");
+      let main = document.querySelector(".main");
+
+      toggle.onclick = function () {
+        navigation.classList.toggle("active");
+        main.classList.toggle("active");
+      };
+      //priview images
+      function previewImage(inputId, imgId) {
+        const input = document.getElementById(inputId);
+        const img = document.getElementById(imgId);
+        // const labeltext = document.getElementById(label)
+        // Check if a file was selected
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          // Set up a function to run when the image is loaded
+          reader.onload = function (e) {
+            img.src = e.target.result;
+            labeltext.style.display = 'none'
+          };
+
+          // Read the selected file as a data URL and load it into the img tag
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          // If no file was selected or the browser doesn't support FileReader, clear the image
+          img.src = "";
+        }
+      }
+    </script>
+    <%-include("../layout/footer")-%>

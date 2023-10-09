@@ -6,121 +6,334 @@
     <title>hello</title>
     <link rel="stylesheet" href="/static/css/product.css" />
     <link rel="stylesheet" href="/static/css/header.css" />
+    <link rel="stylesheet" href="/static/css/footer.css" />
+
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 
   </head>
   <body id="body">
     <%-include('../partials/header')-%>
-    <div class="py-3 py-md-5 bg-light">
-      <div class="container">
-          <div class="row">
-              <div class="col-md-12">
-                  <h4 class="mb-4">Our Products</h4>
-              </div>
-              <div class="col-md-3">
-                  <div class="product-card">
-                      <div class="product-card-img">
-                          <label class="stock bg-success">In Stock</label>
-                          <img src="hp-laptop.jpg" alt="Laptop">
+  <br><br>
+<!-- sidebar + content -->
+<section class="">
+    <div class="container">
+      <div class="row">
+        <!-- sidebar -->
+        <div class="col-lg-3">
+          <!-- Toggle button -->
+          <button
+                  class="btn btn-outline-secondary mb-3 w-100 d-lg-none"
+                  type="button"
+                  data-mdb-toggle="collapse"
+                  data-mdb-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                  >
+            <span>Show filter</span>
+          </button>
+          <!-- Collapsible wrapper -->
+          <div class="collapse card d-lg-block mb-5" id="navbarSupportedContent">
+            <div class="accordion" id="accordionPanelsStayOpenExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button
+                          class="accordion-button text-dark bg-light"
+                          type="button"
+                          data-mdb-toggle="collapse"
+                          data-mdb-target="#panelsStayOpen-collapseTwo"
+                          aria-expanded="true"
+                          aria-controls="panelsStayOpen-collapseTwo"
+                          >
+                    Categories
+                  </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
+                  <div class="accordion-body">
+                    <div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked />
+                        <label class="form-check-label" for="flexCheckChecked1">Bluetooth Headsets</label>
+                        <span class="badge badge-secondary float-end">120</span>
                       </div>
-                      <div class="product-card-body">
-                          <p class="product-brand">HP</p>
-                          <h5 class="product-name">
-                             <a href="">
-                                  HP Laptop 
-                             </a>
-                          </h5>
-                          <div>
-                              <span class="selling-price">$500</span>
-                              <span class="original-price">$799</span>
-                          </div>
-                          <div class="mt-2">
-                              <a href="" class="btn btn1">Add To Cart</a>
-                              <a href="" class="btn btn1"> <i class="fa fa-heart"></i> </a>
-                              <a href="" class="btn btn1"> View </a>
-                          </div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked />
+                        <label class="form-check-label" for="flexCheckChecked2">Wired Headsets</label>
+                        <span class="badge badge-secondary float-end">15</span>
                       </div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked />
+                        <label class="form-check-label" for="flexCheckChecked3">Mitsubishi</label>
+                        <span class="badge badge-secondary float-end">35</span>
+                      </div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked />
+                        <label class="form-check-label" for="flexCheckChecked4">Neck Bands</label>
+                        <span class="badge badge-secondary float-end">89</span>
+                      </div>
+                      <!-- Default checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label class="form-check-label" for="flexCheckDefault">Ear Buds</label>
+                        <span class="badge badge-secondary float-end">30</span>
+                      </div>
+                      <!-- Default checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label class="form-check-label" for="flexCheckDefault">Wired Earphones</label>
+                        <span class="badge badge-secondary float-end">30</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label class="form-check-label" for="flexCheckDefault">Gaming Headset</label>
+                        <span class="badge badge-secondary float-end">30</span>
+                      </div>
+                    </div>
                   </div>
+                </div>
               </div>
-              <div class="col-md-3">
-                  <div class="product-card">
-                      <div class="product-card-img">
-                          <label class="stock bg-success">In Stock</label>
-                          <img src="mobile-redmi-note-8.jpg" alt="Red MI Note 8">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button
+                          class="accordion-button text-dark bg-light"
+                          type="button"
+                          data-mdb-toggle="collapse"
+                          data-mdb-target="#panelsStayOpen-collapseTwo"
+                          aria-expanded="true"
+                          aria-controls="panelsStayOpen-collapseTwo"
+                          >
+                    Brands
+                  </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
+                  <div class="accordion-body">
+                    <div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked />
+                        <label class="form-check-label" for="flexCheckChecked1">SkullCandy</label>
+                        <span class="badge badge-secondary float-end">120</span>
                       </div>
-                      <div class="product-card-body">
-                          <p class="product-brand">MI</p>
-                          <h5 class="product-name">
-                             <a href="">
-                                  Red MI Note 8
-                             </a>
-                          </h5>
-                          <div>
-                              <span class="selling-price">$200</span>
-                              <span class="original-price">$300</span>
-                          </div>
-                          <div class="mt-2">
-                              <a href="" class="btn btn1">Add To Cart</a>
-                              <a href="" class="btn btn1"> <i class="fa fa-heart"></i> </a>
-                              <a href="" class="btn btn1"> View </a>
-                          </div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked />
+                        <label class="form-check-label" for="flexCheckChecked2">boAt</label>
+                        <span class="badge badge-secondary float-end">15</span>
                       </div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked />
+                        <label class="form-check-label" for="flexCheckChecked3">Sony</label>
+                        <span class="badge badge-secondary float-end">35</span>
+                      </div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked />
+                        <label class="form-check-label" for="flexCheckChecked4">audio-technica</label>
+                        <span class="badge badge-secondary float-end">89</span>
+                      </div>
+                      <!-- Default checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label class="form-check-label" for="flexCheckDefault">JBL!</label>
+                        <span class="badge badge-secondary float-end">30</span>
+                      </div>
+                      <!-- Default checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label class="form-check-label" for="flexCheckDefault">Bowers & Wilkins</label>
+                        <span class="badge badge-secondary float-end">30</span>
+                      </div>
+                    </div>
                   </div>
+                </div>
               </div>
-              <div class="col-md-3">
-                  <div class="product-card">
-                      <div class="product-card-img">
-                          <label class="stock bg-success">In Stock</label>
-                          <img src="casual-shirt.jpg" alt="Mens Shirt">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button
+                          class="accordion-button text-dark bg-light"
+                          type="button"
+                          data-mdb-toggle="collapse"
+                          data-mdb-target="#panelsStayOpen-collapseTwo"
+                          aria-expanded="true"
+                          aria-controls="panelsStayOpen-collapseTwo"
+                          >
+                    Price
+                  </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
+                  <div class="accordion-body">
+                    <div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked />
+                        <label class="form-check-label" for="flexCheckChecked1">Highest to Lowest</label>
+                        <span class="badge badge-secondary float-end">120</span>
                       </div>
-                      <div class="product-card-body">
-                          <p class="product-brand">Levis</p>
-                          <h5 class="product-name">
-                             <a href="">
-                                  Mens Shirt 
-                             </a>
-                          </h5>
-                          <div>
-                              <span class="selling-price">$299</span>
-                              <span class="original-price">$359</span>
-                          </div>
-                          <div class="mt-2">
-                              <a href="" class="btn btn1">Add To Cart</a>
-                              <a href="" class="btn btn1"> <i class="fa fa-heart"></i> </a>
-                              <a href="" class="btn btn1"> View </a>
-                          </div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked />
+                        <label class="form-check-label" for="flexCheckChecked2">Lowest to Highest</label>
+                        <span class="badge badge-secondary float-end">15</span>
                       </div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked />
+                        <label class="form-check-label" for="flexCheckChecked3">Below ₹1,000</label>
+                        <span class="badge badge-secondary float-end">35</span>
+                      </div>
+                      <!-- Checked checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked />
+                        <label class="form-check-label" for="flexCheckChecked4">₹1,000  -  ₹5,000</label>
+                        <span class="badge badge-secondary float-end">89</span>
+                      </div>
+                      <!-- Default checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label class="form-check-label" for="flexCheckDefault">₹5,000  -  ₹10,000</label>
+                        <span class="badge badge-secondary float-end">30</span>
+                      </div>
+                      <!-- Default checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label class="form-check-label" for="flexCheckDefault">₹10,000  -  ₹20,000</label>
+                        <span class="badge badge-secondary float-end">30</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                        <label class="form-check-label" for="flexCheckDefault">Above  ₹20,000</label>
+                        <span class="badge badge-secondary float-end">30</span>
+                      </div>
+                    </div>
                   </div>
+                </div>
               </div>
-              <div class="col-md-3">
-                  <div class="product-card">
-                      <div class="product-card-img">
-                          <label class="stock bg-success">In Stock</label>
-                          <img src="headphone.jpg" alt="Head Phone">
-                      </div>
-                      <div class="product-card-body">
-                          <p class="product-brand">Asus</p>
-                          <h5 class="product-name">
-                             <a href="">
-                              Head Phone
-                             </a>
-                          </h5>
-                          <div>
-                              <span class="selling-price">$399</span>
-                              <span class="original-price">$499</span>
-                          </div>
-                          <div class="mt-2">
-                              <a href="" class="btn btn1">Add To Cart</a>
-                              <a href="" class="btn btn1"> <i class="fa fa-heart"></i> </a>
-                              <a href="" class="btn btn1"> View </a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+              
+              
+
+            </div>
           </div>
+        </div>
+        <!-- sidebar -->
+        <!-- content -->
+        <div class="col-lg-9">
+          <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3">
+            <strong class="d-block py-2">32 Items found </strong>
+            <!-- <div class="ms-auto">
+              <select class="form-select d-inline-block w-auto border pt-1">
+                <option value="0">Best match</option>
+                <option value="1">Recommended</option>
+                <option value="2">High rated</option>
+                <option value="3">Randomly</option>
+              </select>
+              <div class="btn-group shadow-0 border">
+                <a href="#" class="btn btn-light" title="List view">
+                  <i class="fa fa-bars fa-lg"></i>
+                </a>
+                <a href="#" class="btn btn-light active" title="Grid view">
+                  <i class="fa fa-th fa-lg"></i>
+                </a>
+              </div>
+            </div> -->
+          </header>
+  <%if(products){%>
+    <%products.forEach((data)=>{ %>
+          <div class="row justify-content-center mb-3">
+            <div class="col-md-12">
+              <div class="card shadow-0 border rounded-3">
+                <div class="card-body">
+                  <div class="row g-0">
+                    <div class="col-xl-3 col-md-4 d-flex justify-content-center">
+                      <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
+                        <img src="<%=data.images[0]%>" class="w-100" />
+                        <a href="#!">
+                          <div class="hover-overlay">
+                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-xl-6 col-md-5 col-sm-7">
+                     <a href="/user/product/details/<%-data._id%>"> <h5><%=data.name%></h5></a>
+                      <br>
+                      <!-- <div class="d-flex flex-row">
+                        <div class="text-warning mb-1 me-2">
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fas fa-star-half-alt"></i>
+                          <span class="ms-1">
+                            4.5
+                          </span>
+                        </div>
+                        <span class="text-muted">154 orders</span>
+                      </div> -->
+  
+                      <p class="text mb-4 mb-md-0">
+                        <%=data.description%>
+                      </p>
+                    </div>
+                    <div class="col-xl-3 col-md-3 col-sm-5">
+                      <div class="d-flex flex-row align-items-center mb-1">
+                        <h4 class="mb-1 me-1">₹<%=data.basePrice%></h4>
+                        <span class="text-danger"><s>₹<%=data.descountedPrice%></s></span>
+                      </div>
+                      <%if(data.stock>0){%>
+                      <h6 class="text-success">In stock</h6>
+                      <%}else{%>
+                      <h6 class="text-danger">out of stock</h6>
+                        <%}%>
+                      <div class="mt-4">
+                        <button class="btn btn-primary shadow-0" type="button">Add to cart</button>
+                        <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          
+  
+          <hr />
+          <%})%>
+  
+          <!-- Pagination -->
+          <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+            <ul class="pagination">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+    <%}else{%>
+      <h1>404 not found</h1>
+      <%}%>
+          <!-- Pagination -->
+        </div>
       </div>
-  </div>
+    </div>
+  </section>
+
+  <%-include('../partials/footer')-%>
     <%-include('../layout/footer')-%>
-  </body>
-</html>

@@ -1,7 +1,7 @@
 const user = require("../Models/user")
 const bcrypt = require("bcrypt");
 const sendOTP = require("./otpController");
-const { use } = require("../routers/adminRoutes");
+// const { use } = require("../routers/adminRoutes");
 require("../util/otpindex")
 const OTP = require("../Models/otp");
 
@@ -109,6 +109,7 @@ const userLogin = async (req, res) => {
         );
         if (isMatch) {
             req.session.name = check.name;
+            req.session.email=check.email
             req.session.logged = true;
             console.log("Login success");
             res.redirect("/user/home");
@@ -152,6 +153,7 @@ const OtpConfirmation = async (req,res) => {
             if(match){
                 req.session.logged=true;
                 req.session.forgot=false;
+                
                 res.redirect("/user/home");
             }
             else{
@@ -182,6 +184,7 @@ const OtpConfirmation = async (req,res) => {
                     const result=await user.insertMany([data])
                     req.session.logged=true;
                     req.session.signotp=false
+                    req.session.email=
                     res.redirect("/user/home")
     
                 }

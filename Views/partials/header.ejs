@@ -1,72 +1,10 @@
-<!-- <div class="nav-bg d-flex justify-content-center align-items-center">
-    <div class="container nav-container">
-      <div class="row d-flex justify-content-center">
-        <div class="col-6 col-md-2 logo-div">
-          <div class="logo"><a href="#">Treaseure cart</a></div>
-        </div>
-        <div class="col-6 col-md-10 option-div">
-          <div
-            class="nav-controllers d-flex justify-content-end align-items-center"
-          >
-            <div class="nav-options">
-              <div class="nav-item"><a href="">Home</a></div>
-              <div class="nav-item"><a href="">Explore</a></div>
-              <div class="nav-item"><a href="">My Accounts</a></div>
-              <div class="nav-item"><a href="">Contact Us</a></div>
-              <div class="nav-search">
-                <form action="">
-                  <input class="find" placeholder="find..." type="text" />
-                </form>
-                <i
-                  class="fa-solid fa-magnifying-glass"
-                  style="color: #020d2a"
-                ></i>
-              </div>
-              <div class="nav-item">
-                <a href=""
-                  ><iconify-icon
-                    icon="iconamoon:profile-circle-light"
-                    style="color: #f0f0f0"
-                    width="32"
-                    height="32"
-                  ></iconify-icon
-                ></a>
-              </div>
-              <div class="nav-item">
-                <a href=""
-                  ><iconify-icon
-                    icon="ph:heart-duotone"
-                    style="color: #f0f0f0"
-                    width="32"
-                    height="32"
-                  ></iconify-icon
-                ></a>
-              </div>
-              <div class="nav-item">
-                <a href=""
-                  ><iconify-icon
-                    icon="tdesign:cart"
-                    style="color: #f0f0f0"
-                    width="32"
-                    height="32"
-                  ></iconify-icon
-                ></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-
-
   <div class="main-navbar shadow-sm sticky-top">
     <div class="top-navbar">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-2 my-auto d-none d-sm-none d-md-block d-lg-block">
-                    <h5 class="brand-name">Treasure <span>Cart</span></h5>
+ 
+    <h5 class="brand-name">Treasure <span style="background-color: #f0f0f0;color: #020A20;border-radius: 3px;padding-left: 1px;padding-right: 1px;">Cart</span></h5>
                 </div>
                 <div class=" col-4 col-sm-6 col-md-5 my-auto">
                     <form role="search">
@@ -82,7 +20,7 @@
                     <ul class="nav justify-content-end">
                         
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="/user/cart">
                                 <i class="fa fa-shopping-cart"></i>
                             </a>
                         </li>
@@ -93,11 +31,11 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-user"></i> Username 
+                                <i class="fa fa-user"></i> <%=user?user:"User"%> 
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#"><i class="fa fa-user"></i> My Account</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
+                            <li><a class="dropdown-item" href="/user/profile"><i class="fa fa-user"></i> My Account</a></li>
+                            <li><a class="dropdown-item" href="/user/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -116,19 +54,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="/user/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Explore</a>
+                        <a class="nav-link" href="/user/products">Explore</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/user/wishlist">Wish List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">My account</a>
+                        <a class="nav-link" href="/user/profile">My account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact Us</a>
+                        <a class="nav-link" href="/user/contact-us">Contact Us</a>
                     </li>
                 </ul>
             </div>

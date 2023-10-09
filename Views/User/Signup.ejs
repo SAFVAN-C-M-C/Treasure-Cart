@@ -1,20 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="/static/css/index.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
 </head>
+
 <body>
-<div class="ocean">
+  <div class="ocean">
     <div class="wave"></div>
     <div class="wave"></div>
-</div>
+  </div>
   <div class="main">
     <div class="container">
       <div class="row">
@@ -28,39 +34,53 @@
                   <div class="d-flex justify-content-center align-items-center form-body">
                     <form action="/user/signUp" method="POST" onsubmit="return validateForm()" id="signupform">
                       <div class="textfield mt-5">
-                        <iconify-icon icon="solar:user-linear" style="color: #787878;" width="26" height="26"></iconify-icon>
+                        <iconify-icon icon="solar:user-linear" style="color: #787878;" width="26"
+                          height="26"></iconify-icon>
                         <input type="text" placeholder="Full Name" id="name" name="name">
-                    </div>
-                    <span id="nameError" class="error"></span>
-                        <div class="textfield mt-4">
-                            <iconify-icon icon="mdi:email-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
-                            <input type="email" placeholder="Email" id="email" name="email">
-                        </div>
-                        <span id="emailError" class="error"></span>
-                        <%if(errmsg.length>0){%>
-                          <span id="err" class="alert-danger"><%=errmsg%></span>
-                        <%}%>
-                        
-                        <div class="textfield mt-4">
-                            <iconify-icon icon="mdi:password-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
+                      </div>
+                      <span id="nameError" class="error"></span>
+                      <div class="textfield mt-4">
+                        <iconify-icon icon="mdi:email-outline" style="color: #787878;" width="26"
+                          height="26"></iconify-icon>
+                        <input type="email" placeholder="Email" id="email" name="email">
+                      </div>
+                      <span id="emailError" class="error"></span>
+                      <%if(errmsg.length>0){%>
+                        <span id="err" class="alert-danger">
+                          <%=errmsg%>
+                        </span>
+                      <%}%>
+                          <div class="textfield mt-4">
+                            <iconify-icon icon="mdi:password-outline" style="color: #787878;" width="26"
+                              height="26"></iconify-icon>
                             <input type="password" placeholder="Password" id="password" name="password">
                             <!-- <iconify-icon icon="mdi:show-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
                              -->
                             <i class="fa-regular fa-eye" id="eye" style="color: #787878;"></i>
-                        </div>
-                        <span id="passwordError" class="error"></span>
-                        <div class="button mt-5 mb-2">
-                          <input class="btn-custom" type="submit" value="Sign up"></button>
-                        </div>
-                        <div class="or d-flex justify-content-center align-items-center">
-                          or 
-                        </div>
-                        <div class="google-button mb-3 d-flex justify-content-center align-items-center">
-                          <a href="/user/google" class="btn-google"><i class="fab fa-google"></i> Signin with google</a>
-                        </div>
-                        <div class="register mb-2 d-flex justify-content-center align-items-center">
-                          Already have an account?<a href="/">Sign in</a>
-                        </div>
+                          </div>
+                          <span id="passwordError" class="error"></span>
+                          <div class="textfield mt-4">
+                            <iconify-icon icon="mdi:password-outline" style="color: #787878;" width="26"
+                              height="26"></iconify-icon>
+                            <input type="password" placeholder="Confirm Password" id="confirm-password" name="confirm-password">
+                            <!-- <iconify-icon icon="mdi:show-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
+                             -->
+                            <!-- <i class="fa-regular fa-eye" id="eye" style="color: #787878;"></i> -->
+                          </div>
+                          <span id="confirmError" class="error"></span>
+                          <div class="button mt-5 mb-2">
+                            <input class="btn-custom" type="submit" value="Sign up">
+                          </div>
+                          <div class="or d-flex justify-content-center align-items-center">
+                            or
+                          </div>
+                          <div class="google-button mb-3 d-flex justify-content-center align-items-center">
+                            <a href="/user/google" class="btn-google"><i class="fab fa-google"></i> Signin with
+                              google</a>
+                          </div>
+                          <div class="register mb-2 d-flex justify-content-center align-items-center">
+                            Already have an account?<a href="/">Sign in</a>
+                          </div>
                     </form>
                   </div>
                 </div>
@@ -73,9 +93,9 @@
     </div>
   </div>
   <style>
-    a{
+    a {
       text-decoration: none;
     }
   </style>
   <script src="/static/js/sign-up.js"></script>
-<%-include('../layout/footer')-%>
+  <%-include('../layout/footer')-%>
