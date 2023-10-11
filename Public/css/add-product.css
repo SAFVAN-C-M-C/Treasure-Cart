@@ -3,12 +3,15 @@ body{
   background-color: #e3e6e6;
 }
 .main {
-  position: absolute;
-  width: calc(100% - 300px);
-  left: 300px;
+  /* position: absolute; */
+  /* width: calc(100% - 300px); */
+  width: 100%;
+  /* left: 300px; */
   min-height: 100vh;
-  background: var(--white);
-  transition: 0.5s;
+  /* background: var(--white); */
+  /* transition: 0.5s; */
+  display: flex;
+  justify-content: center;
 }
 .main.active {
   width: calc(100% - 80px);
@@ -105,6 +108,7 @@ body{
   padding: 10px;
   height: auto;
   border-radius: 15px;
+  margin-top: 10px;
   background-color:#f0f0f0;
 }
 .images-main{

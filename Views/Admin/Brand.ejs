@@ -17,15 +17,15 @@
 <section class="main">
   <div class="container">
     <div class="row d-flex header">
-      <div class="col-6"><h2>Category</h2></div>
-      <div class="col-6 d-flex justify-content-end"><a href="/admin/add-category" class="btn-custom">Add Category</a></div>
+      <div class="col-6"><h2>Brands</h2></div>
+      <div class="col-6 d-flex justify-content-end"><a href="/admin/add-brand" class="btn-custom">Add Brands</a></div>
     </div>
 
     <div class="row mt-3">
       <div class="products-main col-12">
         <div class="search col-12">
             <div class="d-flex justify-content-end align-items-center">
-              <form action="/admin/category/search" method="post">
+              <form action="/admin/brand/search" method="post">
                 <div class="input-group">
                   <div class="form-outline d-flex p-3">
                     <input type="search" class="form-control" name="search" placeholder="Search">
@@ -43,30 +43,30 @@
                 </div>
               </form>
             </div>
-            <%if(Array.isArray(category)){%>
+            <%if(Array.isArray(brand)){%>
             <table class="table  table-shadow mt-3">
                 <thead>
                     <tr>
-                        <th class="">Category</th>
+                        <th class="">Brand</th>
                         <th class="text-center">Updated Date</th>
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
-                <%category.forEach((data)=>{%>
+                <%brand.forEach((data)=>{%>
                 <tbody>
                     
                         <tr>
-                          <td><div class="table-data1"><img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%;"><%=data.name%></div> </td>
+                          <td><div class="table-data1"><img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.name%></span></div> </td>
                           <td> <div class="table-data"><%=data.timeStamp%></div> </td>
                           <td>
                             <div class="table-data">
-                              <a href="/admin/category/edit/<%=data._id%>"><lord-icon
+                              <a href="/admin/brand/edit/<%=data._id%>"><lord-icon
                                 src="https://cdn.lordicon.com/qtqvorle.json"
                                 trigger="hover"
                                 colors="outline:#121331,primary:#646e78,secondary:#ebe6ef,tertiary:#4cb4fd"
                                 style="width:25px;height:25px">
                             </lord-icon></a>
-                            <a href="/admin/category/delete/<%=data._id%>" onclick="return confirm('Do you want to Remove <%=data.name%> ?')">
+                            <a href="/admin/brand/delete/<%=data._id%>" onclick="return confirm('Do you want to Remove <%=data.name%> ?')">
                             <lord-icon
                               src="https://cdn.lordicon.com/exkbusmy.json"
                               trigger="morph"

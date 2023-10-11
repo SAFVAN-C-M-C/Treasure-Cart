@@ -2,10 +2,15 @@ const mongoose = require('mongoose');
 const connection=require("../config/connection")
 
 const { Schema, ObjectId } = mongoose;
-
+const imageSchema = new mongoose.Schema({
+  mainimage: {
+    type: String,
+  },
+});
 const CategoriesSchema = new Schema({
   name: { type: String, required: true },
-  images: [{ type: String,  }],
+  images: [imageSchema],
+  timeStamp: { type: Date },
 });
 
 const Categories = mongoose.model('Categories', CategoriesSchema);

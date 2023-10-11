@@ -17,12 +17,12 @@
 <section>
   <div class="container">
     <div class="header">
-      <span>Add Brands</span>
+      <span>Edit Brand</span>
     </div>
-    <form action="/admin/add-brand" method="post" enctype="multipart/form-data">
+    <form action="/admin/brand/edit/<%=brand._id%>" method="post" enctype="multipart/form-data">
     <div class="text">
       <div class="textfield mt-5 mb-5">
-        <input required type="text" placeholder="Brand Name" id="Brand_name" name="Brand_name">
+        <input required type="text" placeholder="Brand Name" id="Brand_name" name="Brand_name" value="<%=brand.name%>">
       </div>
     </div>
     <div class="images d-flex justify-content-start">
@@ -31,7 +31,7 @@
       <label for="main">
 
         <div class="img-main">
-          <img class="priview" src="/static/images/img-bg.jpg"  id="mn">
+          <img class="priview" src="<%=brand.images[0].mainimage?'/static/product-images/'+brand.images[0].mainimage:'/static/images/img-bg.jpg'%>"  id="mn">
         </div>
       </label>
     </div>

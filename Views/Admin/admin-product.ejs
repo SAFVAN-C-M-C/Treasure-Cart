@@ -4,236 +4,123 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="/static/css/admin-head.css"/>
+  <link rel="stylesheet" href="/static/css/category.css"/>
+
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
+
 <body>
-  <%-include('../partials/admin-nav')-%>
-  <section class="main">
-    <div class="container">
-      <div class="row d-flex header">
-        <div class="col-6"><h2>Products</h2></div>
-        <div class="col-6 d-flex justify-content-end"><a href="/admin/add-product" class="btn-custom">Add Products</a></div>
-      </div>
-      <%if(products){%>
-      <div class="row mt-3">
-        <div class="products-main col-12">
-          <div class="search col-12">
-              <div class="d-flex justify-content-end align-items-center">
-                <form action="/admin/product/search" method="post">
-                  <div class="input-group">
-                    <div class="form-outline d-flex p-3">
-                      <input type="search" class="form-control" name="search" placeholder="Search">
-                          <button id="search-button" type="submit" class="btn btn-custom  mx-2" style="width: 40px;height: 40px;border-radius: 6px;">
-                            
-                            <lord-icon
-                            src="https://cdn.lordicon.com/rlizirgt.json"
-                            trigger="hover"
-                            colors="primary:#ffffff"
-                            style="width:25px;height:25px">
-                        </lord-icon>
-                          </button>
-                    </div>
-                    
+<%-include('../partials/admin-sample-nav')-%>
+<section class="main">
+  <div class="container">
+    <div class="row d-flex header">
+      <div class="col-6"><h2>Products</h2></div>
+      <div class="col-6 d-flex justify-content-end"><a href="/admin/add-product" class="btn-custom">Add Products</a></div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="products-main col-12">
+        <div class="search col-12">
+            <div class="d-flex justify-content-end align-items-center">
+              <form action="/admin/category/search" method="post">
+                <div class="input-group">
+                  <div class="form-outline d-flex p-3">
+                    <input type="search" class="form-control" name="search" placeholder="Search">
+                        <button id="search-button" type="submit" class="btn btn-custom  mx-2" style="width: 40px;height: 40px;border-radius: 6px;">
+                          
+                          <lord-icon
+                          src="https://cdn.lordicon.com/rlizirgt.json"
+                          trigger="hover"
+                          colors="primary:#ffffff"
+                          style="width:25px;height:25px">
+                      </lord-icon>
+                        </button>
                   </div>
-                </form>
-              </div>
-        
-              <table class="table table-bordered table-shadow mt-3">
-                  <thead>
-                      <tr>
-                          <th>Product</th>
-                          <th>Stock</th>
-                          <th>Price</th>
-                          <th>Discount Price</th>
-                          <th>Status</th>
-                          <th>Updated Date</th>
-                          <th>Action</th>
-                      </tr>
-                  </thead>
-                  <%products.forEach((data)=>{%>
-                  <tbody>
-                      
-                          <tr>
-                            <td><div class="table-data"><img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%;"><%=data.name%> </div> </td>
-                            <td> <div class="table-data"><%=data.stock%></div> </td>
-                            <td> <div class="table-data">₹<%=data.basePrice%></div> </td>
-                            <td> <div class="table-data">₹<%=data.descountedPrice%></div> </td>
-                            <td> <div class="table-data"><%if(data.stock>0){%>
-                              <h6 class="text-success">In stock</h6>
-                              <%}else{%>
-                              <h6 class="text-danger">out of stock</h6>
-                                <%}%></div> </td>
-                            <td> <div class="table-data"><%=data.timeStamp%></div> </td>
-                            <td>
-                              <div class="table-data">
-                                <a href="/admin/product/edit/<%=data._id%>"><lord-icon
-                                  src="https://cdn.lordicon.com/qtqvorle.json"
-                                  trigger="hover"
-                                  colors="outline:#121331,primary:#646e78,secondary:#ebe6ef,tertiary:#4cb4fd"
-                                  style="width:25px;height:25px">
-                              </lord-icon></a>
-                              <a href="/admin/product/delete/<%=data._id%>" onclick="return confirm('Do you want to Remove <%-data.name%> ?')">
-                              <lord-icon
-                                src="https://cdn.lordicon.com/exkbusmy.json"
-                                trigger="morph"
-                                colors="outline:#121331,primary:#646e78,secondary:#4bb3fd,tertiary:#ebe6ef"
-                                state="morph-trash-in"
-                                style="width:25px;height:25px">
-                            </lord-icon></a>
-                              </div>
-                            </td>
-                          </tr>
-                      
-                  </tbody>
-                  <%})%>
-              </table>
-          </div>
+                  
+                </div>
+              </form>
+            </div>
+            <%if(Array.isArray(products)){%>
+            <table class="table  table-shadow mt-3">
+                <thead>
+                    <tr>
+                      <th class="text-center">Product Name</th>
+                      <th class="text-center">Stock</th>
+                      <th class="text-center">Price</th>
+                      <th class="text-center">Discount Price</th>
+                      <th class="text-center">Status</th>
+                      <th class="text-center">Updated Date</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <%products.forEach((data)=>{%>
+                <tbody>
+                    
+                  <tr>
+                    <td><div class="table-data"><img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%;"><%=data.name%> </div> </td>
+                    <td> <div class="table-data"><%=data.stock%></div> </td>
+                    <td> <div class="table-data">₹<%=data.basePrice%></div> </td>
+                    <td> <div class="table-data">₹<%=data.descountedPrice%></div> </td>
+                    <td> <div class="table-data"><%if(data.stock>0){%>
+                      <h6 class="text-success">In stock</h6>
+                      <%}else{%>
+                      <h6 class="text-danger">out of stock</h6>
+                        <%}%></div> </td>
+                    <td> <div class="table-data"><%=data.timeStamp%></div> </td>
+                    <td>
+                      <div class="table-data">
+                        <a href="/admin/product/edit/<%=data._id%>"><lord-icon
+                          src="https://cdn.lordicon.com/qtqvorle.json"
+                          trigger="hover"
+                          colors="outline:#121331,primary:#646e78,secondary:#ebe6ef,tertiary:#4cb4fd"
+                          style="width:25px;height:25px">
+                      </lord-icon></a>
+                      <a href="/admin/product/delete/<%=data._id%>" onclick="return confirm('Do you want to Remove <%-data.name%> ?')">
+                      <lord-icon
+                        src="https://cdn.lordicon.com/exkbusmy.json"
+                        trigger="morph"
+                        colors="outline:#121331,primary:#646e78,secondary:#4bb3fd,tertiary:#ebe6ef"
+                        state="morph-trash-in"
+                        style="width:25px;height:25px">
+                    </lord-icon></a>
+                      </div>
+                    </td>
+                  </tr>
+                    
+                </tbody>
+                <%})%>
+
+
+            </table>
+            <%}else{%>
+              <h1>nothing here to see</h1>
+            <%}%>
         </div>
       </div>
-      <%}%>
     </div>
-  </section>
-</body>
-<script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  </div>
+</section>
+<hr>
+<br>
+<div class="col-lg-12 d-flex justify-content-end" style="position: fixed;top: 600px;">
+  <nav aria-label="page navigation example">
+      <ul class="pagination">
+        <%for(let i=1;i<=count;i++){%>
+          <li class="page-item"><a class="page-link" href="/customers?page=<%=i%>"><%=i%></a></li>
+        <%}%>
+
+      </ul>
+  </nav>
+</div>
+
 <style>
-  *{
-    margin: 0;
-    padding: 0;
-    /* background-color: #E3E6E6; */
-  }
-  #sidebar{
-    float: left;
-  }
-  a{
+    a{
     text-decoration: none;
     color: #191919;
   }
-  body{
-    background-color: #E3E6E6;
-    display: flex;
-
-  }
-  .table-data{
-    height: 45px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .nav-side-main{
-    position: relative;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    /* margin-right: auto; */
-    margin-right: 15px;
-    width: 200px;
-    height: 100vh;
-    box-shadow: 3px 3px 7px rgba(0, 64, 64, 0.2);
-    background-color: #fff;
-  }
-  .logo-main{
-    height: 200px;
-    width: 100%;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-  }
-  .nav-logo{
-    height: 100px;
-    width: 100%;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .logo{
-    width: 90%;
-    height: 50%;
-    background-color: #fff;
-    background-image: url("/static/images/logo.png");
-    background-size:100% 100% ;
-
-  }
-  .name{
-    height: 25px;
-    width: 100%;
-    /* background-color: yellow; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .nav-option{
-    height: auto;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  .selected{
-    background-color: #d1d1d1;
-    height: 55px;
-    width: 100%;
-  }
-  .nav-option-item{
-    height: 55px;
-    width: 100%;
-    /* background-color: #313131; */
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  .option-logo{
-    height: 25px;
-    width: 25px;
-    /* background-color: brown; */
-  }
-  .option-title{
-    width: 100px;
-    height: 25px;
-    /* background-color: yellowgreen; */
-    display: flex;
-    justify-content:center ;
-    align-items: center;
-  }
-  .main{
-    width: 80%;
-    margin-top: 20px;
-    /* padding: 15px; */
-  }
-  .header{
-    display: flex;
-    justify-content: space-between;
-  }
-  .btn-custom{
-
-display: flex;
-justify-content: center;
-align-items: center;
-width: 120px;
-height: 50px;
-border-radius: 50px;
-outline: none;
-border: none;
-background-image: linear-gradient(to right, #444BEF, #7b7ee3, #444BEF);
-background-size: 200%;
-font-size: 0.7rem;
-color: #fff;
-font-family: 'Poppins', sans-serif;
-text-transform: uppercase;
-/* margin: 1rem 0; */
-cursor: pointer;
-transition:ease 1s;
-}
-.btn-custom:hover{
-background-position: right;
-}
-
 </style>
-<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-</html>
+<%-include('../layout/footer')-%>

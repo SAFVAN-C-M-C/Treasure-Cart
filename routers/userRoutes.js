@@ -211,7 +211,8 @@ user.get("/auth/google/callback",(req, res, next) => {
             userName: user.displayName,
             email: user.emails[0].value,
             profile: user.photos[0].value,
-            joined: Date.now(),
+            status:"Active",
+            timeStamp:Date.now(),
           };
           console.log(userInformation);
     

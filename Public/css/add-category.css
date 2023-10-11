@@ -1,0 +1,43 @@
+input{
+    outline: none;
+    border: none;
+  }
+  .textfield{
+    width: 50%;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    border: 1px solid black;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .textfield input{
+    width: 98%;
+    background-color: transparent;
+  }
+  .header span{
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .img-main{
+    /* height: 400px; */
+    width: 150px;
+    height: 150px;
+    border-radius: 15px;
+    background-color: #f0f0f0;
+  }
+  .priview{
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+  
+  }
+  .action-buttons{
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 50%;
+  }

@@ -31,6 +31,7 @@
 }
 .main-navbar .navbar{
     padding: 0px;
+    height: 70px;
     background-color: #ddd;
 }
 .main-navbar .navbar .nav-item .nav-link{

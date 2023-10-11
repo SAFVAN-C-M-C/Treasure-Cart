@@ -1,0 +1,31 @@
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="/admin/Dashbord" class="d-flex align-items-center"><iconify-icon icon="akar-icons:dashboard" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Dashboard</span></a>
+    <a href="/admin/products" class="d-flex align-items-center"><iconify-icon icon="tabler:packages" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Products</span></a>
+    <a href="/admin/categories" class="d-flex align-items-center"><iconify-icon icon="carbon:collapse-categories" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Categories</span></a>
+    <a href="/admin/brand" class="d-flex align-items-center"><iconify-icon icon="carbon:categories"  style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Brand</span></a>
+    
+    <a href="/admin/customers" class="d-flex align-items-center"><iconify-icon icon="icon-park-outline:peoples" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Customers</span></a>
+    <a href="/admin/orders" class="d-flex align-items-center"><iconify-icon icon="mdi:cart" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Orders</span></a>
+    <a href="/admin/coupon" class="d-flex align-items-center"><iconify-icon icon="mdi:coupon-outline" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Coupon</span></a>
+    <a href="/admin/banner" class="d-flex align-items-center"><iconify-icon icon="game-icons:vertical-banner" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Banner</span></a>
+    <a href="/user/logout" class="d-flex align-items-center"><iconify-icon icon="ic:baseline-logout" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Log out</span></a>
+</div>
+<div class="nav-main d-flex align-items-center w-100">
+            <div class="col-12 d-flex brand">
+                <span onclick="openNav()"><iconify-icon icon="ic:round-menu" style="color: white;" width="40" height="40"></iconify-icon></span>
+                <h5 class="brand-name">Treasure <span style="background-color: #f0f0f0;color: #020A20;border-radius: 3px;padding-left: 1px;padding-right: 1px;">Cart</span></h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openNav() {
+  document.getElementById("mySidenav").style.display = "block";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.display = "none";
+}
+</script>

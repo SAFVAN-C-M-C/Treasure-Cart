@@ -14,92 +14,6 @@ const { ObjectId } = require('mongodb')
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-admin.get("/",(req,res)=>{
-   if(req.session.admin){
-    res.redirect("/admin/Dashbord")
-   }else{
-    res.render("./Admin/admin-login",{errmsg:req.flash("errmsgadmin")})
-   }
-})
-admin.post("/login",adminController.adminLogin)
-
-admin.get("/Dashbord",(req,res)=>{
-  if(req.session.admin){
-    res.render("./Admin/Admin-dash")
-  }else{
-    res.redirect("/admin")
-  }
-})
-admin.get("/products",async(req,res)=>{
-  if(req.session.admin){
-    const products=await Products.find();
-    console.log(products);
-    res.render("./Admin/admin-product",{products:products});
-  }else{
-    res.redirect("/admin")
-  }
-})
-admin.get("/add-product",async(req,res)=>{
-  if(req.session.admin){
-    const category=await Categories.find();
-    console.log(category);
-    const brand=await Brands.find();
-    console.log(brand);
-    res.render("./Admin/add-products",{brand,category});
-  }else{
-    res.redirect("/admin")
-  }
-})
-admin.get('/categories',(req,res)=>{
-  if(req.session.admin){
-    res.render("./Admin/categories")
-  }else{
-    res.redirect("/admin")
-  }
-})
-
-admin.get("/add-category",(req,res)=>{
-  if(req.session.admin){
-    res.render("./Admin/add-category");
-  }else{
-    res.redirect("/admin")
-  }
-})
-admin.get("/add-brand",(req,res)=>{
-  if(req.session.admin){
-    res.render("./Admin/add-brand");
-  }else{
-    res.redirect("/admin")
-  }
-})
-admin.post("/add-brand",(req,res)=>{
-
-})
-
-
-//add-product
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./public/product-images/");
@@ -117,19 +31,87 @@ const uploadFields = [
   { name: "image1", maxCount: 1 },
   { name: "image2", maxCount: 1 },
 ];
+const categoryFields=[
+  { name: "main", maxCount: 1 },
+]
 
-const product_controller=require("../controllers/productController");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+admin.get("/",adminController.admin_login_get)
+admin.post("/login",adminController.adminLogin)
+
+admin.get("/Dashbord",adminController.admin_dash)
+
+admin.get("/products",adminController.product_list)
+admin.get("/add-product",adminController.add_product_get)
 admin.post("/products/add-products", upload.fields(uploadFields), adminController.add_product);
-
-//product edit
 admin.get("/product/edit/:id",adminController.edit_product)
 admin.post("/product/edit/:id",upload.fields(uploadFields),adminController.edit)
-
-//product delete
 admin.get("/product/delete/:id",adminController.product_delete);
+admin.post("/product/search",adminController.product_search)
 
-//search product
-admin.get("/product/search",adminController.product_search)
+
+
+admin.get('/categories',adminController.category_list)
+admin.get("/add-category",adminController.category_add_get)
+admin.post("/add-category",upload.fields(categoryFields),adminController.category_add)
+admin.get("/category/edit/:id",adminController.category_edit_get)
+admin.post("/category/edit/:id",upload.fields(categoryFields),adminController.category_edit)
+admin.get("/category/delete/:id",adminController.category_delete);
+admin.post("/category/search",adminController.category_search)
+
+
+admin.get('/brand',adminController.brand_list)
+admin.get("/add-brand",adminController.brand_add_get)
+admin.post("/add-brand",upload.fields(categoryFields),adminController.brand_add);
+admin.get("/brand/edit/:id",adminController.brand_edit_get)
+admin.post("/brand/edit/:id",upload.fields(categoryFields),adminController.brand_edit)
+admin.get("/brand/delete/:id",adminController.brand_delete);
+admin.post("/brand/search",adminController.brand_search)
+
+admin.get("/customers",adminController.customers_list)
+admin.get("/customers/block/:id",adminController.customers_block)
+admin.get("/customers/unblock/:id",adminController.customers_unblock)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 admin.get("/sample",(req,res)=>{
