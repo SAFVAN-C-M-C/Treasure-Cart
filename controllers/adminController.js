@@ -61,11 +61,17 @@ const admin_dash = (req, res) => {
 
 const product_list = async (req, res) => {
   if (req.session.admin) {
-    const products = await Products.find();
+    const pageNum = req.query.page?req.query.page:1;
+    console.log(pageNum);
+    const perPage = 10;
+    const products = await Products.find().skip((pageNum - 1) * perPage)
+    .limit(perPage);
+    let x = Number((pageNum - 1) * perPage);
+    console.log(x);
     console.log(products.length);
-    const count=Math.floor(products.length/10);
-    if(count===0)count=1;
-    res.render("./Admin/admin-product", { products: products,count:count });
+    var count=Math.floor(products.length/10)+1;
+    // if(count===0)count=1;
+    res.render("./Admin/admin-product", { products: products,count:count,x });
   } else {
     res.redirect("/admin");
   }
@@ -209,13 +215,25 @@ const product_delete = async (req, res) => {
 };
 const product_search = async (req, res) => {
   try {
+    const pageNum = req.query.page?req.query.page:1;
+    const perPage = 10;
+    let x = Number((pageNum - 1) * perPage);
     const form_data = req.body;
     console.log(form_data);
     let product = await Products.find({
       name: { $regex: "^" + form_data.search, $options: "i" },
-    });
+    }).skip((pageNum - 1) * perPage)
+    .limit(perPage);;
     console.log(`Search Data ${product}`);
-    res.render("./Admin/admin-product", { products: product });
+    
+    console.log(pageNum);
+
+
+    console.log(x);
+    console.log(product.length);
+    var count=Math.floor(product.length/10)+1;
+    res.render("./Admin/admin-product", { products: product,count:count,x });
+
   } catch (err) {
     throw err;
   }
@@ -223,12 +241,20 @@ const product_search = async (req, res) => {
 //category page
 const category_list = async(req, res) => {
   if (req.session.admin) {
-    const data=await Categories.find();
+    const pageNum = req.query.page?req.query.page:1;
+    console.log(pageNum);
+    const perPage = 10;
+    const data=await Categories.find().skip((pageNum - 1) * perPage)
+    .limit(perPage);
+    let x = Number((pageNum - 1) * perPage);
+    console.log(x);
+    console.log(data.length);
+    var count=Math.floor(data.length/10)+1;
     console.log("categories:",data)
-    if(!data){
-      data={}
-    }
-    res.render("./Admin/categories",{category:data});
+    // if(!data){
+    //   data={}
+    // }
+    res.render("./Admin/categories",{category:data,count:count,x});
   } else {
     res.redirect("/admin");
   }
@@ -317,13 +343,21 @@ const category_delete=async (req,res)=>{
 }
 const category_search=async (req,res)=>{
   try {
+    const pageNum = req.query.page?req.query.page:1;
+    console.log(pageNum);
+    const perPage = 10;
     const form_data = req.body;
     console.log(form_data);
     let category = await Categories.find({
       name: { $regex: "^" + form_data.search, $options: "i" },
-    });
+    }).skip((pageNum - 1) * perPage)
+    .limit(perPage);
     console.log(`Search Data ${category}`);
-    res.render("./Admin/categories", { category: category });
+    let x = Number((pageNum - 1) * perPage);
+    console.log(x);
+    console.log(category.length);
+    var count=Math.floor(category.length/10)+1;
+    res.render("./Admin/categories", { category: category,count:count,x });
   } catch (err) {
     throw err;
   }
@@ -331,9 +365,17 @@ const category_search=async (req,res)=>{
 
 const brand_list=async(req,res)=>{
   if (req.session.admin) {
-    const data=await Brands.find();
+    const pageNum = req.query.page?req.query.page:1;
+    console.log(pageNum);
+    const perPage = 10;
+    const data=await Brands.find().skip((pageNum - 1) * perPage)
+    .limit(perPage);
+    let x = Number((pageNum - 1) * perPage);
+    console.log(x);
+    console.log(data.length);
+    var count=Math.floor(data.length/10)+1;
     console.log("Brands:",data)
-    res.render("./Admin/Brand",{brand:data});
+    res.render("./Admin/Brand",{brand:data,count:count,x});
   } else {
     res.redirect("/admin");
   }
@@ -412,13 +454,21 @@ const brand_edit=async(req,res)=>{
 };
 const brand_search=async (req,res)=>{
   try {
+    const pageNum = req.query.page?req.query.page:1;
+    console.log(pageNum);
+    const perPage = 10;
     const form_data = req.body;
     console.log(form_data);
     let brand = await Brands.find({
       name: { $regex: "^" + form_data.search, $options: "i" },
-    });
+    }).skip((pageNum - 1) * perPage)
+    .limit(perPage);
     console.log(`Search Data ${brand}`);
-    res.render("./Admin/Brand", { brand: brand });
+    let x = Number((pageNum - 1) * perPage);
+    console.log(x);
+    console.log(brand.length);
+    var count=Math.floor(brand.length/10)+1;
+    res.render("./Admin/Brand", { brand: brand,count:count,x  });
   } catch (err) {
     throw err;
   }
@@ -436,9 +486,17 @@ const brand_delete=async (req,res)=>{
 const customers_list =async(req,res)=>{
   if (req.session.admin) {
     try{
-      const user=await Users.find();
+      const pageNum = req.query.page?req.query.page:1;
+      console.log(pageNum);
+      const perPage = 10;
+      const user=await Users.find().skip((pageNum - 1) * perPage)
+      .limit(perPage);
+      let x = Number((pageNum - 1) * perPage);
+      console.log(x);
+      console.log(user.length);
+      var count=Math.floor(user.length/10)+1;
       console.log("userss:",user)
-      res.render("./Admin/customers",{user:user});
+      res.render("./Admin/customers",{user:user,count:count,x});
     }catch(err){
       throw err
     }
@@ -466,6 +524,27 @@ const customers_unblock=async(req,res)=>{
   res.redirect("/admin/customers");
 
   }catch(err){
+    throw err;
+  }
+}
+const customers_search=async(req,res)=>{
+  try {
+    const pageNum = req.query.page?req.query.page:1;
+    console.log(pageNum);
+    const perPage = 10;
+    const form_data = req.body;
+    console.log(form_data);
+    let data = await Users.find({
+      userName: { $regex: "^" + form_data.search, $options: "i" },
+    }).skip((pageNum - 1) * perPage)
+    .limit(perPage);
+    console.log(`Search Data ${data}`);
+    let x = Number((pageNum - 1) * perPage);
+    console.log(x);
+    console.log(data.length);
+    var count=Math.floor(data.length/10)+1;
+    res.render("./Admin/customers", { user: data,count:count,x  });
+  } catch (err) {
     throw err;
   }
 }
@@ -497,4 +576,5 @@ module.exports = {
   customers_list,
   customers_block,
   customers_unblock,
+  customers_search,
 };

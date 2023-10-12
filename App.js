@@ -13,7 +13,15 @@ const OTProutes=require("./util/otpindex")
 const adminRouter=require("./routers/adminRoutes");
 const flash=require("connect-flash")
 const multer=require("multer");
+const nocache=require("nocache");
+
+
+
+
+
+
 app.set("view engine", "ejs");
+app.use(nocache());
 app.use("/static", express.static(path.join(__dirname, "Public")));
 
 
@@ -30,6 +38,7 @@ app.use(
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(
   cors({
     origin:"http://localhost:3000",
@@ -39,6 +48,9 @@ app.use(
 )
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+
+
+//router
 app.use('/',userRouter)
 app.use("/otp",OTProutes);
 app.use("/admin",adminRouter);
@@ -46,8 +58,10 @@ app.use("/admin",adminRouter);
 
 
 
-
+//port
 const PORT=process.env.PORT || 8080
+
+//serever listen
 app.listen(PORT,()=>{
     console.log(`The app is working on the port ${PORT}
     http://localhost:${PORT}`);

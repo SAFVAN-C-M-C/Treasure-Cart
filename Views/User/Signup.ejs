@@ -36,13 +36,13 @@
                       <div class="textfield mt-5">
                         <iconify-icon icon="solar:user-linear" style="color: #787878;" width="26"
                           height="26"></iconify-icon>
-                        <input type="text" placeholder="Full Name" id="name" name="name">
+                        <input type="text" placeholder="Full Name" id="name" name="name" onchange="validateUserName()">
                       </div>
                       <span id="nameError" class="error"></span>
                       <div class="textfield mt-4">
                         <iconify-icon icon="mdi:email-outline" style="color: #787878;" width="26"
                           height="26"></iconify-icon>
-                        <input type="email" placeholder="Email" id="email" name="email">
+                        <input type="email" placeholder="Email" id="email" name="email" onchange="validateUserEmail()">
                       </div>
                       <span id="emailError" class="error"></span>
                       <%if(errmsg.length>0){%>
@@ -53,7 +53,7 @@
                           <div class="textfield mt-4">
                             <iconify-icon icon="mdi:password-outline" style="color: #787878;" width="26"
                               height="26"></iconify-icon>
-                            <input type="password" placeholder="Password" id="password" name="password">
+                            <input type="password" placeholder="Password" id="password" name="password" onchange="validatePassword();" >
                             <!-- <iconify-icon icon="mdi:show-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
                              -->
                             <i class="fa-regular fa-eye" id="eye" style="color: #787878;"></i>
@@ -62,14 +62,14 @@
                           <div class="textfield mt-4">
                             <iconify-icon icon="mdi:password-outline" style="color: #787878;" width="26"
                               height="26"></iconify-icon>
-                            <input type="password" placeholder="Confirm Password" id="confirm-password" name="confirm-password">
+                            <input type="password" placeholder="Confirm Password" id="confirm-password" name="confirm-password" onkeyup="checkPasswordMatch();">
                             <!-- <iconify-icon icon="mdi:show-outline" style="color: #787878;" width="26" height="26"></iconify-icon>
                              -->
                             <!-- <i class="fa-regular fa-eye" id="eye" style="color: #787878;"></i> -->
                           </div>
                           <span id="confirmError" class="error"></span>
                           <div class="button mt-5 mb-2">
-                            <input class="btn-custom" type="submit" value="Sign up">
+                            <input class="btn-custom" type="submit" value="Sign up" id="signupButton" disabled>
                           </div>
                           <div class="or d-flex justify-content-center align-items-center">
                             or

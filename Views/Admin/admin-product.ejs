@@ -25,7 +25,7 @@
       <div class="products-main col-12">
         <div class="search col-12">
             <div class="d-flex justify-content-end align-items-center">
-              <form action="/admin/category/search" method="post">
+              <form action="/admin/product/search" method="post">
                 <div class="input-group">
                   <div class="form-outline d-flex p-3">
                     <input type="search" class="form-control" name="search" placeholder="Search">
@@ -47,6 +47,8 @@
             <table class="table  table-shadow mt-3">
                 <thead>
                     <tr>
+                      <th class="text-center">No.</th>
+
                       <th class="text-center">Product Name</th>
                       <th class="text-center">Stock</th>
                       <th class="text-center">Price</th>
@@ -60,6 +62,8 @@
                 <tbody>
                     
                   <tr>
+                    <td> <div class="table-data"><%=++x%></div> </td>
+
                     <td><div class="table-data"><img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%;"><%=data.name%> </div> </td>
                     <td> <div class="table-data"><%=data.stock%></div> </td>
                     <td> <div class="table-data">₹<%=data.basePrice%></div> </td>
@@ -69,7 +73,13 @@
                       <%}else{%>
                       <h6 class="text-danger">out of stock</h6>
                         <%}%></div> </td>
-                    <td> <div class="table-data"><%=data.timeStamp%></div> </td>
+                    <td>
+                        <div class="table-data">
+                          <% let dt=new Date(data.timeStamp)%>
+                          <%let day=["monday",'tuesday','wednesday','friday','satuarday','sunday']%>
+                          <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>/<%=day[dt.getDay()-1]  %>
+                        </div> 
+                      </td>
                     <td>
                       <div class="table-data">
                         <a href="/admin/product/edit/<%=data._id%>"><lord-icon
@@ -106,11 +116,11 @@
 </section>
 <hr>
 <br>
-<div class="col-lg-12 d-flex justify-content-end" style="position: fixed;top: 600px;">
-  <nav aria-label="page navigation example">
-      <ul class="pagination">
+<div class="col-lg-12 d-flex justify-content-end" >
+  <nav aria-label="page navigation example ">
+      <ul class="pagination" style="margin-right: 40px;">
         <%for(let i=1;i<=count;i++){%>
-          <li class="page-item"><a class="page-link" href="/customers?page=<%=i%>"><%=i%></a></li>
+          <li class="page-item"><a class="page-link" href="/admin/products?page=<%=i%>"><%=i%></a></li>
         <%}%>
 
       </ul>

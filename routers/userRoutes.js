@@ -15,127 +15,54 @@ const { ObjectId } = require('mongodb')
 
 
 
-//user login 
-user.get('/',(req,res)=>{
-    if(req.session.logged){
-        res.redirect('/user/home');
-    }else{
-        res.render("./User/index",{title:"Login",errmsg:req.flash("errmsg")});
-    }
-})
+//==================================================================================
+
+user.get('/',userControl.home_get)
+//==================================================================================
 user.post("/user/login",userControl.userLogin);
-
-
-//user sign up
-user.get("/user/SignUp",(req,res)=>{
-    res.render("./User/Signup",{title:"Signup",errmsg:req.flash("errmsg")})
-})
+//==================================================================================
+user.get("/user/SignUp",userControl.userSignup_get)
+//==================================================================================
 user.post("/user/signUp",userControl.userSignup)
-
-
-//otp
+//==================================================================================
 user.get("/user/otp-sent",userControl.otpSender)
-
-//otp page
-user.get("/user/otp",(req,res)=>{
-    res.render("./User/otp");
-})
-// user.post("/user/forgot/otp",userControl.forgotPassOTPConfirmation)
+//==================================================================================
+user.get("/user/otp",userControl.otp_page)
+//==================================================================================
 user.post("/user/otp",userControl.OtpConfirmation)
-
-//forgot password
-user.get("/user/forgot-pass",(req,res)=>{
-    req.session.forgot=true
-    res.render("./User/forgot-pass")
-})
+//==================================================================================
+user.get("/user/forgot-pass",userControl.forgot_password_page)
+//==================================================================================
 user.post("/user/forgot-pass",userControl.forgotPass)
-
-
-//user logged home page
-user.get("/user/home",async(req,res)=>{
-    if(req.session.logged||req.user){
-        console.log(req.session.logged);
-        const find=await Users.findOne({email:req.session.email})
-        console.log(find);
-      const data=find.userName
-      req.session.name=data
-      console.log(data);
-        res.render("./User/home",{title:"Home",user:data})
-    }
-    else{
-        console.log(req.session.logged);
-        res.redirect("/")
-    }
-})
-
- 
-//user logout
+//==================================================================================
+user.get("/user/home",userControl.home_logged)
+//==================================================================================
 user.get("/user/logout",userControl.logout)
+//==================================================================================
+user.get("/user/product/details/:id",userControl.get_product_details)
+//==================================================================================
+user.get("/user/products",userControl.get_product)
+//==================================================================================
+user.get("/user/contact-us",userControl.get_contactUs)
+//==================================================================================
+user.get('/user/profile',userControl.get_profile)
+//==================================================================================
+user.get("/user/wishlist",userControl.get_wishlist)
+//==================================================================================
+user.get("/user/manage-address",userControl.get_manageAddress)
+//==================================================================================
+user.get("/user/order",userControl.get_order)
+//==================================================================================
+user.get("/user/order-history",userControl.get_history)
+//==================================================================================
+user.get("/user/explore",userControl.get_Explore)
+//==================================================================================
+user.get("/user/cart",userControl.get_cart)
+//==================================================================================
+user.get("/user/password/reset",userControl.get_password_reset)
+//==================================================================================
+user.post("/user/password/reset",userControl.password_reset)
 
-user.get("/user/product/details/:id",async(req,res)=>{
-  // if(req.session.admin){
-    const id=req.params.id;
-const data = await Products.findOne({ _id: new ObjectId(id) });
-res.render("./User/product-detail",{data});
-// }else{
-//     res.redirect('/admin')
-// }
-  
-})
-
-
-//product listing
-user.get("/user/products",async(req,res)=>{
-    // if(req.session.logged){
-        const products=await Products.find();
-        console.log(products);
-        const data=req.session.name
-        res.render("./User/products",{title:"products",products:products,user:data})
-    // }
-    // else{
-    //     res.redirect("/")
-    // }
-})
-
-
-
-
-//contact us
-user.get("/user/contact-us",(req,res)=>{
-  res.render("./User/contact-us")
-})
-//profile
-user.get('/user/profile',(req,res)=>{
-  res.render("./User/profile")
-})
-//get wish list
-user.get("/user/wishlist",(req,res)=>{
-  const data=req.session.name
-  res.render("./User/user-wishlist",{user:data})
-})
-//manage
-user.get("/user/manage-address",(req,res)=>{
-  res.render("./User/address-manage")
-})
-//my order
-user.get("/user/order",(req,res)=>{
-  res.render("./User/orders")
-})
-//history order
-user.get("/user/order-history",(req,res)=>{
-  res.render("./User/history");
-})
-//reset
-user.get("/user/reset",(req,res)=>{
-  res.render("./User/reset");
-})
-//expolre
-user.get("/user/explore",(req,res)=>{
-  res.render("./User/explore");
-})
-user.get("/user/cart",(req,res)=>{
-  res.render("./User/cart")
-})
 
 
 

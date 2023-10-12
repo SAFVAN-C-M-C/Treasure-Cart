@@ -31,6 +31,7 @@ const uploadFields = [
   { name: "image1", maxCount: 1 },
   { name: "image2", maxCount: 1 },
 ];
+
 const categoryFields=[
   { name: "main", maxCount: 1 },
 ]
@@ -91,6 +92,8 @@ admin.post("/brand/search",adminController.brand_search)
 admin.get("/customers",adminController.customers_list)
 admin.get("/customers/block/:id",adminController.customers_block)
 admin.get("/customers/unblock/:id",adminController.customers_unblock)
+admin.post("/customers/search",adminController.customers_search)
+
 
 
 

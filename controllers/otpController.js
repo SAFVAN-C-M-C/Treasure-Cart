@@ -46,4 +46,4 @@ const sendOTP=async (email)=>{
         throw err;
     }
 }
-module.exports=sendOTP;
+module.exports={sendOTP};
