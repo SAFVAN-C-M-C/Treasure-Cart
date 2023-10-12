@@ -8,6 +8,8 @@ const {sendOTP}=require("../controllers/otpController");
 const OTP = require("../Models/otp");
 const Products = require("../Models/product");
 const { ObjectId } = require('mongodb')
+const Brands = require("../Models/brand")
+const Categories = require("../Models/category")
 //=================================================================================================================
 
 const home_get=(req,res)=>{
@@ -32,7 +34,7 @@ const otp_page=(req,res)=>{
     if (req.session.signotp || req.session.forgot) {
     res.render("./User/otp");
     }else{
-        res.redirect("/")
+        res.redirect("/user/logout")
     }
 }
 //=================================================================================================================
@@ -61,76 +63,178 @@ const home_logged=async(req,res)=>{
     }
     else{
         console.log(req.session.logged);
-        res.redirect("/")
+        res.redirect("/user/logout")
     }
 }
 
 //=================================================================================================================
 
 const get_product_details=async(req,res)=>{
-    // if(req.session.admin){
-      const id=req.params.id;
-  const data = await Products.findOne({ _id: new ObjectId(id) });
-  res.render("./User/product-detail",{data});
-  // }else{
-  //     res.redirect('/admin')
-  // }
-    
+    if(req.session.logged){
+        try{
+            const id=req.params.id;
+            const data = await Products.findOne({ _id: new ObjectId(id) });
+            console.log(data);
+            const brandId=data.brandId
+            const brand=await Brands.findOne({_id:brandId})
+            console.log(brandId);
+            console.log(brand);
+            const categoryId=data.categoryId
+            console.log(categoryId);
+            const category=await Categories.findOne({_id:categoryId})
+            console.log(category);
+            const user=req.session.name?req.session.name:"User"
+            res.render("./User/product-detail",{data,user,brand,category});
+        //   res.render("./User/product-sample",{data});
+        }catch(err){
+            console.log(err)
+            req.session.err=true
+            res.redirect("/user/404")
+            
+        }
+    }else{
+        res.redirect("/user/logout")
+    }
   }
 
 //=================================================================================================================
 
   const get_product=async(req,res)=>{
-    // if(req.session.logged){
+    if(req.session.logged){
+        try{
+            
         const products=await Products.find();
         console.log(products);
         const data=req.session.name
         res.render("./User/products",{title:"products",products:products,user:data})
-    // }
-    // else{
-    //     res.redirect("/")
-    // }
+        }catch(err){
+            req.session.err=true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    }else{
+        res.redirect("/user/logout")
+    }
 }
 
 //=================================================================================================================
 
 const get_Explore=(req,res)=>{
-    res.render("./User/explore");
-  }
+    if(req.session.logged){
+        try{
+            res.render("./User/explore");
+        }catch(err){            
+            req.session.err=true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    }else{
+        res.redirect("/user/logout")
+    }
+}
 //=================================================================================================================
 const get_cart=(req,res)=>{
-    res.render("./User/cart")
+    if(req.session.logged){
+        try{
+            res.render("./User/cart")
+        }catch(err){            
+            req.session.err=true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    }else{
+        res.redirect("/user/logout")
+    }
   }
 
 
 //=================================================================================================================
 
 const get_contactUs=(req,res)=>{
-    res.render("./User/contact-us")
-  }
+    if(req.session.logged){
+        try{
+            res.render("./User/contact-us")
+        }catch(err){            
+            req.session.err=true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    }else{
+        res.redirect("/user/logout")
+    }  }
 //=================================================================================================================
 const get_profile=(req,res)=>{
-    res.render("./User/profile")
-  }
+    if(req.session.logged){
+        try{
+            res.render("./User/profile")
+        }catch(err){            
+            req.session.err=true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    }else{
+        res.redirect("/user/logout")
+    }
+}
 //=================================================================================================================
 
 const get_wishlist =(req,res)=>{
-    const data=req.session.name
-    res.render("./User/user-wishlist",{user:data})
+    if(req.session.logged){
+        try{
+            const data=req.session.name
+            res.render("./User/user-wishlist",{user:data})
+        }catch(err){            
+            req.session.err=true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    }else{
+        res.redirect("/user/logout")
+    }
   }
 
 //=================================================================================================================
   const get_manageAddress=(req,res)=>{
-    res.render("./User/address-manage")
-  }
+    if(req.session.logged){
+        try{
+            res.render("./User/address-manage")
+        }catch(err){            
+            req.session.err=true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    }else{
+        res.redirect("/user/logout")
+    }
+}
 //=================================================================================================================
   const get_order=(req,res)=>{
-    res.render("./User/orders")
-  }
+    if(req.session.logged){
+        try{
+            res.render("./User/orders")
+        }catch(err){            
+            req.session.err=true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    }else{
+        res.redirect("/user/logout")
+    }
+}
 //=================================================================================================================
 const get_history=(req,res)=>{
-    res.render("./User/history");
-  }
+    if(req.session.logged){
+        try{
+            res.render("./User/history");
+        }catch(err){            
+            req.session.err=true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    }else{
+        res.redirect("/user/logout")
+    }
+}
 
 //=================================================================================================================
 
@@ -372,7 +476,7 @@ const get_password_reset=(req,res)=>{
         res.render("./User/password-reset");
 
     }else{
-        res.redirect("/")
+        res.redirect("/user/logout")
     }
 }
 
@@ -392,7 +496,14 @@ const password_reset=async(req,res)=>{
         console.log(err);
     }
 }
-
+const error_get=(req,res)=>{
+    if(req.session.err){
+      res.render("./Errors/404");
+    }
+    else{
+      res.redirect("/user/logout");
+    }
+  }
 module.exports = {
     home_get,
     userLogin,
@@ -418,4 +529,5 @@ module.exports = {
     get_cart,
     get_password_reset,
     password_reset,
+    error_get,
 }

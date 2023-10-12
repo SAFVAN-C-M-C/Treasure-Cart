@@ -1,22 +1,16 @@
 const express=require("express");
-const session = require("express-session");
 const user=express.Router()
 const userControl=require("../controllers/userController");
 const passport=require("passport")
-const bcrypt=require("bcrypt")
 require("../config/passport")
 require("../config/login-auth")
-const USER=require("../Models/user")
-const {sendOTP}=require("../controllers/otpController");
-const OTP = require("../Models/otp");
 const Users = require("../Models/user");
-const Products = require("../Models/product");
-const { ObjectId } = require('mongodb')
+
+
 
 
 
 //==================================================================================
-
 user.get('/',userControl.home_get)
 //==================================================================================
 user.post("/user/login",userControl.userLogin);
@@ -62,7 +56,9 @@ user.get("/user/cart",userControl.get_cart)
 user.get("/user/password/reset",userControl.get_password_reset)
 //==================================================================================
 user.post("/user/password/reset",userControl.password_reset)
-
+//==================================================================================
+user.get("/404",userControl.error_get)
+//==================================================================================
 
 
 

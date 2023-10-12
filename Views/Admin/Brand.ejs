@@ -59,8 +59,8 @@
                           <td><div class="table-data1"><img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.name%></span></div> </td>
                           <td> <div class="table-data">
                             <% let dt=new Date(data.timeStamp)%>
-                            <%let day=["monday",'tuesday','wednesday','friday','satuarday','sunday']%>
-                            <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>/<%=day[dt.getDay()-1]  %>
+                            
+                            <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>
                           </div> </td>
                           <td>
                             <div class="table-data">

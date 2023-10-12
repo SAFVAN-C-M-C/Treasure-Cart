@@ -35,7 +35,7 @@ function validatePassword() {
   var isValid = passwordPattern.test(password);
   var signupButton = document.getElementById("signupButton");
 
-  if (isValid && password.trim().length >8) {
+  if (isValid && password.trim().length >=8) {
       msg.innerHTML = "";
       signupButton.disabled = false; // Enable the button
   } else {
@@ -61,3 +61,26 @@ function checkPasswordMatch() {
   }
 }
 
+var error = document.getElementById("err");
+function hideError() {
+    if (error) {
+      error.style.display = "none";
+    }
+  }
+setTimeout(hideError, 3000);
+
+const togglePassword = document.getElementById("eye");
+const password = document.getElementById("password");
+
+togglePassword.addEventListener("click", function () {
+  // toggle the type attribute
+  if (password.type == "password") {
+    password.type = "text";
+    togglePassword.classList.remove("fa-eye");
+    togglePassword.classList.add("fa-eye-slash");
+  } else {
+    password.type = "password";
+    togglePassword.classList.remove("fa-eye-slash");
+    togglePassword.classList.add("fa-eye");
+  }
+});

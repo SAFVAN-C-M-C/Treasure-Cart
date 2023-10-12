@@ -96,6 +96,10 @@ admin.post("/customers/search",adminController.customers_search)
 
 
 
+admin.get("/logout",adminController.logout)
+
+
+admin.get("/404",adminController.error_get)
 
 
 

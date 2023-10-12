@@ -16,13 +16,14 @@
 <%-include('../partials/admin-sample-nav')-%>
 <section>
   <div class="container">
-    <div class="header">
-      <span>Add Category</span>
+    <div class="header mb-5">
+      <span>Edit Category</span>
     </div>
     <form action="/admin/category/edit/<%=category._id%>" method="post" enctype="multipart/form-data">
     <div class="text">
+      <span id="nameError" class="error "></span>
       <div class="textfield mt-5 mb-5">
-        <input required type="text" placeholder="Category Name" id="Category_name" name="Category_name" value="<%=category.name%>">
+        <input required type="text" placeholder="Category Name" id="Category_name" name="Category_name" onchange="validateName()" value="<%=category.name%>">
       </div>
     </div>
     <div class="images d-flex justify-content-start">
@@ -37,16 +38,17 @@
     </div>
     <div class="action-buttons">
       <div class="cancel-btn">
-        <a href="#" class="btn btn-outline" >Cancel</a>
+        <a href="/admin/categories" class="btn btn-outline" >Cancel</a>
       </div>
       <div class="save-btn">
-       <input type="submit" class="btn btn-info text-white" value="SAVE">
+       <input type="submit" class="btn btn-info text-white" disabled id="signupButton" value="SAVE">
       </div>
 
     </div>
   </form>
   </div>
 </section>
+<script src="/static/js/add-category.js"></script>
 <script>
   function previewImage(inputId, imgId) {
         const input = document.getElementById(inputId);

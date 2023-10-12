@@ -1,77 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/details.css">
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="/static/css/header.css" />
+        <link rel="stylesheet" href="/static/css/footer.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    </head>
 </head>
-</head>
+
 <body>
-    <%if(data){%>
-    <div class="py-3 py-md-5 bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-5 mt-3">
-                    <div class="bg-white border">
-                        <img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" class="w-100" alt="Img">
-                    </div>
-                </div>
-                <div class="col-md-7 mt-3">
-                    <div class="product-view">
-                        <h4 class="product-name">
-                            HP Laptop 15IQasd54
-                            <label class="label-stock "><%if(data.stock>0){%>
-                                <h6 class="text-success">In stock</h6>
-                                <%}else{%>
-                                <h6 class="text-danger">out of stock</h6>
-                                  <%}%></label>
-                        </h4>
-                        <hr>
-                        <!-- <p class="product-path">
-                            Home / Category / Product / HP Laptop
-                        </p> -->
-                        <div>
-                            <span class="selling-price">₹<%=data.descountedPrice%></span>
-                            <span class="original-price">₹<%=data.basePrice%></span>
+    <%-include('../partials/header')-%>
+
+        <section class="py-5">
+            <div class="container">
+                <div class="row gx-5">
+                    <aside class="col-lg-6">
+                        <div class="border rounded-4 mb-3 d-flex justify-content-center" id="img-show">
+                            <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image"
+                                href="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>">
+                                <img  style="max-width: 100%; max-height: 70vh; margin: auto;" class="rounded-4 fit"
+                                    src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" />
+                            </a>
                         </div>
-                        <div class="mt-2">
-                            <div class="input-group">
-                                <span class="btn btn1"><i class="fa fa-minus"></i></span>
-                                <input type="text" value="1" class="input-quantity" />
-                                <span class="btn btn1"><i class="fa fa-plus"></i></span>
+                        <div class="d-flex justify-content-center mb-3">
+                            <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank"
+                                data-type="image"
+                                href="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                                class="item-thumb">
+                                <img width="60" height="60" class="rounded-2"
+                                    src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" />
+                            </a>
+                            <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank"
+                                data-type="image"
+                                href="<%=data.images[0].image1?'/static/product-images/'+data.images[0].image1:'/static/images/img-bg.jpg'%>"
+                                class="item-thumb">
+                                <img width="60" height="60" class="rounded-2"
+                                    src="<%=data.images[0].image1?'/static/product-images/'+data.images[0].image1:'/static/images/img-bg.jpg'%>" />
+                            </a>
+                            <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank"
+                                data-type="image"
+                                href="<%=data.images[0].image2?'/static/product-images/'+data.images[0].image2:'/static/images/img-bg.jpg'%>"
+                                class="item-thumb">
+                                <img width="60" height="60" class="rounded-2"
+                                    src="<%=data.images[0].image2?'/static/product-images/'+data.images[0].image2:'/static/images/img-bg.jpg'%>" />
+                            </a>
+                        </div>
+                        <!-- thumbs-wrap.// -->
+                        <!-- gallery-wrap .end// -->
+                    </aside>
+                    <main class="col-lg-6">
+                        <div class="ps-lg-3">
+                            <h4 class="title text-dark">
+                                <%=data.name%>
+
+                            </h4>
+                            <div class="d-flex flex-row my-3">
+
+                                <%if(data.stock>0){%>
+                                    <h6 class="text-success">In stock</h6>
+                                    <%}else{%>
+                                        <h6 class="text-danger">out of stock</h6>
+                                        <%}%>
                             </div>
-                        </div>
-                        <div class="mt-2">
-                            <a href="" class="btn btn1"> <i class="fa fa-shopping-cart"></i> Add To Cart</a>
-                            <a href="" class="btn btn1"> <i class="fa fa-heart"></i> Add To Wishlist </a>
-                        </div>
-                        <div class="mt-3">
-                            <h5 class="mb-0">Description</h5>
+
+                            <div class="mb-3">
+                                <span class="h6 text-danger"><strike>₹<%=data.basePrice%></strike></span>
+                                <span class="h3 text-success"><b>₹<%=data.descountedPrice%>/-</b></span>
+                            </div>
+
                             <p>
                                 <%=data.description%>
                             </p>
+
+                            <div class="row">
+                                <dt class="col-3">Category:</dt>
+                                <dd class="col-9">
+                                    <%=category?.name?category.name:"unknown"%>
+                                </dd>
+
+                                <dt class="col-3">Brand:</dt>
+                                <dd class="col-9">
+                                    <%=brand?.name?brand.name:"unknown"%>
+                                </dd>
+
+                                <dt class="col-3">Status</dt>
+                                <%if(data.stock>0){%>
+                                    <dd class="col-9 text-success">
+                                        In stock</dd>
+                                    <%}else{%>
+                                        <dd class="col-9 text-danger">
+                                            out of stock</dd>
+                                        <%}%>
+                                            
+                            </div>
+
+                            <hr />
+
+                            <div class="row mb-4">
+                                <!-- <div class="col-md-4 col-6">
+                                    <label class="mb-2">Size</label>
+                                    <select class="form-select border border-secondary" style="height: 35px;">
+                                        <option>Small</option>
+                                        <option>Medium</option>
+                                        <option>Large</option>
+                                    </select>
+                                </div> -->
+                                <!-- col.// -->
+                                <div class="col-md-4 col-6 mb-3">
+                                    <label class="mb-2 d-block">Quantity</label>
+                                    <div class="input-group mb-3" style="width: 170px;">
+                                        <button class="btn btn-white border border-secondary px-3" type="button"
+                                            id="button-addon1" data-mdb-ripple-color="dark">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input type="text" class="form-control text-center border border-secondary"
+                                            placeholder="14" aria-label="Example text with button addon"
+                                            aria-describedby="button-addon1" />
+                                        <button class="btn btn-white border border-secondary px-3" type="button"
+                                            id="button-addon2" data-mdb-ripple-color="dark">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-warning shadow-0 text-white"> Buy now </a>
+                            <a href="#" class="btn btn-primary shadow-0 text-white"> <i class="me-1 fa fa-shopping-basket"></i> Add
+                                to cart </a>
+                            <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
+                                    class="me-1 fa fa-heart fa-lg"></i> Save </a>
                         </div>
-                    </div>
+                    </main>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-md-12 mt-3">
-                    <div class="card">
-                        <div class="card-header bg-white">
-                            <h4>Description</h4>
-                        </div>
-                        <div class="card-body">
-                            <p>
-                                <%=data.description%>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-        </div>
-    </div>
-    <%}%>
-<%-include('../layout/footer')-%>
+        </section>
+
+        <style>
+            .icon-hover:hover {
+                border-color: #3b71ca !important;
+                background-color: white !important;
+                color: #3b71ca !important;
+            }
+
+            .icon-hover:hover i {
+                color: #3b71ca !important;
+            }
+        </style>
+<script>
+    var options = {
+        width: 280,
+        zoomWidth: 200,
+        offset: { vertical: 0, horizontal: 10 }
+    };
+    new ImageZoom(document.getElementById("img-show"), options);
+
+</script>
+
+        <%-include('../partials/footer')-%>
+
+            <%-include('../layout/footer')-%>

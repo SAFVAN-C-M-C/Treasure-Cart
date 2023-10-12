@@ -23,26 +23,32 @@
             <div class="row pt-4">
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="general-main">
-                  <span class="mt-2" style="font-size: 1.5rem;font-weight: 700;">General Main</span>
+                  <span class="mt-2" style="font-size: 1.5rem;font-weight: 700;">General</span>
                   <div class="textfield mt-5">
-                    <input required type="text" placeholder="Product Name" id="Product_Name" name="Product_Name" value="<%=product.name%>">
+                    <input required type="text" placeholder="Product Name" id="Product_Name" name="Product_Name" onchange="validateName()" value="<%=product.name%>">
                   </div>
+                  <span id="productError" class="error"></span>
                   <div class="textfield mt-5">
-                    <input required type="Text" placeholder="Description" id="Description" name="Description" value="<%=product.description%>">
+                    <input required type="Text" placeholder="Description" id="Description" name="Description" onchange="validateDescription()" value="<%=product.description%>">
                   </div>
+                  <span id="descriptionError" class="error"></span>
                   <div class="textfield mt-5">
-                    <input required type="number" placeholder="stock" id="stock" name="stock" value="<%=product.stock%>">
+                    <input required type="number" placeholder="stock" id="stock" name="stock" onchange="validateStock()" value="<%=product.stock%>">
                   </div>
+                  <span id="stockError" class="error"></span>
                   <div class="textfield mt-5">
-                    <input required type="number" placeholder="basePrice" id="basePrice" name="basePrice" value="<%=product.basePrice%>">
+                    <input required type="number" placeholder="base Price" id="basePrice" name="basePrice" onchange="validatbase()" value="<%=product.basePrice%>">
                   </div>
+                  <span id="baseError" class="error"></span>
                   <div class="textfield mt-5">
-                    <input required type="number" placeholder="descountedPrice" id="descountedPrice"
-                      name="descountedPrice" value="<%=product.descountedPrice%>">
+                    <input required type="number" placeholder="descounted Price" id="descountedPrice"
+                    name="descountedPrice" onchange="validatprice()" value="<%=product.descountedPrice%>">
                   </div>
+                  <span id="priceError" class="error"></span>
+
                   <div class="textfield mt-5 ">
-                    <select name="brand" id="brand">
-                      <option value="">Select Brand</option>
+                    <select name="brand" id="brand" onchange="validateBrand()">
+                      <option value="default">Select Brand</option>
                       <%if(brand){%>
                         <%brand.forEach((bran)=>{%>
                           <option value="<%=bran.name%>">
@@ -52,9 +58,11 @@
                             <%}%>
                     </select>
                   </div>
+                  <span id="brandError" class="error"></span>
+
                   <div class="textfield mt-5 mb-5">
-                    <select name="category" id="category">
-                      <option value="">Select Category</option>
+                    <select name="category" id="category" onchange="validcategory()">
+                      <option value="default">Select Category</option>
                       <%if(category){%>
                         <%category.forEach((cat)=>{%>
                           <option value="<%=cat.name%>">
@@ -64,6 +72,8 @@
                             <%}%>
                     </select>
                   </div>
+                  <span id="categoryError" class="error"></span>
+
                 </div>
               </div>
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
@@ -107,7 +117,7 @@
                     <a href="/admin/products" class="btn btn-outline" >Cancel</a>
                   </div>
                   <div class="save-btn">
-                   <input type="submit" class="btn btn-info text-white" value="SAVE">
+                   <input type="submit" class="btn btn-info text-white" disabled id="signupButton" value="SAVE">
                   </div>
 
                 </div>
@@ -117,6 +127,8 @@
         </form>
       </div>
     </div>
+    <script src="/static/js/add_product.js"></script>
+
     <script>
       let list = document.querySelectorAll(".navigation_nav li");
 

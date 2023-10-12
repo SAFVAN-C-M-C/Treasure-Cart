@@ -15,6 +15,19 @@
 <body>
 <%-include('../partials/admin-sample-nav')-%>
 <section class="main">
+  
+  <%if(errmsg.length>0){%>
+    <div id="errorDiv" class="alert alert-danger d-flex justify-content-center align-items-center"  style="position: absolute;right: 50%; width: 150px;height: 40px;">
+      <strong><%=errmsg%>
+      </strong>
+    </div>
+  <%}%>
+  <%if(msg.length>0){%>
+    <div id="errorDiv" class="alert alert-success d-flex justify-content-center align-items-center"  style="position: absolute;right: 50%; width: 250px;height: 40px;">
+      <strong><%=msg%>
+      </strong>
+    </div>
+    <%}%>
   <div class="container">
     <div class="row d-flex header">
       <div class="col-6"><h2>Products</h2></div>
@@ -76,8 +89,8 @@
                     <td>
                         <div class="table-data">
                           <% let dt=new Date(data.timeStamp)%>
-                          <%let day=["monday",'tuesday','wednesday','friday','satuarday','sunday']%>
-                          <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>/<%=day[dt.getDay()-1]  %>
+                          
+                          <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>
                         </div> 
                       </td>
                     <td>
@@ -114,6 +127,15 @@
 
   </div>
 </section>
+<script>
+  var errorDiv = document.getElementById("errorDiv");
+function hideError() {
+    if (errorDiv) {
+      error.style.display = "none";
+    }
+  }
+setTimeout(hideError, 3000);
+</script>
 <hr>
 <br>
 <div class="col-lg-12 d-flex justify-content-end" >
