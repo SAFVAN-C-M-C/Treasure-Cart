@@ -1,9 +1,9 @@
-const OTP=require("../Models/otp");
-const generateOTP = require("../util/generateOtp");
-const sendEmail=require("../util/mail");
+const OTP=require("../../Models/otp");
+const generateOTP = require("../../util/generateOtp");
+const sendEmail=require("../../util/mail");
 const bcrypt=require("bcrypt");
 const {AUTH_EMAIL}=process.env;
-const hashData=require("../util/hashOTP")
+const hashData=require("../../util/hashOTP")
 const sendOTP=async (email)=>{
     try{
         if(!(email)){

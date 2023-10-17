@@ -1,63 +1,92 @@
 const express=require("express");
 const user=express.Router()
-const userControl=require("../controllers/userController");
+const userControl=require("../controllers/Client/userController");
 const passport=require("passport")
 require("../config/passport")
 require("../config/login-auth")
 const Users = require("../Models/user");
+const { verifyUser } = require("../middlewares/userAuth");
 
 
 
 
 
-//==================================================================================
+//home==================================================================================
+
 user.get('/',userControl.home_get)
-//==================================================================================
+
+//login==================================================================================
+
 user.post("/user/login",userControl.userLogin);
-//==================================================================================
+
+//sign up==================================================================================
+
 user.get("/user/SignUp",userControl.userSignup_get)
-//==================================================================================
 user.post("/user/signUp",userControl.userSignup)
-//==================================================================================
+
+//otp==================================================================================
+
 user.get("/user/otp-sent",userControl.otpSender)
-//==================================================================================
 user.get("/user/otp",userControl.otp_page)
-//==================================================================================
 user.post("/user/otp",userControl.OtpConfirmation)
-//==================================================================================
+
+//forgot password==================================================================================
+
 user.get("/user/forgot-pass",userControl.forgot_password_page)
-//==================================================================================
 user.post("/user/forgot-pass",userControl.forgotPass)
-//==================================================================================
+
+//home==================================================================================
+
 user.get("/user/home",userControl.home_logged)
-//==================================================================================
+
+//logout==================================================================================
+
 user.get("/user/logout",userControl.logout)
-//==================================================================================
-user.get("/user/product/details/:id",userControl.get_product_details)
-//==================================================================================
-user.get("/user/products",userControl.get_product)
-//==================================================================================
-user.get("/user/contact-us",userControl.get_contactUs)
-//==================================================================================
-user.get('/user/profile',userControl.get_profile)
-//==================================================================================
-user.get("/user/wishlist",userControl.get_wishlist)
-//==================================================================================
-user.get("/user/manage-address",userControl.get_manageAddress)
-//==================================================================================
-user.get("/user/order",userControl.get_order)
-//==================================================================================
-user.get("/user/order-history",userControl.get_history)
-//==================================================================================
-user.get("/user/explore",userControl.get_Explore)
-//==================================================================================
-user.get("/user/cart",userControl.get_cart)
-//==================================================================================
+
+//products==================================================================================
+
+user.get("/user/product/details/:id",verifyUser,userControl.get_product_details)
+user.get("/user/products".verifyUser,userControl.get_product)
+
+//contact us==================================================================================
+
+user.get("/user/contact-us",verifyUser,userControl.get_contactUs)
+
+//profile==================================================================================
+
+user.get('/user/profile',verifyUser,userControl.get_profile)
+
+//wishlist==================================================================================
+
+user.get("/user/wishlist",verifyUser,userControl.get_wishlist)
+
+//manage address==================================================================================
+
+user.get("/user/manage-address",verifyUser,userControl.get_manageAddress)
+
+//order==================================================================================
+
+user.get("/user/order",verifyUser,userControl.get_order)
+user.get("/user/order-history",verifyUser,userControl.get_history)
+
+//explore==================================================================================
+
+user.get("/user/explore",verifyUser,userControl.get_Explore)
+
+//cart==================================================================================
+
+user.get("/user/cart",verifyUser,userControl.get_cart)
+user.get("/user/addToCart/:userId/:prodId",userControl.addTocart);
+
+//reset password==================================================================================
+
 user.get("/user/password/reset",userControl.get_password_reset)
-//==================================================================================
 user.post("/user/password/reset",userControl.password_reset)
-//==================================================================================
+
+//404==================================================================================
+
 user.get("/404",userControl.error_get)
+
 //==================================================================================
 
 
@@ -121,13 +150,16 @@ user.get("/auth/google/callback",(req, res, next) => {
           if (err) {
             // Handle error
             console.error("Error during Google authentication:", err);
-            return res.redirect("/failedmail"); // Redirect to an error page
+            req.flash("errmsg","please try again")
+
+            return res.redirect("/"); // Redirect to an error page
           }
       
           if (!user) {
             // Handle authentication failure
             console.error("Authentication failed:", info.message);
-            return res.redirect("/user/home"); // Redirect to a failure page
+            req.flash("errmsg","existing user,please login")
+            return res.redirect("/"); // Redirect to a failure page
           }
           console.log(user);
           let userInformation = {

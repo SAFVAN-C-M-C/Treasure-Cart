@@ -1,67 +1,69 @@
-require("../util/otpindex")
-const passport=require("passport")
-const bcrypt=require("bcrypt")
-require("../config/passport")
-require("../config/login-auth")
-const USER=require("../Models/user")
-const {sendOTP}=require("../controllers/otpController");
-const OTP = require("../Models/otp");
-const Products = require("../Models/product");
+require("../../util/otpindex")
+require("passport")
+require("../../config/passport")
+require("../../config/login-auth")
+const bcrypt = require("bcrypt")
+const USER = require("../../Models/user")
+const { sendOTP } = require("./otpController");
+const OTP = require("../../Models/otp");
+const Products = require("../../Models/product");
 const { ObjectId } = require('mongodb')
-const Brands = require("../Models/brand")
-const Categories = require("../Models/category")
+const Brands = require("../../Models/brand")
+const Categories = require("../../Models/category")
+const Users = require("../../Models/user")
+
 //=================================================================================================================
 
-const home_get=(req,res)=>{
-    if(req.session.logged){
+const home_get = (req, res) => {
+    if (req.session.logged) {
         res.redirect('/user/home');
-    }else{
-        res.render("./User/index",{title:"Login",errmsg:req.flash("errmsg")});
+    } else {
+        res.render("./User/index", { title: "Login", errmsg: req.flash("errmsg") });
     }
 }
 //=================================================================================================================
 
-const userSignup_get=(req,res)=>{
-    if(req.session.logged){
+const userSignup_get = (req, res) => {
+    if (req.session.logged) {
         res.redirect('/user/home');
-    }else{
-    res.render("./User/Signup",{title:"Signup",errmsg:req.flash("errmsg")})
+    } else {
+        res.render("./User/Signup", { title: "Signup", errmsg: req.flash("errmsg") })
     }
 }
 //=================================================================================================================
 
-const otp_page=(req,res)=>{
+const otp_page = (req, res) => {
     if (req.session.signotp || req.session.forgot) {
-    res.render("./User/otp");
-    }else{
+        res.render("./User/otp");
+    } else {
         res.redirect("/user/logout")
     }
 }
 //=================================================================================================================
 
 
-const forgot_password_page=(req,res)=>{
-    if(req.session.logged){
+const forgot_password_page = (req, res) => {
+    if (req.session.logged) {
         res.redirect('/user/home');
-    }else{
-    req.session.forgot=true
-    res.render("./User/forgot-pass",{errmsg:req.flash("errmsg")})
+    } else {
+        req.session.forgot = true
+        res.render("./User/forgot-pass", { errmsg: req.flash("errmsg") })
     }
 }
 
 //=================================================================================================================
 
-const home_logged=async(req,res)=>{
-    if(req.session.logged||req.user){
+const home_logged = async (req, res) => {
+    if (req.session.logged || req.user) {
         console.log(req.session.logged);
-        const find=await USER.findOne({email:req.session.email})
+        const find = await USER.findOne({ email: req.session.email })
         console.log(find);
-      const data=find.userName
-      req.session.name=data
-      console.log(data);
-        res.render("./User/home",{title:"Home",user:data})
+        const data = find.userName
+        req.session.name = data
+        console.log(data);
+        res.render("./User/home", { title: "Home", user: data })
     }
-    else{
+    else {
         console.log(req.session.logged);
         res.redirect("/user/logout")
     }
@@ -69,171 +71,173 @@ const home_logged=async(req,res)=>{
 
 //=================================================================================================================
 
-const get_product_details=async(req,res)=>{
-    if(req.session.logged){
-        try{
-            const id=req.params.id;
+const get_product_details = async (req, res) => {
+    // if (req.session.logged) {
+        try {
+            const id = req.params.id;
             const data = await Products.findOne({ _id: new ObjectId(id) });
             console.log(data);
-            const brandId=data.brandId
-            const brand=await Brands.findOne({_id:brandId})
+            const brandId = data.brandId
+            const brand = await Brands.findOne({ _id: brandId })
             console.log(brandId);
             console.log(brand);
-            const categoryId=data.categoryId
+            const categoryId = data.categoryId
             console.log(categoryId);
-            const category=await Categories.findOne({_id:categoryId})
+            const category = await Categories.findOne({ _id: categoryId })
             console.log(category);
-            const user=req.session.name?req.session.name:"User"
-            res.render("./User/product-detail",{data,user,brand,category});
-        //   res.render("./User/product-sample",{data});
-        }catch(err){
+            const user = req.session.name ? req.session.name : "User"
+            res.render("./User/product-detail", { data, user, brand, category });
+            //   res.render("./User/product-sample",{data});
+        } catch (err) {
             console.log(err)
-            req.session.err=true
+            req.session.err = true
             res.redirect("/user/404")
-            
-        }
-    }else{
-        res.redirect("/user/logout")
-    }
-  }
 
-//=================================================================================================================
-
-  const get_product=async(req,res)=>{
-    if(req.session.logged){
-        try{
-            
-        const products=await Products.find();
-        console.log(products);
-        const data=req.session.name
-        res.render("./User/products",{title:"products",products:products,user:data})
-        }catch(err){
-            req.session.err=true
-            res.redirect("/user/404")
-            console.log(err);
         }
-    }else{
-        res.redirect("/user/logout")
-    }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
 }
 
 //=================================================================================================================
 
-const get_Explore=(req,res)=>{
-    if(req.session.logged){
-        try{
+const get_product = async (req, res) => {
+    // if (req.session.logged) {
+        try {
+
+            const products = await Products.find();
+            console.log(products);
+            const data = req.session.name
+            res.render("./User/products", { title: "products", products: products, user: data })
+        } catch (err) {
+            req.session.err = true
+            res.redirect("/user/404")
+            console.log(err);
+        }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
+}
+
+//=================================================================================================================
+
+const get_Explore = (req, res) => {
+    // if (req.session.logged) {
+        try {
             res.render("./User/explore");
-        }catch(err){            
-            req.session.err=true
+        } catch (err) {
+            req.session.err = true
             res.redirect("/user/404")
             console.log(err);
         }
-    }else{
-        res.redirect("/user/logout")
-    }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
 }
 //=================================================================================================================
-const get_cart=(req,res)=>{
-    if(req.session.logged){
-        try{
-            res.render("./User/cart")
-        }catch(err){            
-            req.session.err=true
+const get_cart = (req, res) => {
+    // if (req.session.logged) {
+        try {
+            const user = req.session.user
+            res.render("./User/SampleCart", { user })
+        } catch (err) {
+            req.session.err = true
             res.redirect("/user/404")
             console.log(err);
         }
-    }else{
-        res.redirect("/user/logout")
-    }
-  }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
+}
 
 
 //=================================================================================================================
 
-const get_contactUs=(req,res)=>{
-    if(req.session.logged){
-        try{
+const get_contactUs = (req, res) => {
+    // if (req.session.logged) {
+        try {
             res.render("./User/contact-us")
-        }catch(err){            
-            req.session.err=true
+        } catch (err) {
+            req.session.err = true
             res.redirect("/user/404")
             console.log(err);
         }
-    }else{
-        res.redirect("/user/logout")
-    }  }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
+}
 //=================================================================================================================
-const get_profile=(req,res)=>{
-    if(req.session.logged){
-        try{
+const get_profile = (req, res) => {
+    // if (req.session.logged) {
+        try {
             res.render("./User/profile")
-        }catch(err){            
-            req.session.err=true
+        } catch (err) {
+            req.session.err = true
             res.redirect("/user/404")
             console.log(err);
         }
-    }else{
-        res.redirect("/user/logout")
-    }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
 }
 //=================================================================================================================
 
-const get_wishlist =(req,res)=>{
-    if(req.session.logged){
-        try{
-            const data=req.session.name
-            res.render("./User/user-wishlist",{user:data})
-        }catch(err){            
-            req.session.err=true
+const get_wishlist = (req, res) => {
+    // if (req.session.logged) {
+        try {
+            const data = req.session.name
+            res.render("./User/user-wishlist", { user: data })
+        } catch (err) {
+            req.session.err = true
             res.redirect("/user/404")
             console.log(err);
         }
-    }else{
-        res.redirect("/user/logout")
-    }
-  }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
+}
 
 //=================================================================================================================
-  const get_manageAddress=(req,res)=>{
-    if(req.session.logged){
-        try{
+const get_manageAddress = (req, res) => {
+    // if (req.session.logged) {
+        try {
             res.render("./User/address-manage")
-        }catch(err){            
-            req.session.err=true
+        } catch (err) {
+            req.session.err = true
             res.redirect("/user/404")
             console.log(err);
         }
-    }else{
-        res.redirect("/user/logout")
-    }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
 }
 //=================================================================================================================
-  const get_order=(req,res)=>{
-    if(req.session.logged){
-        try{
+const get_order = (req, res) => {
+    // if (req.session.logged) {
+        try {
             res.render("./User/orders")
-        }catch(err){            
-            req.session.err=true
+        } catch (err) {
+            req.session.err = true
             res.redirect("/user/404")
             console.log(err);
         }
-    }else{
-        res.redirect("/user/logout")
-    }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
 }
 //=================================================================================================================
-const get_history=(req,res)=>{
-    if(req.session.logged){
-        try{
+const get_history = (req, res) => {
+    // if (req.session.logged) {
+        try {
             res.render("./User/history");
-        }catch(err){            
-            req.session.err=true
+        } catch (err) {
+            req.session.err = true
             res.redirect("/user/404")
             console.log(err);
         }
-    }else{
-        res.redirect("/user/logout")
-    }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
 }
 
 //=================================================================================================================
@@ -353,7 +357,7 @@ const userLogin = async (req, res) => {
                     req.session.logged = true;
                     console.log("Login success");
                     res.redirect("/user/home");
-                }else{
+                } else {
                     req.flash("errmsg", "*user blocked")
 
                     req.session.errmsg = "user blocked"
@@ -403,7 +407,7 @@ const OtpConfirmation = async (req, res) => {
                 if (match) {
                     // req.session.logged = true;
                     req.session.forgot = false;
-                    req.session.pass_reset=true
+                    req.session.pass_reset = true
                     res.redirect("/user/password/reset");
                 }
                 else {
@@ -471,39 +475,49 @@ const logout = (req, res) => {
     });
 }
 //==================================================================================
-const get_password_reset=(req,res)=>{
-    if(req.session.pass_reset){
+const get_password_reset = (req, res) => {
+    if (req.session.pass_reset) {
         res.render("./User/password-reset");
 
-    }else{
+    } else {
         res.redirect("/user/logout")
     }
 }
 
 //=================================================================================================================
-const password_reset=async(req,res)=>{
-    try{
+const password_reset = async (req, res) => {
+    try {
         console.log(req.body);
         const pass = await bcrypt.hash(req.body.password, 10);
-        const email=req.session.email
+        const email = req.session.email
         console.log(email);
-        const update=await USER.updateOne({email:email},{ $set: {password:pass} })
+        const update = await USER.updateOne({ email: email }, { $set: { password: pass } })
         req.session.logged = true;
-        req.session.pass_reset=false
+        req.session.pass_reset = false
         res.redirect("/user/home")
-    }catch(err){
+    } catch (err) {
         req.flash("errmsg", "something went wrong")
         console.log(err);
     }
 }
-const error_get=(req,res)=>{
-    if(req.session.err){
-      res.render("./Errors/404");
+const error_get = (req, res) => {
+    if (req.session.err) {
+        res.render("./Errors/404");
     }
-    else{
-      res.redirect("/user/logout");
+    else {
+        res.redirect("/user/logout");
     }
-  }
+}
+const addTocart = async (req, res) => {
+    const userId = req.params.userId;
+    const productId = req.params.prodId;
+    const check=Users.findOne({_id:userId});
+    if(check.length>0){
+
+    }else{
+        
+    }
+}
 module.exports = {
     home_get,
     userLogin,

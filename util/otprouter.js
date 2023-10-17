@@ -1,6 +1,6 @@
 const express=require("express");
 const router=express.Router();
-const {sendOTP}=require("../controllers/otpController")
+const {sendOTP}=require("../controllers/Client/otpController")
 //request new otp
 router.get("/",async(req,res)=>{
     try{

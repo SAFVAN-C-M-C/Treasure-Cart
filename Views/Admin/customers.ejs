@@ -71,7 +71,9 @@
 
                             <%}%>
                           </td>
-                          <td> <div class="table-data"><%=data.timeStamp%></div> </td>
+                          <td> <div class="table-data"><% let dt=new Date(data.timeStamp)%>
+                          
+                            <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%></div> </td>
 
 
                           <td>

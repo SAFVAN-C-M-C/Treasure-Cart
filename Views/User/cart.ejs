@@ -1,79 +1,122 @@
-<div class="py-3 py-md-4 checkout">
-    <div class="container">
-        <h4>Checkout</h4>
-        <hr>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%-include('../layout/header_links')-%>
+    <link rel="stylesheet" href="/static/css/cart.css">
+</head>
+<body>
+<%-include('../partials/header')-%>
 
+<section class="cart-main">
+    <div class="cart-content container-fluid">
         <div class="row">
-            <div class="col-md-12 mb-4">
-                <div class="shadow bg-white p-3">
-                    <h4 class="text-primary">
-                        Item Total Amount :
-                        <span class="float-end">$5454</span>
-                    </h4>
-                    <hr>
-                    <small>* Items will be delivered in 3 - 5 days.</small>
-                    <br/>
-                    <small>* Tax and other charges are included ?</small>
+            <div class="col-12 col-md-8">
+                <div class="poduct-list mt-4 rounded-3  w-100 ">
+                    <div class="cart-heading">
+                        <span>Cart</span>
+                    </div>
+                    <hr style="height: 5px;">
+                    <div class="d-flex justify-content-center w-75 ">
+                        <div class="card-body">
+                          <div class="row g-0">
+                            <div class="col-xl-3 col-md-4 d-flex justify-content-center">
+                              <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
+                                <img src="/static/images/img-bg.jpg" class="w-100" />
+                                <a href="#!">
+                                  <div class="hover-overlay">
+                                    <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="col-xl-6 col-md-5 col-sm-7">
+                             <a href="/user/product/details/data._id"> <h5>data.name</h5></a>
+                              <br>
+                              <p class="text mb-4 mb-md-0">
+                                <!-- data.description -->
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci numquam eaque, officia sunt doloribus voluptates at, sequi consequatur rem debitis repudiandae nobis doloremque natus libero praesentium quia quidem inventore repellendus.
+                              </p>
+                            </div>
+                            <div class="col-xl-3 col-md-3 col-sm-5">
+                              <div class="d-flex flex-row align-items-center mb-1">
+                                <h4 class="mb-1 me-1">₹data.basePrice</h4>
+                                <span class="text-danger"><s>₹data.descountedPrice</s></span>
+                              </div>
+                              <%//if(data.stock>0){%>
+                              <h6 class="text-success">In stock</h6>
+                              <%//}else{%>
+                              <h6 class="text-danger">out of stock</h6>
+                                <%//}%>
+                              <div class="mt-4">
+                                <button class="btn btn-primary shadow-0" type="button">Add to cart</button>
+                                <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="shadow bg-white p-3">
-                    <h4 class="text-primary">
-                        Basic Information
-                    </h4>
+            <div class="col-12 col-md-4 d-flex justify-content-center align-items-center   " style="flex-direction: column;">
+                <div class="price-details mt-4  rounded-3">
+                    <div class="price-details-heading">
+                        <span>Price Details</span>
+                    </div>
                     <hr>
-
-                    <form action="" method="POST">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label>Full Name</label>
-                                <input type="text" name="fullname" class="form-control" placeholder="Enter Full Name" />
+                    <div class="details-contents-main">
+                        <table class="table">
+                            <tr>
+                                <td class="tab-content m-2 "> Price(3)</td>
+                                <td>₹17,199</td>
+                            </tr>
+                            <tr>
+                                <td>Our Price</td>
+                                <td>₹17,199</td>
+                            </tr>
+                            <tr>
+                                <td>Discount</td>
+                                <td>-</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <hr>
+                    <div class="total d-flex justify-content-around   ">
+                        <span>Total</span>
+                        <span>₹17,579/-</span>
+                    </div>
+                    <hr>
+                    <form action="" class="form-body">
+                        <div class="coupon-main">
+                            <div class="textfield">
+                            <input type="text" name="coupon" placeholder="Coupon Code">
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Phone Number</label>
-                                <input type="number" name="phone" class="form-control" placeholder="Enter Phone Number" />
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Email Address</label>
-                                <input type="email" name="email" class="form-control" placeholder="Enter Email Address" />
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Pin-code (Zip-code)</label>
-                                <input type="number" name="pincode" class="form-control" placeholder="Enter Pin-code" />
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label>Full Address</label>
-                                <textarea name="address" class="form-control" rows="2"></textarea>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label>Select Payment Mode: </label>
-                                <div class="d-md-flex align-items-start">
-                                    <div class="nav col-md-3 flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                        <button class="nav-link fw-bold" id="cashOnDeliveryTab-tab" data-bs-toggle="pill" data-bs-target="#cashOnDeliveryTab" type="button" role="tab" aria-controls="cashOnDeliveryTab" aria-selected="true">Cash on Delivery</button>
-                                        <button class="nav-link fw-bold" id="onlinePayment-tab" data-bs-toggle="pill" data-bs-target="#onlinePayment" type="button" role="tab" aria-controls="onlinePayment" aria-selected="false">Online Payment</button>
-                                    </div>
-                                    <div class="tab-content col-md-9" id="v-pills-tabContent">
-                                        <div class="tab-pane fade" id="cashOnDeliveryTab" role="tabpanel" aria-labelledby="cashOnDeliveryTab-tab" tabindex="0">
-                                            <h6>Cash on Delivery Mode</h6>
-                                            <hr/>
-                                            <button type="button" class="btn btn-primary">Place Order (Cash on Delivery)</button>
-
-                                        </div>
-                                        <div class="tab-pane fade" id="onlinePayment" role="tabpanel" aria-labelledby="onlinePayment-tab" tabindex="0">
-                                            <h6>Online Payment Mode</h6>
-                                            <hr/>
-                                            <button type="button" class="btn btn-warning">Pay Now (Online Payment)</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                            <input type="submit" class="btn-custom" value="Apply"/>
                         </div>
                     </form>
-
+                    
                 </div>
+                <div class="proceed mt-4 ">
+                    <div class="button">
+                        <a href="" class="btn btn bg-success btn-success w-100  ">Proceed to CheckOut</a>
+                    </div>
+                </div>
+                
+                
             </div>
 
         </div>
+
     </div>
-</div>
+</section>
+<style>
+    a{
+        text-decoration: none;
+    }
+</style>
+
+<%-include('../partials/footer')-%>
+<%-include('../layout/footer')-%>

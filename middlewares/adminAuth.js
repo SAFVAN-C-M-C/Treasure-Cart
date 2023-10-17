@@ -1,4 +1,4 @@
-function verifySignup(req, res, next) {
+function verifyadmin(req, res, next) {
     if (req.session.logged) {
       next();
     } else {
@@ -6,5 +6,5 @@ function verifySignup(req, res, next) {
     }
   }
   
-  module.exports = { verifySignup };
+  module.exports = { verifyUser };
   
