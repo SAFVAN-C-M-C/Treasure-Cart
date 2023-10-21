@@ -21,11 +21,10 @@ const ProductsSchema = new Schema({
   descountedPrice: { type: Number},
   // variation: { type: String },
   timeStamp: { type: Date },
-  brandId: { type: Schema.Types.ObjectId },
-  categoryId: { type: Schema.Types.ObjectId },
+  brandId: { type: Schema.Types.ObjectId, ref: 'brands'  },
+  categoryId: { type: Schema.Types.ObjectId,ref: 'categories' },
 });
 
-const Products = mongoose.model('Products', ProductsSchema);
-
+const Products = mongoose.model('products', ProductsSchema);
 module.exports=Products;
 

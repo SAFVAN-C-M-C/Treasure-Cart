@@ -5,7 +5,7 @@ const Users = require("../../Models/user");
 // ===========================================================================================================================================
 
 const customers_list = async (req, res) => {
-    if (req.session.admin) {
+    // if (req.session.admin) {
         try {
             const pageNum = req.query.page ? req.query.page : 1;
             console.log(pageNum);
@@ -22,9 +22,9 @@ const customers_list = async (req, res) => {
             throw err
         }
 
-    } else {
-        res.redirect("/admin");
-    }
+    // } else {
+    //     res.redirect("/admin");
+    // }
 }
 // ===========================================================================================================================================
 

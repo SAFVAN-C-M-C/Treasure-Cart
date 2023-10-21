@@ -5,7 +5,7 @@ const { ObjectId } = require("mongodb");
 
 //category page
 const category_list = async (req, res) => {
-    if (req.session.admin) {
+    // if (req.session.admin) {
         try {
             const pageNum = req.query.page ? req.query.page : 1;
             console.log(pageNum);
@@ -26,15 +26,15 @@ const category_list = async (req, res) => {
             res.render.err = true
             res.redirect("/admin/404");
         }
-    } else {
-        res.redirect("/admin/logout");
-    }
+    // } else {
+    //     res.redirect("/admin/logout");
+    // }
 };
 // ===========================================================================================================================================
 
 //add category
 const category_add_get = (req, res) => {
-    if (req.session.admin) {
+    // if (req.session.admin) {
         try {
             res.render("./Admin/add-category");
         } catch (err) {
@@ -42,9 +42,9 @@ const category_add_get = (req, res) => {
             res.render.err = true
             res.redirect("/admin/404");
         }
-    } else {
-        res.redirect("/admin/logout");
-    }
+    // } else {
+    //     res.redirect("/admin/logout");
+    // }
 };
 // ===========================================================================================================================================
 
@@ -75,7 +75,7 @@ const category_add = async (req, res) => {
 // ===========================================================================================================================================
 
 const category_edit_get = async (req, res) => {
-    if (req.session.admin) {
+    // if (req.session.admin) {
         try {
             const id = req.params.id;
             const category = await Categories.findOne({ _id: new ObjectId(id) });
@@ -88,9 +88,9 @@ const category_edit_get = async (req, res) => {
             res.render.err = true
             res.redirect("/admin/404");
         }
-    } else {
-        res.redirect("/admin/logout");
-    }
+    // } else {
+    //     res.redirect("/admin/logout");
+    // }
 }
 
 // ===========================================================================================================================================

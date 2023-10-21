@@ -7,11 +7,7 @@ const bcrypt = require("bcrypt");
 // email:'safvancmc3@gmail.com'
 //123
 const admin_login_get = (req, res) => {
-  if (req.session.admin) {
-    res.redirect("/admin/Dashbord");
-  } else {
     res.render("./Admin/admin-login", { errmsg: req.flash("errmsgadmin") });
-  }
 };
 // ===========================================================================================================================================
 
@@ -53,16 +49,16 @@ const adminLogin = async (req, res) => {
 // ===========================================================================================================================================
 
 const admin_dash = (req, res) => {
-  if (req.session.admin) {
+  // if (req.session.admin) {
     try{
         res.render("./Admin/Admin-dash");
     }catch(err){
       res.render.err=true
       res.redirect("/admin/404");
     }
-  } else {
-    res.redirect("/admin/logout");
-  }
+  // } else {
+  //   res.redirect("/admin/logout");
+  // }
 };
 
 // ===========================================================================================================================================
@@ -79,12 +75,12 @@ const logout=(req,res)=>{
 // ===========================================================================================================================================
 
 const error_get=(req,res)=>{
-  if(req.session.err){
+  // if(req.session.err){
     res.render("./Errors/404");
-  }
-  else{
-    res.redirect("/admin/logout");
-  }
+  // }
+  // else{
+  //   res.redirect("/admin/logout");
+  // }
 }
 // ===========================================================================================================================================
 

@@ -5,7 +5,7 @@ const { ObjectId } = require("mongodb");
 
 
 const brand_list=async(req,res)=>{
-    if (req.session.admin) {
+    // if (req.session.admin) {
       const pageNum = req.query.page?req.query.page:1;
       console.log(pageNum);
       const perPage = 10;
@@ -17,16 +17,16 @@ const brand_list=async(req,res)=>{
       var count=Math.floor(data.length/10)+1;
       console.log("Brands:",data)
       res.render("./Admin/Brand",{brand:data,count:count,x});
-    } else {
-      res.redirect("/admin");
-    }
+    // } else {
+    //   res.redirect("/admin");
+    // }
   }
   const brand_add_get = (req, res) => {
-    if (req.session.admin) {
+    // if (req.session.admin) {
       res.render("./Admin/add-brand");
-    } else {
-      res.redirect("/admin");
-    }
+    // } else {
+    //   res.redirect("/admin");
+    // }
   };
   
   const brand_add=async(req,res)=>{

@@ -6,7 +6,7 @@ const { ObjectId } = require("mongodb");
 
 // ===========================================================================================================================================
 const product_list = async (req, res) => {
-  if (req.session.admin) {
+  // if (req.session.admin) {
     try{
       const pageNum = req.query.page?req.query.page:1;
       console.log(pageNum);
@@ -22,14 +22,14 @@ const product_list = async (req, res) => {
       res.render.err=true
       res.redirect("/admin/404");
     }
-  } else {
-    res.redirect("/admin/logout");
-  }
+  // } else {
+  //   res.redirect("/admin/logout");
+  // }
 };
 // ===========================================================================================================================================
 
 const add_product_get = async (req, res) => {
-  if (req.session.admin) {
+  // if (req.session.admin) {
     try{
       const category = await Categories.find();
       console.log(category);
@@ -40,9 +40,9 @@ const add_product_get = async (req, res) => {
       res.render.err=true
       res.redirect("/admin/404");
     }
-  } else {
-    res.redirect("/admin/logout");
-  }
+  // } else {
+  //   res.redirect("/admin/logout");
+  // }
 };
 // ===========================================================================================================================================
 const add_product = async (req, res) => {
@@ -95,7 +95,7 @@ const add_product = async (req, res) => {
 };
 // ===========================================================================================================================================
 const edit_product = async (req, res) => {
-  if (req.session.admin) {
+  // if (req.session.admin) {
     try{
       const id = req.params.id;
     const products = await Products.findOne({ _id: new ObjectId(id) });
@@ -113,9 +113,9 @@ const edit_product = async (req, res) => {
       res.render.err=true
       res.redirect("/admin/404");
     }
-  } else {
-    res.redirect("/admin/logout");
-  }
+  // } else {
+  //   res.redirect("/admin/logout");
+  // }
 };
 // ===========================================================================================================================================
 const edit = async (req, res) => {
@@ -186,7 +186,7 @@ const product_delete = async (req, res) => {
 };
 // ===========================================================================================================================================
 const product_search = async (req, res) => {
-  if (req.session.admin) {
+  // if (req.session.admin) {
     try{
       const pageNum = req.query.page?req.query.page:1;
       const perPage = 10;
@@ -211,9 +211,9 @@ const product_search = async (req, res) => {
       res.render.err=true
       res.redirect("/admin/404");
     }
-  } else {
-    res.redirect("/admin/logout");
-  }
+  // } else {
+  //   res.redirect("/admin/logout");
+  // }
 };
 // ===========================================================================================================================================
 module.exports={

@@ -18,39 +18,49 @@
                     <!-- left side div -->
                     <div class="col-md-12 col-lg-8 col-11 mx-auto main_cart mb-lg-5 mb-5 shadow">
                         <!--  productlist  for each place -->
+                        <%if(Array.isArray(data)){%>
+                            
                         <div class="card p-4">
-                            <h2 class="py-4 font-weight-bold">Cart (2 items)</h2>
+                            <h2 class="py-4 font-weight-bold">Cart (<%=data.length%> items)</h2>
+                            <%data.forEach((data)=>{%>
                             <div class="row">
                                 <!-- cart images div -->
                                 <div
                                     class="col-md-5 col-11 mx-auto bg-light d-flex justify-content-center align-items-center shadow product_img">
-                                    <img src="images/img2.png" class="img-fluid" alt="cart img">
+                                    <img src="<%=data.productId.images[0].mainimage?'/static/product-images/'+data.productId.images[0].mainimage:'/static/images/img-bg.jpg'%>" class="img-fluid" alt="cart img">
                                 </div>
                                 <!-- cart product details -->
                                 <div class="col-md-7 col-11 mx-auto px-4 mt-2">
                                     <div class="row">
                                         <!-- product name  -->
-                                        <div class="col-6 card-title">
-                                            <h1 class="mb-4 product_name">Blue Zara Shirt</h1>
-                                            <p class="mb-2">SHIRT - BLUE</p>
-                                            <p class="mb-2">COLOR: BLUE</p>
-                                            <p class="mb-3">SIZE: M</p>
+                                        <div class="col-8 card-title">
+                                            <h1 class="mb-4 product_name"><%=data.productId.name%></h1>
+                                            <p class="mb-2"><%=data.productId.description%></p>
+                                            <p class="mb-2">Price: ₹<%=data.productId.descountedPrice%></p>
+                                            <!-- <p class="mb-3">SIZE: M</p> -->
                                         </div>
                                         <!-- quantity inc dec -->
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <ul class="pagination justify-content-end set_quantity">
                                                 <li class="page-item">
-                                                    <button class="page-link "
-                                                        onclick="decreaseNumber('textbox','itemval')">
+                                                    <button class="page-link decrease-quantity"
+
+                                                        data-product-id="<%=data.productId._id%>"
+                                                        onclick="decreaseNumber('textbox','itemval')"
+                                                        
+                                                        >
                                                         <i class="fas fa-minus"></i> </button>
                                                 </li>
-                                                <li class="page-item"><input type="text" name="" class="page-link"
-                                                        value="0" id="textbox">
+                                                <li class="page-item"><input type="text"  data-min-value="1"
+                                                    data-available-quantity="<%= data.productId.stock %>"
+                                                     id="count_<%=data.productId._id %>" name="" class="page-link"
+                                                        value="<%=data.quantity%>">
                                                 </li>
                                                 <li class="page-item">
-                                                    <button class="page-link"
+                                                    <button class="page-link increase-quantity"
+                                                        data-product-id="<%=data.productId._id%>"
                                                         onclick="increaseNumber('textbox','itemval')"> <i
-                                                            class="fas fa-plus"></i></button>
+                                                        class="fas fa-plus"></i></button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -67,8 +77,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr />
+                            <%})%>
                         </div>
-                        <hr />
+                        
+                       
+                        <%}else{%>
+                            <h2>nothing to show here!!Cart is empty</h2>
+                            <%}%>
+                        
                     </div>
                     <!-- right side div -->
                     <div class="col-md-12 col-lg-4 col-11 mx-auto mt-lg-2 mt-md-5">
@@ -133,55 +150,171 @@
         crossorigin="anonymous"></script>
 
     <script type="text/javascript">
+        // document.addEventListener("DOMContentLoaded", () => {
+    const decreaseButtons = document.querySelectorAll(".decrease-quantity");
+    const increaseButtons = document.querySelectorAll(".increase-quantity");
 
-        var product_total_amt = document.getElementById('product_total_amt');
-        var shipping_charge = document.getElementById('shipping_charge');
-        var total_cart_amt = document.getElementById('total_cart_amt');
-        var discountCode = document.getElementById('discount_code1');
-        const decreaseNumber = (incdec, itemprice) => {
-            var itemval = document.getElementById(incdec);
-            var itemprice = document.getElementById(itemprice);
-            console.log(itemprice.innerHTML);
-            // console.log(itemval.value);
-            if (itemval.value <= 0) {
-                itemval.value = 0;
-                alert('Negative quantity not allowed');
-            } else {
-                itemval.value = parseInt(itemval.value) - 1;
-                itemval.style.background = '#fff';
-                itemval.style.color = '#000';
-                itemprice.innerHTML = parseInt(itemprice.innerHTML) - 15;
-                product_total_amt.innerHTML = parseInt(product_total_amt.innerHTML) - 15;
-                total_cart_amt.innerHTML = parseInt(product_total_amt.innerHTML) + parseInt(shipping_charge.innerHTML);
-            }
+    // Function to update total amount
+    function updateTotalAmount() {
+      let totalAmount = 0;
+
+      // Get all product rows
+      const productRows = document.querySelectorAll(".row.gy-3.mb-4");
+      productRows.forEach((row) => {
+        const productId = row
+          .querySelector(".decrease-quantity")
+          .getAttribute("data-product-id");
+        const quantityInput = row.querySelector(`#count_${productId}`);
+        const quantity = parseInt(
+          row.querySelector(`#count_${productId}`).value,
+          10
+        );
+        const productAmount = parseFloat(
+          row.querySelector(`#productAmount_${productId}`).textContent
+        );
+
+        totalAmount += productAmount;
+      });
+
+
+      // Update the total amount in the HTML
+      const totalAmountCell = document.getElementById("totalAmountCell");
+      const subTotal = document.getElementById("sub-total");
+      totalAmountCell.value = `${totalAmount.toFixed(2)}`;
+      subTotal.textContent = `Rs ${totalAmount.toFixed(2)}`;
+      const hiddenTotalAmount = document.getElementById('hiddenTotalAmount');
+      hiddenTotalAmount.value = totalAmount.toFixed(2);
+    }
+
+    // Function to send AJAX request to update quantity
+    async function updateQuantity(productId, change) {
+      try {
+        const response = await fetch("/updateQuantity", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ productId, change }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Received new quantity from server:", data.newQuantity);
+
+          const quantityInput = document.getElementById(`count_${productId}`);
+          const productAmount = document.getElementById(
+            `productAmount_${productId}`
+          );
+          const existingValue = productAmount.getAttribute("data-value");
+
+          if (quantityInput) {
+            quantityInput.value = data.newQuantity;
+            productAmount.textContent = existingValue * data.newQuantity;
+
+            // Calculate and update the total amount
+            updateTotalAmount();
+          }
+        } else {
+          console.error("Error updating quantity:", response.statusText);
         }
-        const increaseNumber = (incdec, itemprice) => {
-            var itemval = document.getElementById(incdec);
-            var itemprice = document.getElementById(itemprice);
-            // console.log(itemval.value);
-            if (itemval.value >= 5) {
-                itemval.value = 5;
-                alert('max 5 allowed');
-                itemval.style.background = 'red';
-                itemval.style.color = '#fff';
-            } else {
-                itemval.value = parseInt(itemval.value) + 1;
-                itemprice.innerHTML = parseInt(itemprice.innerHTML) + 15;
-                product_total_amt.innerHTML = parseInt(product_total_amt.innerHTML) + 15;
-                total_cart_amt.innerHTML = parseInt(product_total_amt.innerHTML) + parseInt(shipping_charge.innerHTML);
-            }
+      } catch (error) {
+        console.error("Error updating quantity:", error);
+      }
+    }
+
+    // Add event listeners to decrease buttons
+    decreaseButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const productId = button.getAttribute("data-product-id");
+        const quantityInput = document.getElementById(`count_${productId}`);
+        const quantity = parseInt(quantityInput.value, 10);
+        const availableQuantity = parseInt(quantityInput.getAttribute("data-available-quantity"), 10);
+        
+        if (quantity === 1) {
+          // Prevent further decrease when quantity is 1
+          return;
         }
-        const discount_code = () => {
-            let totalamtcurr = parseInt(total_cart_amt.innerHTML);
-            let error_trw = document.getElementById('error_trw');
-            if (discountCode.value === 'thapa') {
-                let newtotalamt = totalamtcurr - 15;
-                total_cart_amt.innerHTML = newtotalamt;
-                error_trw.innerHTML = "Hurray! code is valid";
-            } else {
-                error_trw.innerHTML = "Try Again! Valid code is thapa";
-            }
+        if (quantity <= availableQuantity) {
+          const outOfStockMessage = document.querySelector(`#outOfStockMessage_${productId}`);
+            outOfStockMessage.style.display = "none";
+          }
+        updateQuantity(productId, -1);
+      });
+    });
+
+    increaseButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const productId = button.getAttribute("data-product-id");
+        const quantityInput = document.getElementById(`count_${productId}`);
+        const quantity = parseInt(quantityInput.value, 10);
+        const availableQuantity = parseInt(quantityInput.getAttribute("data-available-quantity"), 10);
+
+        // Check if quantity exceeds available quantity
+        if (quantity >= availableQuantity) {
+          // Display "Out of Stock" message
+          const outOfStockMessage = document.querySelector(`#outOfStockMessage_${productId}`);
+          if (outOfStockMessage) {
+            outOfStockMessage.style.display = "block";
+          }
+
+          // Prevent further increase
+          return;
         }
+        updateQuantity(productId, 1);
+      });
+    });
+
+    updateTotalAmount();
+  // });
+
+        // var product_total_amt = document.getElementById('product_total_amt');
+        // var shipping_charge = document.getElementById('shipping_charge');
+        // var total_cart_amt = document.getElementById('total_cart_amt');
+        // var discountCode = document.getElementById('discount_code1');
+        // const decreaseNumber = (incdec, itemprice) => {
+        //     var itemval = document.getElementById(incdec);
+        //     var itemprice = document.getElementById(itemprice);
+        //     console.log(itemprice.innerHTML);
+        //     // console.log(itemval.value);
+        //     if (itemval.value <= 0) {
+        //         itemval.value = 0;
+        //         alert('Negative quantity not allowed');
+        //     } else {
+        //         itemval.value = parseInt(itemval.value) - 1;
+        //         itemval.style.background = '#fff';
+        //         itemval.style.color = '#000';
+        //         itemprice.innerHTML = parseInt(itemprice.innerHTML) - 15;
+        //         product_total_amt.innerHTML = parseInt(product_total_amt.innerHTML) - 15;
+        //         total_cart_amt.innerHTML = parseInt(product_total_amt.innerHTML) + parseInt(shipping_charge.innerHTML);
+        //     }
+        // }
+        // const increaseNumber = (incdec, itemprice) => {
+        //     var itemval = document.getElementById(incdec);
+        //     var itemprice = document.getElementById(itemprice);
+        //     // console.log(itemval.value);
+        //     if (itemval.value >= 5) {
+        //         itemval.value = 5;
+        //         alert('max 5 allowed');
+        //         itemval.style.background = 'red';
+        //         itemval.style.color = '#fff';
+        //     } else {
+        //         itemval.value = parseInt(itemval.value) + 1;
+        //         itemprice.innerHTML = parseInt(itemprice.innerHTML) + 15;
+        //         product_total_amt.innerHTML = parseInt(product_total_amt.innerHTML) + 15;
+        //         total_cart_amt.innerHTML = parseInt(product_total_amt.innerHTML) + parseInt(shipping_charge.innerHTML);
+        //     }
+        // }
+        // const discount_code = () => {
+        //     let totalamtcurr = parseInt(total_cart_amt.innerHTML);
+        //     let error_trw = document.getElementById('error_trw');
+        //     if (discountCode.value === 'thapa') {
+        //         let newtotalamt = totalamtcurr - 15;
+        //         total_cart_amt.innerHTML = newtotalamt;
+        //         error_trw.innerHTML = "Hurray! code is valid";
+        //     } else {
+        //         error_trw.innerHTML = "Try Again! Valid code is thapa";
+        //     }
+        // }
     </script>
   <%-include('../partials/footer')-%>
   <%-include('../layout/footer')-%>

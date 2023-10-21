@@ -24,7 +24,8 @@ const UsersSchema = new Schema({
   dob: { type: Date },
   gender: { type: String },
   joined:{type:Date},
-  profile:{type:String}
+  profile:{type:String},
+  veified:{type:String}
 });
 
 const Users = mongoose.model('Users', UsersSchema);

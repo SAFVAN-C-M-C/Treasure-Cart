@@ -1,10 +1,17 @@
 function verifyadmin(req, res, next) {
-    if (req.session.logged) {
+    if (req.session.admin) {
       next();
     } else {
-      res.redirect("/");
+      res.redirect("/admin/logout");
     }
   }
+  function existingadmin(req,res,next){
+  if (req.session.admin) {
+    res.redirect("/admin/Dashbord");
+  }else{
+    next()
+  }
+  }
   
-  module.exports = { verifyUser };
+  module.exports = { verifyadmin,existingadmin };
   

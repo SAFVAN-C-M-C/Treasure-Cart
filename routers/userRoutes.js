@@ -1,11 +1,13 @@
 const express=require("express");
 const user=express.Router()
 const userControl=require("../controllers/Client/userController");
+const cartConrller=require("../controllers/Client/cartController")
 const passport=require("passport")
 require("../config/passport")
 require("../config/login-auth")
 const Users = require("../Models/user");
-const { verifyUser } = require("../middlewares/userAuth");
+const { verifyUser,existingUser, otpverify, passrest } = require("../middlewares/userAuth");
+const { err } = require("../middlewares/err");
 
 
 
@@ -13,7 +15,7 @@ const { verifyUser } = require("../middlewares/userAuth");
 
 //home==================================================================================
 
-user.get('/',userControl.home_get)
+user.get('/',existingUser,userControl.home_get)
 
 //login==================================================================================
 
@@ -21,23 +23,23 @@ user.post("/user/login",userControl.userLogin);
 
 //sign up==================================================================================
 
-user.get("/user/SignUp",userControl.userSignup_get)
+user.get("/user/SignUp",existingUser,userControl.userSignup_get)
 user.post("/user/signUp",userControl.userSignup)
 
 //otp==================================================================================
 
-user.get("/user/otp-sent",userControl.otpSender)
-user.get("/user/otp",userControl.otp_page)
+user.get("/user/otp-sent",otpverify,userControl.otpSender)
+user.get("/user/otp",otpverify,userControl.otp_page)
 user.post("/user/otp",userControl.OtpConfirmation)
 
 //forgot password==================================================================================
 
-user.get("/user/forgot-pass",userControl.forgot_password_page)
+user.get("/user/forgot-pass",existingUser,userControl.forgot_password_page)
 user.post("/user/forgot-pass",userControl.forgotPass)
 
 //home==================================================================================
 
-user.get("/user/home",userControl.home_logged)
+user.get("/user/home",verifyUser,userControl.home_logged)
 
 //logout==================================================================================
 
@@ -46,7 +48,7 @@ user.get("/user/logout",userControl.logout)
 //products==================================================================================
 
 user.get("/user/product/details/:id",verifyUser,userControl.get_product_details)
-user.get("/user/products".verifyUser,userControl.get_product)
+user.get("/user/products",verifyUser,userControl.get_product)
 
 //contact us==================================================================================
 
@@ -75,17 +77,19 @@ user.get("/user/explore",verifyUser,userControl.get_Explore)
 
 //cart==================================================================================
 
-user.get("/user/cart",verifyUser,userControl.get_cart)
-user.get("/user/addToCart/:userId/:prodId",userControl.addTocart);
+user.get("/user/cart",verifyUser,cartConrller.get_cart)
+user.get("/user/addToCart/:prodId",verifyUser,cartConrller.addTocart);
+
+
 
 //reset password==================================================================================
 
-user.get("/user/password/reset",userControl.get_password_reset)
+user.get("/user/password/reset",passrest,userControl.get_password_reset)
 user.post("/user/password/reset",userControl.password_reset)
 
 //404==================================================================================
 
-user.get("/404",userControl.error_get)
+user.get("/404",err,userControl.error_get)
 
 //==================================================================================
 

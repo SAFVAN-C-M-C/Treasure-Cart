@@ -29,7 +29,6 @@ app.use(
     session({
       
       secret: uuidv4(),
-      cookie:{maxAge:60000000},
       resave: false,
       saveUninitialized: false,
     })

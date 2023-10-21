@@ -7,6 +7,8 @@ const productController = require("../controllers/Admin/productController");
 const customerController = require("../controllers/Admin/customerController");
 const Products = require("../Models/product");
 const {upload,uploadFields,categoryFields} = require("../util/upload");
+const { verifyadmin, existingadmin } = require("../middlewares/adminAuth");
+const { err } = require("../middlewares/err");
 
 
 
@@ -34,48 +36,48 @@ const {upload,uploadFields,categoryFields} = require("../util/upload");
 
 // ADMIN GENERAL===========================================================================================================================================
 
-admin.get("/",adminController.admin_login_get)
+admin.get("/",existingadmin,adminController.admin_login_get)
 admin.post("/login",adminController.adminLogin)
-admin.get("/Dashbord",adminController.admin_dash)
+admin.get("/Dashbord",verifyadmin,adminController.admin_dash)
 admin.get("/logout",adminController.logout)
-admin.get("/404",adminController.error_get)
+admin.get("/404",err,adminController.error_get)
 
 // product===========================================================================================================================================
 
-admin.get("/products",productController.product_list)
-admin.get("/add-product",productController.add_product_get)
+admin.get("/products",verifyadmin,productController.product_list)
+admin.get("/add-product",verifyadmin,productController.add_product_get)
 admin.post("/products/add-products", upload.fields(uploadFields), productController.add_product);
-admin.get("/product/edit/:id",productController.edit_product)
+admin.get("/product/edit/:id",verifyadmin,productController.edit_product)
 admin.post("/product/edit/:id",upload.fields(uploadFields),productController.edit)
-admin.get("/product/delete/:id",productController.product_delete);
-admin.post("/product/search",productController.product_search)
+admin.get("/product/delete/:id",verifyadmin,productController.product_delete);
+admin.post("/product/search",verifyadmin,productController.product_search)
 
 //category ===========================================================================================================================================
 
-admin.get('/categories',categoryController.category_list)
-admin.get("/add-category",categoryController.category_add_get)
+admin.get('/categories',verifyadmin,categoryController.category_list)
+admin.get("/add-category",verifyadmin,categoryController.category_add_get)
 admin.post("/add-category",upload.fields(categoryFields),categoryController.category_add)
-admin.get("/category/edit/:id",categoryController.category_edit_get)
+admin.get("/category/edit/:id",verifyadmin,categoryController.category_edit_get)
 admin.post("/category/edit/:id",upload.fields(categoryFields),categoryController.category_edit)
-admin.get("/category/delete/:id",categoryController.category_delete);
-admin.post("/category/search",categoryController.category_search)
+admin.get("/category/delete/:id",verifyadmin,categoryController.category_delete);
+admin.post("/category/search",verifyadmin,categoryController.category_search)
 
 // brand===========================================================================================================================================
 
-admin.get('/brand',brandController.brand_list)
-admin.get("/add-brand",brandController.brand_add_get)
+admin.get('/brand',verifyadmin,brandController.brand_list)
+admin.get("/add-brand",verifyadmin,brandController.brand_add_get)
 admin.post("/add-brand",upload.fields(categoryFields),brandController.brand_add);
-admin.get("/brand/edit/:id",brandController.brand_edit_get)
+admin.get("/brand/edit/:id",verifyadmin,brandController.brand_edit_get)
 admin.post("/brand/edit/:id",upload.fields(categoryFields),brandController.brand_edit)
-admin.get("/brand/delete/:id",brandController.brand_delete);
-admin.post("/brand/search",brandController.brand_search)
+admin.get("/brand/delete/:id",verifyadmin,brandController.brand_delete);
+admin.post("/brand/search",verifyadmin,brandController.brand_search)
 
 // customers===========================================================================================================================================
 
-admin.get("/customers",customerController.customers_list)
-admin.get("/customers/block/:id",customerController.customers_block)
-admin.get("/customers/unblock/:id",customerController.customers_unblock)
-admin.post("/customers/search",customerController.customers_search)
+admin.get("/customers",verifyadmin,customerController.customers_list)
+admin.get("/customers/block/:id",verifyadmin,customerController.customers_block)
+admin.get("/customers/unblock/:id",verifyadmin,customerController.customers_unblock)
+admin.post("/customers/search",verifyadmin,customerController.customers_search)
 
 // ===========================================================================================================================================
 

@@ -291,7 +291,7 @@
                       <h6 class="text-danger">out of stock</h6>
                         <%}%>
                       <div class="mt-4">
-                        <button class="btn btn-primary shadow-0" type="button">Add to cart</button>
+                        <a href="/user/addToCart/<%=data._id%>" class="btn btn-primary shadow-0" type="button">Add to cart</a>
                         <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
                       </div>
                     </div>
@@ -335,5 +335,5 @@
     </div>
   </section>
 
-  <%-include('../partials/footer')-%>
-    <%-include('../layout/footer')-%>
+<%-include('../partials/footer')-%>
+<%-include('../layout/footer')-%>

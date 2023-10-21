@@ -11,89 +11,87 @@ const { ObjectId } = require('mongodb')
 const Brands = require("../../Models/brand")
 const Categories = require("../../Models/category")
 const Users = require("../../Models/user")
+const Cart = require("../../Models/cart")
+const CART = require("../../Models/cart")
 
 //=================================================================================================================
 
 const home_get = (req, res) => {
-    if (req.session.logged) {
-        res.redirect('/user/home');
-    } else {
-        res.render("./User/index", { title: "Login", errmsg: req.flash("errmsg") });
-    }
+
+    res.render("./User/index", { title: "Login", errmsg: req.flash("errmsg") });
+
 }
 //=================================================================================================================
 
 const userSignup_get = (req, res) => {
-    if (req.session.logged) {
-        res.redirect('/user/home');
-    } else {
-        res.render("./User/Signup", { title: "Signup", errmsg: req.flash("errmsg") })
-    }
+
+    res.render("./User/Signup", { title: "Signup", errmsg: req.flash("errmsg") })
+
 }
 //=================================================================================================================
 
 const otp_page = (req, res) => {
-    if (req.session.signotp || req.session.forgot) {
-        res.render("./User/otp");
-    } else {
-        res.redirect("/user/logout")
-    }
+    // if (req.session.signotp || req.session.forgot) {
+    res.render("./User/otp");
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
 }
 //=================================================================================================================
 
 
 const forgot_password_page = (req, res) => {
-    if (req.session.logged) {
-        res.redirect('/user/home');
-    } else {
-        req.session.forgot = true
-        res.render("./User/forgot-pass", { errmsg: req.flash("errmsg") })
-    }
+    // if (req.session.logged) {
+    //     res.redirect('/user/home');
+    // } else {
+    req.session.forgot = true
+    res.render("./User/forgot-pass", { errmsg: req.flash("errmsg") })
+    // }
 }
 
 //=================================================================================================================
 
 const home_logged = async (req, res) => {
-    if (req.session.logged || req.user) {
-        console.log(req.session.logged);
-        const find = await USER.findOne({ email: req.session.email })
-        console.log(find);
-        const data = find.userName
-        req.session.name = data
-        console.log(data);
-        res.render("./User/home", { title: "Home", user: data })
-    }
-    else {
-        console.log(req.session.logged);
-        res.redirect("/user/logout")
-    }
+    // if (req.session.logged || req.user) {
+    console.log(req.session.logged);
+    const find = await USER.findOne({ email: req.session.email })
+    console.log(find);
+    const data = find.userName
+    req.session.name = data
+    console.log(data);
+    res.render("./User/home", { title: "Home", user: data })
 }
+// else {
+//     console.log(req.session.logged);
+//     res.redirect("/user/logout")
+// }
+
 
 //=================================================================================================================
 
 const get_product_details = async (req, res) => {
     // if (req.session.logged) {
-        try {
-            const id = req.params.id;
-            const data = await Products.findOne({ _id: new ObjectId(id) });
-            console.log(data);
-            const brandId = data.brandId
-            const brand = await Brands.findOne({ _id: brandId })
-            console.log(brandId);
-            console.log(brand);
-            const categoryId = data.categoryId
-            console.log(categoryId);
-            const category = await Categories.findOne({ _id: categoryId })
-            console.log(category);
-            const user = req.session.name ? req.session.name : "User"
-            res.render("./User/product-detail", { data, user, brand, category });
-            //   res.render("./User/product-sample",{data});
-        } catch (err) {
-            console.log(err)
-            req.session.err = true
-            res.redirect("/user/404")
+    try {
+        const id = req.params.id;
+        const data = await Products.findOne({ _id: new ObjectId(id) });
+        console.log(data);
+        const brandId = data.brandId
+        const brand = await Brands.findOne({ _id: brandId })
+        console.log(brandId);
+        console.log(brand);
+        const categoryId = data.categoryId
+        console.log(categoryId);
+        const category = await Categories.findOne({ _id: categoryId })
+        console.log(category);
+        const user = req.session.name ? req.session.name : "User"
+        res.render("./User/product-detail", { data, user, brand, category });
+        //   res.render("./User/product-sample",{data});
+    } catch (err) {
+        console.log(err)
+        req.session.err = true
+        res.redirect("/user/404")
 
-        }
+    }
     // } else {
     //     res.redirect("/user/logout")
     // }
@@ -103,17 +101,17 @@ const get_product_details = async (req, res) => {
 
 const get_product = async (req, res) => {
     // if (req.session.logged) {
-        try {
+    try {
 
-            const products = await Products.find();
-            console.log(products);
-            const data = req.session.name
-            res.render("./User/products", { title: "products", products: products, user: data })
-        } catch (err) {
-            req.session.err = true
-            res.redirect("/user/404")
-            console.log(err);
-        }
+        const products = await Products.find();
+        console.log(products);
+        const data = req.session.name
+        res.render("./User/products", { title: "products", products: products, user: data })
+    } catch (err) {
+        req.session.err = true
+        res.redirect("/user/404")
+        console.log(err);
+    }
     // } else {
     //     res.redirect("/user/logout")
     // }
@@ -123,45 +121,32 @@ const get_product = async (req, res) => {
 
 const get_Explore = (req, res) => {
     // if (req.session.logged) {
-        try {
-            res.render("./User/explore");
-        } catch (err) {
-            req.session.err = true
-            res.redirect("/user/404")
-            console.log(err);
-        }
+    try {
+        res.render("./User/explore");
+    } catch (err) {
+        req.session.err = true
+        res.redirect("/user/404")
+        console.log(err);
+    }
     // } else {
     //     res.redirect("/user/logout")
     // }
 }
 //=================================================================================================================
-const get_cart = (req, res) => {
-    // if (req.session.logged) {
-        try {
-            const user = req.session.user
-            res.render("./User/SampleCart", { user })
-        } catch (err) {
-            req.session.err = true
-            res.redirect("/user/404")
-            console.log(err);
-        }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
-}
+
 
 
 //=================================================================================================================
 
 const get_contactUs = (req, res) => {
     // if (req.session.logged) {
-        try {
-            res.render("./User/contact-us")
-        } catch (err) {
-            req.session.err = true
-            res.redirect("/user/404")
-            console.log(err);
-        }
+    try {
+        res.render("./User/contact-us")
+    } catch (err) {
+        req.session.err = true
+        res.redirect("/user/404")
+        console.log(err);
+    }
     // } else {
     //     res.redirect("/user/logout")
     // }
@@ -169,13 +154,13 @@ const get_contactUs = (req, res) => {
 //=================================================================================================================
 const get_profile = (req, res) => {
     // if (req.session.logged) {
-        try {
-            res.render("./User/profile")
-        } catch (err) {
-            req.session.err = true
-            res.redirect("/user/404")
-            console.log(err);
-        }
+    try {
+        res.render("./User/profile")
+    } catch (err) {
+        req.session.err = true
+        res.redirect("/user/404")
+        console.log(err);
+    }
     // } else {
     //     res.redirect("/user/logout")
     // }
@@ -184,14 +169,14 @@ const get_profile = (req, res) => {
 
 const get_wishlist = (req, res) => {
     // if (req.session.logged) {
-        try {
-            const data = req.session.name
-            res.render("./User/user-wishlist", { user: data })
-        } catch (err) {
-            req.session.err = true
-            res.redirect("/user/404")
-            console.log(err);
-        }
+    try {
+        const data = req.session.name
+        res.render("./User/user-wishlist", { user: data })
+    } catch (err) {
+        req.session.err = true
+        res.redirect("/user/404")
+        console.log(err);
+    }
     // } else {
     //     res.redirect("/user/logout")
     // }
@@ -200,13 +185,13 @@ const get_wishlist = (req, res) => {
 //=================================================================================================================
 const get_manageAddress = (req, res) => {
     // if (req.session.logged) {
-        try {
-            res.render("./User/address-manage")
-        } catch (err) {
-            req.session.err = true
-            res.redirect("/user/404")
-            console.log(err);
-        }
+    try {
+        res.render("./User/address-manage")
+    } catch (err) {
+        req.session.err = true
+        res.redirect("/user/404")
+        console.log(err);
+    }
     // } else {
     //     res.redirect("/user/logout")
     // }
@@ -214,13 +199,13 @@ const get_manageAddress = (req, res) => {
 //=================================================================================================================
 const get_order = (req, res) => {
     // if (req.session.logged) {
-        try {
-            res.render("./User/orders")
-        } catch (err) {
-            req.session.err = true
-            res.redirect("/user/404")
-            console.log(err);
-        }
+    try {
+        res.render("./User/orders")
+    } catch (err) {
+        req.session.err = true
+        res.redirect("/user/404")
+        console.log(err);
+    }
     // } else {
     //     res.redirect("/user/logout")
     // }
@@ -228,13 +213,13 @@ const get_order = (req, res) => {
 //=================================================================================================================
 const get_history = (req, res) => {
     // if (req.session.logged) {
-        try {
-            res.render("./User/history");
-        } catch (err) {
-            req.session.err = true
-            res.redirect("/user/404")
-            console.log(err);
-        }
+    try {
+        res.render("./User/history");
+    } catch (err) {
+        req.session.err = true
+        res.redirect("/user/404")
+        console.log(err);
+    }
     // } else {
     //     res.redirect("/user/logout")
     // }
@@ -279,27 +264,27 @@ const userSignup = async (req, res) => {
 
 
 const otpSender = async (req, res) => {
-    if (req.session.signotp || req.session.forgot) {
-        try {
-            console.log(req.session.email);
-            console.log("otp route");
-            const email = req.session.email;
-            console.log(email);
-            console.log(sendOTP);
-            const createdOTP = await sendOTP(email)
-            req.session.email = email;
-            console.log("session before verifiying otp :", req.session.email);
-            res.status(200).redirect("/User/otp")
-        } catch (err) {
-            console.log(err);
-            req.session.errmsg = "Sorry at this momment we can't sent otp";
-            console.log(req.session.errmsg);
-            if (req.session.forgot) {
-                res.redirect("/user/forgot-pass")
-            }
-            res.redirect("/user/SignUp");
+    // if (req.session.signotp || req.session.forgot) {
+    try {
+        console.log(req.session.email);
+        console.log("otp route");
+        const email = req.session.email;
+        console.log(email);
+        console.log(sendOTP);
+        const createdOTP = await sendOTP(email)
+        req.session.email = email;
+        console.log("session before verifiying otp :", req.session.email);
+        res.status(200).redirect("/User/otp")
+    } catch (err) {
+        console.log(err);
+        req.session.errmsg = "Sorry at this momment we can't sent otp";
+        console.log(req.session.errmsg);
+        if (req.session.forgot) {
+            res.redirect("/user/forgot-pass")
         }
+        res.redirect("/user/SignUp");
     }
+    // }
 }
 
 //=================================================================================================================
@@ -353,7 +338,8 @@ const userLogin = async (req, res) => {
             if (isMatch) {
                 if (check.status === "Active") {
                     req.session.name = check.name;
-                    req.session.email = check.email
+                    req.session.email = check.email;
+                    req.session.userid = check._id;
                     req.session.logged = true;
                     console.log("Login success");
                     res.redirect("/user/home");
@@ -476,12 +462,12 @@ const logout = (req, res) => {
 }
 //==================================================================================
 const get_password_reset = (req, res) => {
-    if (req.session.pass_reset) {
-        res.render("./User/password-reset");
+    // if (req.session.pass_reset) {
+    res.render("./User/password-reset");
 
-    } else {
-        res.redirect("/user/logout")
-    }
+    // } else {
+    //     res.redirect("/user/logout")
+    // }
 }
 
 //=================================================================================================================
@@ -508,16 +494,7 @@ const error_get = (req, res) => {
         res.redirect("/user/logout");
     }
 }
-const addTocart = async (req, res) => {
-    const userId = req.params.userId;
-    const productId = req.params.prodId;
-    const check=Users.findOne({_id:userId});
-    if(check.length>0){
 
-    }else{
-        
-    }
-}
 module.exports = {
     home_get,
     userLogin,
@@ -540,8 +517,9 @@ module.exports = {
     get_order,
     get_history,
     get_Explore,
-    get_cart,
+    // get_cart,
     get_password_reset,
     password_reset,
     error_get,
+    // addTocart,
 }
