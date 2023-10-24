@@ -67,4 +67,4 @@ function hideError() {
       error.style.display = "none";
     }
   }
-setTimeout(hideError, 3000);
+setTimeout(hideError, 5000);

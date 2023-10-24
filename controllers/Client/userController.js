@@ -152,10 +152,11 @@ const get_contactUs = (req, res) => {
     // }
 }
 //=================================================================================================================
-const get_profile = (req, res) => {
+const get_profile = async(req, res) => {
     // if (req.session.logged) {
     try {
-        res.render("./User/profile")
+        
+        res.render("./User/profile",{user})
     } catch (err) {
         req.session.err = true
         res.redirect("/user/404")
@@ -494,6 +495,19 @@ const error_get = (req, res) => {
         res.redirect("/user/logout");
     }
 }
+//=================================================================================================================
+
+
+//get check out
+const getcheckout=async(req,res)=>{
+    try{
+        const userId=req.session.userid
+        const user=await USER.findOne({_id:userId})
+        res.render("./User/checkout",{user});
+    }catch(err){
+        console.log(err);
+    }
+}
 
 module.exports = {
     home_get,
@@ -521,5 +535,6 @@ module.exports = {
     get_password_reset,
     password_reset,
     error_get,
+    getcheckout
     // addTocart,
 }

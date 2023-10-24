@@ -5,7 +5,7 @@ function validateName() {
     var msg = document.getElementById("productError");
     var signupButton = document.getElementById("signupButton");
   
-    if (Pattern.test(name) && name.trim().length >3) {
+    if (Pattern.test(name) && name.trim().length >=3) {
         msg.innerHTML = "";
         signupButton.disabled = false; // Enable the button
     } else {
@@ -19,7 +19,7 @@ function validateName() {
     var msg = document.getElementById("descriptionError");
     var signupButton = document.getElementById("signupButton");
   
-    if (Pattern.test(name) && name.trim().length >3) {
+    if (Pattern.test(name) && name.trim().length >=3) {
         msg.innerHTML = "";
         signupButton.disabled = false; // Enable the button
     } else {

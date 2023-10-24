@@ -79,8 +79,13 @@ user.get("/user/explore",verifyUser,userControl.get_Explore)
 
 user.get("/user/cart",verifyUser,cartConrller.get_cart)
 user.get("/user/addToCart/:prodId",verifyUser,cartConrller.addTocart);
+user.post("/user/addtoCart",verifyUser,cartConrller.addtoCart)
+user.post('/updatequantity',verifyUser,cartConrller.updateQuantity)
+user.post('/removefromcart',verifyUser,cartConrller.removeFromCart)
 
+//checkout==================================================================================
 
+user.get("/user/checkout",verifyUser,userControl.getcheckout);
 
 //reset password==================================================================================
 
@@ -89,7 +94,7 @@ user.post("/user/password/reset",userControl.password_reset)
 
 //404==================================================================================
 
-user.get("/404",err,userControl.error_get)
+user.get("/user/404",err,userControl.error_get)
 
 //==================================================================================
 

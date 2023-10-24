@@ -173,7 +173,7 @@ h2 {
     position: relative;
 }
 
-.set_quantity::after {
+/* .set_quantity::after {
     content: "(Note, 1 piece)";
     width: auto;
     height: auto;
@@ -182,7 +182,7 @@ h2 {
     bottom: -20px;
     right: 1.5rem;
     font-size: 0.8rem;
-}
+} */
 
 .page-link {
     line-height: 16px;
@@ -217,7 +217,28 @@ h2 {
 .price_indiv p {
     font-size: 1.1rem;
 }
+#trash{
+    background-color: transparent;
+    transition: 1s ease;
+}
+#trash:hover{
+    background-color: rgb(255, 0, 0);
+}
+#trash:hover span {
+    color: white;
+}
+#trash:hover i {
+    color: white;
+}
 
 .fa-heart:hover {
     color: red;
+}
+.action-btn{
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 50px; 
+    border: 1px solid black;
+    border-radius: 12px;
 }

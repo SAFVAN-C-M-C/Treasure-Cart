@@ -1,320 +1,230 @@
 <html lang="en">
+
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
-    <%-include('../layout/header_links')-%>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <%-include('../layout/header_links')-%>
     <link rel="stylesheet" type="text/css" href="/static/css/cart.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Treasure Cart</title>
 </head>
 <%-include('../partials/header')-%>
 
-<body class="bg-light">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-10 col-11 mx-auto">
-                <div class="row mt-5 gx-3">
-                    <!-- left side div -->
-                    <div class="col-md-12 col-lg-8 col-11 mx-auto main_cart mb-lg-5 mb-5 shadow">
-                        <!--  productlist  for each place -->
-                        <%if(Array.isArray(data)){%>
-                            
-                        <div class="card p-4">
-                            <h2 class="py-4 font-weight-bold">Cart (<%=data.length%> items)</h2>
-                            <%data.forEach((data)=>{%>
-                            <div class="row">
-                                <!-- cart images div -->
-                                <div
-                                    class="col-md-5 col-11 mx-auto bg-light d-flex justify-content-center align-items-center shadow product_img">
-                                    <img src="<%=data.productId.images[0].mainimage?'/static/product-images/'+data.productId.images[0].mainimage:'/static/images/img-bg.jpg'%>" class="img-fluid" alt="cart img">
-                                </div>
-                                <!-- cart product details -->
-                                <div class="col-md-7 col-11 mx-auto px-4 mt-2">
-                                    <div class="row">
-                                        <!-- product name  -->
-                                        <div class="col-8 card-title">
-                                            <h1 class="mb-4 product_name"><%=data.productId.name%></h1>
-                                            <p class="mb-2"><%=data.productId.description%></p>
-                                            <p class="mb-2">Price: ₹<%=data.productId.descountedPrice%></p>
-                                            <!-- <p class="mb-3">SIZE: M</p> -->
-                                        </div>
-                                        <!-- quantity inc dec -->
-                                        <div class="col-4">
-                                            <ul class="pagination justify-content-end set_quantity">
-                                                <li class="page-item">
-                                                    <button class="page-link decrease-quantity"
 
-                                                        data-product-id="<%=data.productId._id%>"
-                                                        onclick="decreaseNumber('textbox','itemval')"
-                                                        
-                                                        >
-                                                        <i class="fas fa-minus"></i> </button>
-                                                </li>
-                                                <li class="page-item"><input type="text"  data-min-value="1"
-                                                    data-available-quantity="<%= data.productId.stock %>"
-                                                     id="count_<%=data.productId._id %>" name="" class="page-link"
-                                                        value="<%=data.quantity%>">
-                                                </li>
-                                                <li class="page-item">
-                                                    <button class="page-link increase-quantity"
-                                                        data-product-id="<%=data.productId._id%>"
-                                                        onclick="increaseNumber('textbox','itemval')"> <i
-                                                        class="fas fa-plus"></i></button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- //remover move and price -->
-                                    <div class="row">
-                                        <div class="col-8 d-flex justify-content-between remove_wish">
-                                            <p><i class="fas fa-trash-alt"></i> REMOVE ITEM</p>
-                                            <p><i class="fas fa-heart"></i>MOVE TO WISH LIST </p>
-                                        </div>
-                                        <div class="col-4 d-flex justify-content-end price_money">
-                                            <h3>$<span id="itemval">0.00 </span></h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                            <%})%>
+
+
+  <body class="bg-light">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10 col-11 mx-auto">
+          <div class="row mt-5 gx-3">
+            <!-- left side div -->
+            <div class="col-md-12 col-lg-8 col-11 mx-auto main_cart mb-lg-5 mb-5 shadow">
+              <!--  productlist  for each place -->
+              <%if(Array.isArray(data)){%>
+
+                <div class="card p-4">
+                  <h2 class="py-4 font-weight-bold">Cart (<%=data.length%> items)</h2>
+                  <%data.forEach((data)=>{%>
+                    <div class="row">
+                      <!-- cart images div -->
+                      <div
+                        class="col-md-5 col-11 mx-auto bg-light d-flex justify-content-center align-items-center shadow product_img">
+                        <img
+                          src="<%=data.productId.images[0].mainimage?'/static/product-images/'+data.productId.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                          class="img-fluid" alt="cart img">
+                      </div>
+                      <!-- cart product details -->
+                      <div class="col-md-7 col-11 mx-auto px-4 mt-2">
+                        <div class="row">
+                          <!-- product name  -->
+                          <div class="col-8 card-title">
+                            <h1 class="mb-4 product_name">
+                              <%=data.productId.name%>
+                            </h1>
+                            <p class="mb-2">
+                              <%=data.productId.description%>
+                            </p>
+                            <p class="mb-2" style="font-size: 1rem;">Price: <span style="font-size: 1.3rem;color: red;">₹<%=data.productId.descountedPrice%></span>
+                            </p>
+                            <!-- <p class="mb-3">SIZE: M</p> -->
+                          </div>
+                          <!-- quantity inc dec -->
+                          <div class="col-4">
+                            <ul class="pagination justify-content-end set_quantity">
+                              <li class="page-item">
+                                <button class="page-link decrease-quantity" data-product-id="<%=data.productId._id%>"
+                                  onclick="quantityChanger('<%= data.productId._id %>',-1,'<%= cart._id %>','<%=data.quantity%>','<%=data.productId.stock%>')">
+                                  <i class="fas fa-minus"></i> </button>
+                              </li>
+                              <li class="page-item"><input type="text" data-min-value="1"
+                                  data-available-quantity="<%= data.productId.stock %>"
+                                  id="count_<%=data.productId._id %>" name="" class="page-link"
+                                  value="<%=data.quantity%>">
+                              </li>
+                              <li class="page-item">
+                                <button class="page-link increase-quantity" data-product-id="<%=data.productId._id%>"
+                                  onclick="quantityChanger('<%= data.productId._id %>',1,'<%= cart._id %>','<%=data.quantity%>','<%=data.productId.stock%>')">
+                                  <i class="fas fa-plus"></i></button>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                        
-                       
-                        <%}else{%>
-                            <h2>nothing to show here!!Cart is empty</h2>
-                            <%}%>
-                        
+                        <!-- //remover move and price -->
+                        <div class="row">
+                          <div class="col-8 d-flex justify-content-start remove_wish">
+                            <div id="trash" class="d-flex justify-content-center align-items-center action-btn mx-3"><a href="#"onclick="removeFromCart('<%= data.productId._id %>','<%= cart._id %>')"><i class="fas fa-trash-alt"></i> <span>Remove</span></a></div>
+                            <div class="d-flex justify-content-center align-items-center action-btn"><a href=""><i class="fas fa-heart"></i></a></div>
+
+                          </div>
+                          <!-- <div class="col-4 d-flex justify-content-end price_money">
+                            <h3>$<span id="totalPrice" st>0.00 </span></h3>
+                          </div> -->
+                        </div>
+                      </div>
                     </div>
-                    <!-- right side div -->
-                    <div class="col-md-12 col-lg-4 col-11 mx-auto mt-lg-2 mt-md-5">
-                        <div class="right_side p-3 shadow bg-white">
-                            <h2 class="product_name mb-5">The Total Amount Of</h2>
-                            <div class="price_indiv d-flex justify-content-between">
-                                <p>Product amount</p>
-                                <p>$<span id="product_total_amt">0.00</span></p>
-                            </div>
-                            <div class="price_indiv d-flex justify-content-between">
-                                <p>Shipping Charge</p>
-                                <p>$<span id="shipping_charge">50.0</span></p>
-                            </div>
-                            <hr />
-                            <div class="total-amt d-flex justify-content-between font-weight-bold">
-                                <p>The total amount of (including VAT)</p>
-                                <p>$<span id="total_cart_amt">0.00</span></p>
-                            </div>
-                            <button class="btn btn-primary text-uppercase">Checkout</button>
-                        </div>
-                        <!-- discount code part -->
-                        <div class="discount_code mt-3 shadow">
-                            <div class="card">
-                                <div class="card-body">
-                                    <a class="d-flex justify-content-between" data-toggle="collapse"
-                                        href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                        Add a discount code (optional)
-                                        <span><i class="fas fa-chevron-down pt-1"></i></span>
-                                    </a>
-                                    <div class="collapse" id="collapseExample">
-                                        <div class="mt-3">
-                                            <input type="text" name="" id="discount_code1"
-                                                class="form-control font-weight-bold"
-                                                placeholder="Enter the discount code">
-                                            <small id="error_trw" class="text-dark mt-3">code is thapa</small>
-                                        </div>
-                                        <button class="btn btn-primary btn-sm mt-3"
-                                            onclick="discount_code()">Apply</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- discount code ends -->
-                        <div class="mt-3 shadow p-3 mb-lg-5 bg-white">
-                            <div class="pt-4">
-                                <h5 class="mb-4">Expected delivery date</h5>
-                                <p>July 27th 2020 - July 29th 2020</p>
-                            </div>
-                        </div>
-                    </div>
+                    <hr />
+                    <%})%>
                 </div>
+
+
+                <%}else{%>
+                  <h2>nothing to show here!!Cart is empty</h2>
+                  <%}%>
+
             </div>
+            <!-- right side div -->
+            <div class="col-md-12 col-lg-4 col-11 mx-auto mt-lg-2 mt-md-5">
+              <div class="right_side p-3 shadow bg-white">
+                <h2 class="product_name mb-5">The Total</h2>
+                <div class="price_indiv d-flex justify-content-between">
+                  <p>Total Product</p>
+                  <p><span id="totalQuantityValue"><%=totalQuantity%></span></p>
+                </div>
+                <div class="price_indiv d-flex justify-content-between">
+                  <p>Sub Total</p>
+                  <p>₹<span id="subtotalAmount"><%=subtotal%></span></p>
+                </div>
+                <div class="price_indiv d-flex justify-content-between">
+                  <p>Tax</p>
+                  <p>₹<span id="gstAmount"><%=gstAmount%></span></p>
+                </div>
+                <hr />
+                <div class="total-amt d-flex justify-content-between font-weight-bold">
+                  <p>The total amount of (including GST)</p>
+                  <p>₹<span id="totalPrice"><%=total%></span></p>
+                </div>
+                <a href="/user/checkout" class="btn btn-primary text-uppercase">Checkout</a>
+              </div>
+              <!-- discount code part -->
+              <div class="discount_code mt-3 shadow">
+                <div class="card">
+                  <div class="card-body">
+                    <a class="d-flex justify-content-between" data-toggle="collapse" href="#collapseExample"
+                      aria-expanded="false" aria-controls="collapseExample">
+                      Add a discount code (optional)
+                      <span><i class="fas fa-chevron-down pt-1"></i></span>
+                    </a>
+                    <div class="collapse" id="collapseExample">
+                      <div class="mt-3">
+                        <input type="text" name="" id="discount_code1" class="form-control font-weight-bold"
+                          placeholder="Enter the discount code">
+                        <small id="error_trw" class="text-dark mt-3">code is thapa</small>
+                      </div>
+                      <button class="btn btn-primary btn-sm mt-3" onclick="discount_code()">Apply</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- discount code ends -->
+              <div class="mt-3 shadow p-3 mb-lg-5 bg-white">
+                <div class="pt-4">
+                  <h5 class="mb-4">Expected delivery date</h5>
+                  <p>July 27th 2020 - July 29th 2020</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
     <!-- Optional JavaScript -->
     <!-- Popper.js first, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
-        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
-        crossorigin="anonymous"></script>
+      integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+      crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-        // document.addEventListener("DOMContentLoaded", () => {
-    const decreaseButtons = document.querySelectorAll(".decrease-quantity");
-    const increaseButtons = document.querySelectorAll(".increase-quantity");
-
-    // Function to update total amount
-    function updateTotalAmount() {
-      let totalAmount = 0;
-
-      // Get all product rows
-      const productRows = document.querySelectorAll(".row.gy-3.mb-4");
-      productRows.forEach((row) => {
-        const productId = row
-          .querySelector(".decrease-quantity")
-          .getAttribute("data-product-id");
-        const quantityInput = row.querySelector(`#count_${productId}`);
-        const quantity = parseInt(
-          row.querySelector(`#count_${productId}`).value,
-          10
-        );
-        const productAmount = parseFloat(
-          row.querySelector(`#productAmount_${productId}`).textContent
-        );
-
-        totalAmount += productAmount;
-      });
+      function quantityChanger(productId, count, cartId, curent, avail) {
+        var quantityElement = document.getElementById("count_" + productId);
+        var currentQuantity = Number(quantityElement.value)
+        console.log(avail);
+        console.log(curent);
 
 
-      // Update the total amount in the HTML
-      const totalAmountCell = document.getElementById("totalAmountCell");
-      const subTotal = document.getElementById("sub-total");
-      totalAmountCell.value = `${totalAmount.toFixed(2)}`;
-      subTotal.textContent = `Rs ${totalAmount.toFixed(2)}`;
-      const hiddenTotalAmount = document.getElementById('hiddenTotalAmount');
-      hiddenTotalAmount.value = totalAmount.toFixed(2);
-    }
-
-    // Function to send AJAX request to update quantity
-    async function updateQuantity(productId, change) {
-      try {
-        const response = await fetch("/updateQuantity", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ productId, change }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Received new quantity from server:", data.newQuantity);
-
-          const quantityInput = document.getElementById(`count_${productId}`);
-          const productAmount = document.getElementById(
-            `productAmount_${productId}`
-          );
-          const existingValue = productAmount.getAttribute("data-value");
-
-          if (quantityInput) {
-            quantityInput.value = data.newQuantity;
-            productAmount.textContent = existingValue * data.newQuantity;
-
-            // Calculate and update the total amount
-            updateTotalAmount();
-          }
-        } else {
-          console.error("Error updating quantity:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error updating quantity:", error);
-      }
-    }
-
-    // Add event listeners to decrease buttons
-    decreaseButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const productId = button.getAttribute("data-product-id");
-        const quantityInput = document.getElementById(`count_${productId}`);
-        const quantity = parseInt(quantityInput.value, 10);
-        const availableQuantity = parseInt(quantityInput.getAttribute("data-available-quantity"), 10);
         
-        if (quantity === 1) {
-          // Prevent further decrease when quantity is 1
-          return;
-        }
-        if (quantity <= availableQuantity) {
-          const outOfStockMessage = document.querySelector(`#outOfStockMessage_${productId}`);
-            outOfStockMessage.style.display = "none";
-          }
-        updateQuantity(productId, -1);
-      });
-    });
+          if (count === 1 && avail > currentQuantity) {
 
-    increaseButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const productId = button.getAttribute("data-product-id");
-        const quantityInput = document.getElementById(`count_${productId}`);
-        const quantity = parseInt(quantityInput.value, 10);
-        const availableQuantity = parseInt(quantityInput.getAttribute("data-available-quantity"), 10);
-
-        // Check if quantity exceeds available quantity
-        if (quantity >= availableQuantity) {
-          // Display "Out of Stock" message
-          const outOfStockMessage = document.querySelector(`#outOfStockMessage_${productId}`);
-          if (outOfStockMessage) {
-            outOfStockMessage.style.display = "block";
+            currentQuantity += 1;
+            quantityElement.value = currentQuantity;
+            console.log("count increased...")
+          } else if (count === -1 && currentQuantity > 1) {
+            currentQuantity -= 1;
+            quantityElement.value = currentQuantity;
+            console.log("count decreased...")
           }
 
-          // Prevent further increase
-          return;
+
+          $.ajax({
+            url: '/updatequantity',
+            method: 'POST',
+            data: {
+              productId: productId,
+              quantity: currentQuantity,
+              cartId: cartId,
+            },
+            success: function (response) {
+              console.log("Response from the server:", response);
+
+              $('#subtotalAmount').text(+ response.subtotal.toFixed(2));
+              $('#gstAmount').text( + response.gstAmount.toFixed(2));
+              $('#totalQuantityValue').text(response.totalQuantity);
+              $('#totalPrice').text(+ response.total.toFixed(2)+'/-');
+
+            }
+          });
+
+          console.log("updated quantity successfully");
+        
+
+      }
+
+
+      function removeFromCart(productId, cartId) {
+        if (confirm("Are you sure you want to remove this item from your cart?")) {
+          $.ajax({
+            url: '/removefromcart',
+            method: 'POST',
+            data: {
+              productId: productId,
+              cartId: cartId,
+            },
+            success: function (response) {
+
+              window.location.reload();
+            },
+            error: function (error) {
+              console.error('Error removing product from the cart:', error);
+            }
+          });
         }
-        updateQuantity(productId, 1);
-      });
-    });
+      }
 
-    updateTotalAmount();
-  // });
-
-        // var product_total_amt = document.getElementById('product_total_amt');
-        // var shipping_charge = document.getElementById('shipping_charge');
-        // var total_cart_amt = document.getElementById('total_cart_amt');
-        // var discountCode = document.getElementById('discount_code1');
-        // const decreaseNumber = (incdec, itemprice) => {
-        //     var itemval = document.getElementById(incdec);
-        //     var itemprice = document.getElementById(itemprice);
-        //     console.log(itemprice.innerHTML);
-        //     // console.log(itemval.value);
-        //     if (itemval.value <= 0) {
-        //         itemval.value = 0;
-        //         alert('Negative quantity not allowed');
-        //     } else {
-        //         itemval.value = parseInt(itemval.value) - 1;
-        //         itemval.style.background = '#fff';
-        //         itemval.style.color = '#000';
-        //         itemprice.innerHTML = parseInt(itemprice.innerHTML) - 15;
-        //         product_total_amt.innerHTML = parseInt(product_total_amt.innerHTML) - 15;
-        //         total_cart_amt.innerHTML = parseInt(product_total_amt.innerHTML) + parseInt(shipping_charge.innerHTML);
-        //     }
-        // }
-        // const increaseNumber = (incdec, itemprice) => {
-        //     var itemval = document.getElementById(incdec);
-        //     var itemprice = document.getElementById(itemprice);
-        //     // console.log(itemval.value);
-        //     if (itemval.value >= 5) {
-        //         itemval.value = 5;
-        //         alert('max 5 allowed');
-        //         itemval.style.background = 'red';
-        //         itemval.style.color = '#fff';
-        //     } else {
-        //         itemval.value = parseInt(itemval.value) + 1;
-        //         itemprice.innerHTML = parseInt(itemprice.innerHTML) + 15;
-        //         product_total_amt.innerHTML = parseInt(product_total_amt.innerHTML) + 15;
-        //         total_cart_amt.innerHTML = parseInt(product_total_amt.innerHTML) + parseInt(shipping_charge.innerHTML);
-        //     }
-        // }
-        // const discount_code = () => {
-        //     let totalamtcurr = parseInt(total_cart_amt.innerHTML);
-        //     let error_trw = document.getElementById('error_trw');
-        //     if (discountCode.value === 'thapa') {
-        //         let newtotalamt = totalamtcurr - 15;
-        //         total_cart_amt.innerHTML = newtotalamt;
-        //         error_trw.innerHTML = "Hurray! code is valid";
-        //     } else {
-        //         error_trw.innerHTML = "Try Again! Valid code is thapa";
-        //     }
-        // }
     </script>
-  <%-include('../partials/footer')-%>
-  <%-include('../layout/footer')-%>
+    <%-include('../partials/footer')-%>
+      <%-include('../layout/footer')-%>

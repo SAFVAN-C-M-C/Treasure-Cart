@@ -10,6 +10,7 @@
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   </head>
   <body id="body">
@@ -244,6 +245,17 @@
           </header>
   <%if(products){%>
     <%products.forEach((data)=>{ %>
+      <div class="toast bg-light  start-50 translate-middle-x" style="position: fixed;bottom: 10px;z-index: 9999; background-color: #0b5ed7;" id="toastCart" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success ">
+          <!-- <img src="..." class="rounded me-2" alt="..."> -->
+          <strong class="me-auto text-light ">Treasure Cart</strong>
+          <!-- <small>11 mins ago</small> -->
+          <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> -->
+        </div>
+        <div class="toast-body text-dark ">
+          Product Added to cart
+        </div>
+      </div>
           <div class="row justify-content-center mb-3">
             <div class="col-md-12">
               <div class="card shadow-0 border rounded-3">
@@ -282,8 +294,8 @@
                     </div>
                     <div class="col-xl-3 col-md-3 col-sm-5">
                       <div class="d-flex flex-row align-items-center mb-1">
-                        <h4 class="mb-1 me-1">₹<%=data.basePrice%></h4>
-                        <span class="text-danger"><s>₹<%=data.descountedPrice%></s></span>
+                        <h4 class="mb-1 me-1">₹<%=data.descountedPrice%></h4>
+                        <span class="text-danger"><s>₹<%=data.basePrice%></s></span>
                       </div>
                       <%if(data.stock>0){%>
                       <h6 class="text-success">In stock</h6>
@@ -291,7 +303,7 @@
                       <h6 class="text-danger">out of stock</h6>
                         <%}%>
                       <div class="mt-4">
-                        <a href="/user/addToCart/<%=data._id%>" class="btn btn-primary shadow-0" type="button">Add to cart</a>
+                        <button onclick="addtoCart('<%= data._id %>')" class="btn btn-primary shadow-0" type="button">Add to cart</button>
                         <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
                       </div>
                     </div>
@@ -326,6 +338,7 @@
               </li>
             </ul>
           </nav>
+          
     <%}else{%>
       <h1>404 not found</h1>
       <%}%>
@@ -334,6 +347,39 @@
       </div>
     </div>
   </section>
+
+  <script>
+    function addtoCart(productId) {
+      var element=document.getElementById("toastCart");
+              var option={
+                animation:true,
+                delay:2000,
+                autohide: true
+              }
+              var toastElement=new bootstrap.Toast(element, option)
+              
+          console.log("hello");
+
+          $.ajax({
+            url: '/user/addtoCart',
+            method: 'POST',
+            data: {
+              productId: productId,
+            },
+            success: function (response) {
+              // alert("product added to the cart")
+              // window.location.reload();
+              console.log(response);
+
+              toastElement.show()
+            },
+            error: function (error) {
+              console.error('Error while product added to the cart:', error);
+            }
+          });
+        
+      }
+  </script>
 
 <%-include('../partials/footer')-%>
 <%-include('../layout/footer')-%>
