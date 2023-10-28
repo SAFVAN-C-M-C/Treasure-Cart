@@ -26,4 +26,7 @@ const storage = multer.diskStorage({
   const categoryFields=[
     { name: "main", maxCount: 1 },
   ]
-  module.exports={upload,uploadFields,categoryFields}
+  const profile=[
+    { name: "main", maxCount: 1 },
+  ]
+  module.exports={upload,uploadFields,categoryFields,profile}

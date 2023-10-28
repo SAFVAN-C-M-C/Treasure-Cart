@@ -14,34 +14,41 @@ function validateName() {
     }
   }
   function validateDescription() {
-    var Pattern = /^[a-zA-Z0-9_.\s]+$/;
+    var Pattern = /^[a-zA-Z0-9_.,\s]+$/;
     var name = document.getElementById("Description").value;
     var msg = document.getElementById("descriptionError");
     var signupButton = document.getElementById("signupButton");
   
-    if (Pattern.test(name) && name.trim().length >=3) {
+    if (Pattern.test(name) ) {
+        console.log(name.trim().length);
+        if(name.trim().length >=3){
         msg.innerHTML = "";
-        signupButton.disabled = false; // Enable the button
+        signupButton.disabled = false;
+        }else{
+            msg.innerHTML = "description must be more than hehehehhehehehe characters";
+        signupButton.disabled = true;
+        }
+         
     } else {
-        msg.innerHTML = "description name must be more than 3 characters";
+        msg.innerHTML = "description not match";
         signupButton.disabled = true; // Disable the button
     }
   }
 
-  function validateDescription() {
-    var Pattern = /^[a-zA-Z0-9_.\s]+$/;
-    var name = document.getElementById("Description").value;
-    var msg = document.getElementById("descriptionError");
-    var signupButton = document.getElementById("signupButton");
+//   function validateDescription() {
+//     var Pattern = /^[a-zA-Z0-9_.\s]+$/;
+//     var name = document.getElementById("Description").value;
+//     var msg = document.getElementById("descriptionError");
+//     var signupButton = document.getElementById("signupButton");
   
-    if (Pattern.test(name) && name.trim().length >3) {
-        msg.innerHTML = "";
-        signupButton.disabled = false; // Enable the button
-    } else {
-        msg.innerHTML = "description name must be more than 3 characters";
-        signupButton.disabled = true; // Disable the button
-    }
-  }
+//     if (Pattern.test(name) && name.trim().length >3) {
+//         msg.innerHTML = "";
+//         signupButton.disabled = false; // Enable the button
+//     } else {
+//         msg.innerHTML = "description name must be more than 3 characters";
+//         signupButton.disabled = true; // Disable the button
+//     }
+//   }
   function validateStock() {
     // var Pattern = /[0-9]/;
     var value = document.getElementById("stock").value;

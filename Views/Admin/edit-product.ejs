@@ -48,7 +48,7 @@
 
                   <div class="textfield mt-5 ">
                     <select name="brand" id="brand" onchange="validateBrand()">
-                      <option value="default">Select Brand</option>
+                      <option value="">Select Brand</option>
                       <%if(brand){%>
                         <%brand.forEach((bran)=>{%>
                           <option value="<%=bran.name%>">
@@ -62,7 +62,7 @@
 
                   <div class="textfield mt-5 mb-5">
                     <select name="category" id="category" onchange="validcategory()">
-                      <option value="default">Select Category</option>
+                      <option value="">Select Category</option>
                       <%if(category){%>
                         <%category.forEach((cat)=>{%>
                           <option value="<%=cat.name%>">
@@ -86,7 +86,7 @@
 
                   <div class="row">
                     <div class="images">
-                      <input type="file" name="main" accept="image/*" id="main" required
+                      <input type="file" name="main" accept="image/*" id="main" 
                         onchange="previewImage('main', 'mn')">
                       <label for="main">
 
@@ -94,14 +94,14 @@
                           <img class="priview" src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"  id="mn">
                         </div>
                       </label>
-                      <input type="file" name="image1" accept="image/*" id="imag1" required
+                      <input type="file" name="image1" accept="image/*" id="imag1" 
                         onchange="previewImage('imag1', 'im1')">
                       <label for="imag1">
                         <div class="img1">
                           <img class="priview" src="<%=product.images[0].image1?'/static/product-images/'+product.images[0].image1:'/static/images/img-bg.jpg'%>"  id="im1">
                         </div>
                       </label>
-                      <input type="file" name="image2" accept="image/*" id="imag2" required
+                      <input type="file" name="image2" accept="image/*" id="imag2" 
                         onchange="previewImage('imag2', 'im2')">
                       <label for="imag2">
                         <div class="img2 ">

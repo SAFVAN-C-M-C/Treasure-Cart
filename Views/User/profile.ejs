@@ -8,29 +8,37 @@
 </head>
 <body>
     <%-include('../partials/header')-%>
+ 
     <div class="container-xl px-2 mt-4">
         <!-- Account page navigation-->
         <nav class="nav nav-borders">
-            <a class="nav-link active ms-0" href="https://www.bootdey.com/snippets/view/bs5-edit-profile-account-details" target="__blank">Profile</a>
-            <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-billing-page" target="__blank">Addresses</a>
+            <a class="nav-link active ms-0" href="#">Profile</a>
+            <a class="nav-link" href="/user/manage-address">Addresses</a>
             <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page" target="__blank">Reset Password</a>
             <!-- <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Wish List</a> -->
             <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">My Orders</a>
 
         </nav>
         <hr class="mt-0 mb-4">
+    <form action="/user/edit" method="post" enctype="multipart/form-data">
+
         <div class="row">
+
             <div class="col-xl-4">
                 <!-- Profile picture card-->
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
                         <!-- Profile picture image-->
-                        <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                        <label for="main">
+                            <div class="img-main rounded-circle" style="background-color: #e9ecef;">
+                                <img id="mn" class="img-account-profile rounded-circle mb-2" src="<%=UserData.profile[0].mainimage?'/static/product-images/'+UserData.profile[0].mainimage:'http://bootdey.com/img/Content/avatar/avatar1.png'%>" alt="">
+                            </div>
+                          </label>
                         <!-- Profile picture help block-->
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                         <!-- Profile picture upload button-->
-                        <button class="btn btn-primary" type="button">Upload new image</button>
+                        <input type="file" onchange="previewImage('main', 'mn')" name="main" accept="image/*" id="main" class="btn btn-primary" style="display: none;">
                     </div>
                 </div>
             </div>
@@ -39,64 +47,63 @@
                 <div class="card mb-4">
                     <div class="card-header">Account Details</div>
                     <div class="card-body">
-                        <form>
                             <!-- Form Group (username)-->
                             <div class="mb-3">
                                 <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
-                                <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username" value="username">
+                                <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username" name="name" value="<%=UserData.userName%>" required>
                             </div>
                             <!-- Form Row-->
-                            <div class="row gx-3 mb-3">
+                            <!-- <div class="row gx-3 mb-3"> -->
                                 <!-- Form Group (first name)-->
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <label class="small mb-1" for="inputFirstName">First name</label>
                                     <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" value="Valerie">
-                                </div>
+                                </div> -->
                                 <!-- Form Group (last name)-->
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <label class="small mb-1" for="inputLastName">Last name</label>
                                     <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" value="Luna">
                                 </div>
-                            </div>
-                            <!-- Form Row        -->
-                            <div class="row gx-3 mb-3">
-                                <!-- Form Group (organization name)-->
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputOrgName">Organization name</label>
-                                    <input class="form-control" id="inputOrgName" type="text" placeholder="Enter your organization name" value="Start Bootstrap">
-                                </div>
-                                <!-- Form Group (location)-->
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputLocation">Location</label>
-                                    <input class="form-control" id="inputLocation" type="text" placeholder="Enter your location" value="San Francisco, CA">
-                                </div>
-                            </div>
+                            </div> -->
                             <!-- Form Group (email address)-->
                             <div class="mb-3">
                                 <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                                <input class="form-control" id="inputEmailAddress" type="email" placeholder="Enter your email address" value="name@example.com">
+                                <input disabled class="form-control" id="inputEmailAddress" name="email" type="email" placeholder="Enter your email" value="<%=UserData.email%>">
                             </div>
                             <!-- Form Row-->
                             <div class="row gx-3 mb-3">
                                 <!-- Form Group (phone number)-->
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="inputPhone">Phone number</label>
-                                    <input class="form-control" id="inputPhone" type="tel" placeholder="Enter your phone number" value="555-123-4567">
+                                    <input class="form-control" id="inputPhone" type="number" name="phone" maxlength="10" placeholder="Enter your 10 digit phone number" value="<%=UserData.phone?UserData.phone:0%>"  >
                                 </div>
                                 <!-- Form Group (birthday)-->
                                 <div class="col-md-6">
-                                    <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                    <input class="form-control" id="inputBirthday" type="text" name="birthday" placeholder="Enter your birthday" value="06/10/1988">
+                                    <label class="small mb-1" for="inputBirthday">DOB</label>
+                                    <%var date=UserData.dob.toString().slice(0, 10)%>
+                                    <input class="form-control" id="dob" type="date" name="dob" placeholder="DD-MM-YYYY" value="<%=date%>" required>
+
                                 </div>
+                                <!-- <input type="date" name="date" id="date" 
+             required 
+            style="padding: 5px; border-radius: 5px;  
+            border: 1px solid #ccc; margin-bottom: 10px;"> -->
                             </div>
                             <!-- Save changes button-->
-                            <button class="btn btn-primary" type="button">Save changes</button>
-                        </form>
+                            <button class="btn btn-primary" type="submit">Save changes</button>
+                        
                     </div>
                 </div>
             </div>
         </div>
+    </form>
+
     </div>
+
+
+
+
+
     
 
 
@@ -115,6 +122,15 @@
         /* body{margin-top:20px;
 background-color:#f2f6fc;
 color:#69707a;
+} */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+/* input[type=number] {
+  -moz-appearance: textfield;
 } */
 .img-account-profile {
     height: 10rem;
@@ -172,5 +188,44 @@ color:#69707a;
     margin-right: 1rem;
 }
     </style>
+    <script>
+        function previewImage(inputId, imgId) {
+        const input = document.getElementById(inputId);
+        const img = document.getElementById(imgId);
+        // const labeltext = document.getElementById(label)
+        // Check if a file was selected
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          // Set up a function to run when the image is loaded
+          reader.onload = function (e) {
+            img.src = e.target.result;
+            labeltext.style.display = 'none'
+          };
+
+          // Read the selected file as a data URL and load it into the img tag
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          // If no file was selected or the browser doesn't support FileReader, clear the image
+          img.src = "";
+        }
+      }
+
+      // Assuming you have the date-time string from the database
+    //   var dateTimeString = document.getElementById("dob").value;
+
+// // Create a new Date object
+// var dateTime = new Date(dateTimeString);
+
+// // Format the date as "YYYY-MM-DD"
+//         // Format the date as "YYYY-MM-DD"
+//         var formattedDate = dateTime.getFullYear() + '-' +
+//                             ('0' + (dateTime.getMonth() + 1)).slice(-2) + '-' +
+//                             ('0' + dateTime.getDate()).slice(-2);
+
+// Set the formatted date as the value of the input field
+// console.log(dateTimeString.slice(0, 10));
+// document.getElementById("dob").value = dateTimeString.slice(0, 10);
+    </script>
     <%-include('../partials/footer')-%>
     <%-include('../layout/footer')-%>

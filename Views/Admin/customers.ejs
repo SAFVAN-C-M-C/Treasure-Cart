@@ -14,6 +14,49 @@
 
 <body>
 <%-include('../partials/admin-sample-nav')-%>
+<%user.forEach((data)=>{%>
+  <div class="modal fade" id="blockconfirmation<%=data._id%>" tabindex="-1" role="dialog" aria-labelledby="blockconfirmationLabel<%=data._id%>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you want to Block <%=data.userName%> user?
+        </div>
+        <div class="modal-footer">
+          <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+          <a href="/admin/customers/block/<%=data._id%>" class="btn btn-danger   ">Block</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<%})%>
+<%user.forEach((data)=>{%>
+  <div class="modal fade" id="Unblockconfirmation<%=data._id%>" tabindex="-1" role="dialog" aria-labelledby="UnblockconfirmationLabel<%=data._id%>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you want to Unblock the  <%=data.userName%> user?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <a href="/admin/customers/unblock/<%=data._id%>"" class="btn btn-primary  ">Unblock</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<%})%>
 <section class="main">
   <div class="container">
     <div class="row d-flex header">
@@ -79,9 +122,11 @@
                           <td>
                             <div class="table-data">
                                 <%if(data.status==="Active"){%>
-                              <a href="/admin/customers/block/<%=data._id%>" onclick="return confirm('Do you want to Block <%=data.name%> ?')"><img class="icons-img" src="/static/images/lock.png" alt=""></a>
+                           
+
+                              <a  data-bs-toggle="modal" data-bs-target="#blockconfirmation<%=data._id%>"><img class="icons-img" src="/static/images/lock.png" alt=""></a>
                               <%}else{%>
-                              <a href="/admin/customers/unblock/<%=data._id%>" onclick="return confirm('Do you want to Unblock <%=data.name%> ?')"><img class="icons-img" src="/static/images/unlocked.png" alt=""></a>
+                              <a data-bs-toggle="modal" data-bs-target="#Unblockconfirmation<%=data._id%>"><img class="icons-img" src="/static/images/unlocked.png" alt=""></a>
                                 <%}%>
                             </div>
                           </td>
@@ -113,6 +158,7 @@
       </ul>
   </nav>
 </div>
+
 <style>
     a{
     text-decoration: none;

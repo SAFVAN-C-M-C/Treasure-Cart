@@ -8,6 +8,7 @@ require("../config/login-auth")
 const Users = require("../Models/user");
 const { verifyUser,existingUser, otpverify, passrest } = require("../middlewares/userAuth");
 const { err } = require("../middlewares/err");
+const { profile, upload } = require("../util/upload");
 
 
 
@@ -57,6 +58,8 @@ user.get("/user/contact-us",verifyUser,userControl.get_contactUs)
 //profile==================================================================================
 
 user.get('/user/profile',verifyUser,userControl.get_profile)
+user.post('/user/edit',upload.fields(profile),verifyUser,userControl.edit_profile)
+
 
 //wishlist==================================================================================
 
@@ -65,6 +68,7 @@ user.get("/user/wishlist",verifyUser,userControl.get_wishlist)
 //manage address==================================================================================
 
 user.get("/user/manage-address",verifyUser,userControl.get_manageAddress)
+user.post("/user/addAddress",verifyUser,userControl.addAddress)
 
 //order==================================================================================
 
@@ -86,6 +90,7 @@ user.post('/removefromcart',verifyUser,cartConrller.removeFromCart)
 //checkout==================================================================================
 
 user.get("/user/checkout",verifyUser,userControl.getcheckout);
+user.post("/user/checkout",verifyUser,userControl.postCheckout)
 
 //reset password==================================================================================
 
@@ -227,10 +232,19 @@ user.get("/auth/google/callback",(req, res, next) => {
               console.log(user);
         
               if(user){
-              req.session.email = user.emails[0].value;
+                const check= await Users.findOne({email:user.emails[0].value});
+                if (check.status === "Active"){
+                  req.session.email = user.emails[0].value;
               // Redirect to the desired page (e.g., /setSession)
               req.session.logged=true
                res.redirect("/user/home");
+                }else{
+                  req.flash("errmsg", "*user blocked")
+
+                    req.session.errmsg = "user blocked"
+                    res.redirect('/')
+                    console.log("user blocked");
+                }
               }
             }catch(err){
                 console.log(err);

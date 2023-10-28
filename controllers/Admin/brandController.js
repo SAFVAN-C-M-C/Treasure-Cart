@@ -38,16 +38,18 @@ const brand_list=async(req,res)=>{
       const {
         Brand_name
       } = req.body;
-  
+      const check=await Brands.findOne({name:Brand_name})
       console.log("name is " + Brand_name);
-      const data = {
-        name: Brand_name,
-        images: {
-          mainimage: main.filename,
-        },
-        timeStamp:Date.now(),
-      };
-      const insert = await Brands.insertMany([data]);
+      if(!check){
+        const data = {
+          name: Brand_name,
+          images: {
+            mainimage: main.filename,
+          },
+          timeStamp:Date.now(),
+        };
+        const insert = await Brands.insertMany([data]);
+      }
       res.redirect("/admin/brand");
     } catch (err) {
       console.log("error found" + err);
@@ -67,7 +69,8 @@ const brand_list=async(req,res)=>{
   }
   const brand_edit=async(req,res)=>{
     try {
-      const id = req.params.id;
+      if(req.files["main"]){
+        const id = req.params.id;
       console.log("hello it here on the edit post");
       const main = req.files["main"][0];
   
@@ -80,6 +83,8 @@ const brand_list=async(req,res)=>{
       } = req.body;
   
       console.log("name is " + Brand_name);
+      const check=Brands.findOne({name:Brand_name});
+    if(!check){
       const data = {
         name: Brand_name,
         images: {
@@ -88,7 +93,35 @@ const brand_list=async(req,res)=>{
         timeStamp: Date.now(),
       };
       await Brands.updateOne({ _id: new ObjectId(id) }, { $set: data });
+    }
       res.redirect("/admin/brand");
+      }else{
+        const id = req.params.id;
+        console.log("hello it here on the edit post");
+        // const main = req.files["main"][0];
+    
+        // Do whatever you want with these files.
+        console.log("Uploaded files:");
+        // console.log(main);
+    
+        const {
+          Brand_name,
+        } = req.body;
+    const check=Brands.findOne({name:Brand_name});
+    if(!check){
+      const data = {
+        name: Brand_name,
+        // images: {
+        //   mainimage: main.filename,
+        // },
+        timeStamp: Date.now(),
+      };
+      await Brands.updateOne({ _id: new ObjectId(id) }, { $set: data });
+    }
+        console.log("name is " + Brand_name);
+        
+        res.redirect("/admin/brand");
+      }
     } catch (err) {
       throw err;
     }

@@ -1,1 +1,274 @@
-<h1>address</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <%-include('../layout/header_links')-%>
+</head>
+<body>
+    <%-include('../partials/header')-%>
+    <!-- add address -->
+    <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAddressModalLabel">Add Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/user/addAddress" method="post">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="name" id="fullName" placeholder="Enter your full name" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" id="address" placeholder="Enter your address" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="pincode" class="form-label">Pincode</label>
+                            <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter your pincode" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="state" class="form-label">State</label>
+                            <input type="text" class="form-control" id="state" name="state" placeholder="Enter your state" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="mobileNumber" class="form-label">Mobile Number</label>
+                            <input type="tel" class="form-control" id="mobileNumber" name="mobile" placeholder="Enter your mobile number" required />
+                        </div>
+                        <button type="submit" class="btn btn-dark" style="background-color: black;">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- edit address -->
+<% address.forEach(function(address) { %>
+    <div class="modal fade" id="editAddressModal<%=address._id%>" tabindex="-1" aria-labelledby="editAddressModalLabel<%=address._id%>" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editAddressModalLabel<%=address._id%>">Edit Address</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/user/editAddress/<%=address._id%>" method="post">
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control"  name="name" id="fullName" placeholder="Enter your full name" value="<%=address.name%>" required />
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter your address" value="<%=address.address%>" required />
+                </div>
+                <div class="mb-3">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city" value="<%=address.city%>" required />
+                </div>
+                <div class="mb-3">
+                    <label for="pincode" class="form-label">Pincode</label>
+                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter your pincode" value="<%=address.pincode%>" required />
+                </div>
+                <div class="mb-3">
+                    <label for="state" class="form-label">State</label>
+                    <input type="text" class="form-control" id="state" name="state" placeholder="Enter your state" value="<%=address.state%>" required />
+                </div>
+                <div class="mb-3">
+                    <label for="mobileNumber" class="form-label">Mobile Number</label>
+                    <input type="tel" class="form-control" id="mobileNumber" name="mobile" placeholder="Enter your mobile number" value="<%=address.mobile%>" required />
+                </div>
+                <button type="submit" class="btn btn-primary " >Submit</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%})%>
+    <div class="container-xl px-2 mt-4">
+        <!-- Account page navigation-->
+        <nav class="nav nav-borders">
+            <a class="nav-link  ms-0" href="/user/profile" >Profile</a>
+            <a class="nav-link active" href="#" >Addresses</a>
+            <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page" target="__blank">Reset Password</a>
+            <!-- <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Wish List</a> -->
+            <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">My Orders</a>
+
+        </nav>
+        <hr class="mt-0 mb-4">
+        <div class="row">
+            <div class="col-xl-4 mb-lg-3 ">
+                <!-- Profile picture card-->
+                <div class="card mb-4 mb-xl-0">
+                    <div class="card-header">Profile Picture</div>
+                    <div class="card-body text-center">
+                        <!-- Profile picture image-->
+                                <img id="mn" class="img-account-profile rounded-circle mb-2" src="<%=UserData.profile[0].mainimage?'/static/product-images/'+UserData.profile[0].mainimage:'http://bootdey.com/img/Content/avatar/avatar1.png'%>" alt="">
+                        
+                        <!-- Profile picture help block-->
+                        <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                        <!-- Profile picture upload button-->
+                        <input type="file" onchange="previewImage('main', 'mn')" name="main" accept="image/*" id="main" class="btn btn-primary" style="display: none;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8">
+                <!-- Account details card-->
+                <div class="card mb-4">
+                    <div class="card-header">Saved Addresses</div>
+                    <div class="card-body">
+                        <%if(Array.isArray(address) && address.length!=0){%>
+                            <%address.forEach((data)=>{%>
+                                <div class="card mt-2 mb-2 ">
+                                    <div class="card-header"><%=data.name%></div>
+                                    <div class="card-body">
+                                        <%=data.address%> <br>
+                                        <%=data.city%> <br>
+                                        <%=data.state%> <br>
+                                        <%=data.pincode%> <br>
+                                        <%=data.mobile%> <br>
+                                        <div class="action">
+                                            <a href="" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#editAddressModal<%=data._id%>"> edit</a>
+                                            <a href="" class="btn btn-danger  "> delete</a>
+        
+                                        </div>
+                                    </div>
+                                </div>
+                                <%})%>
+                        <%}else{%>
+                            no address saved yet
+                            <%}%>
+                            <div class="row gx-3 mb-3">   
+                            </div>
+                            <!-- add address button-->
+                            <a class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#addAddressModal"><i class="fas fa-plus-circle"></i>Add Address </a> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <style>
+        /* body{margin-top:20px;
+background-color:#f2f6fc;
+color:#69707a;
+} */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+/* input[type=number] {
+  -moz-appearance: textfield;
+} */
+.img-account-profile {
+    height: 10rem;
+}
+.rounded-circle {
+    border-radius: 50% !important;
+}
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+}
+.card .card-header {
+    font-weight: 500;
+}
+.card-header:first-child {
+    border-radius: 0.35rem 0.35rem 0 0;
+}
+.card-header {
+    padding: 1rem 1.35rem;
+    margin-bottom: 0;
+    background-color: rgba(33, 40, 50, 0.03);
+    border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+}
+.form-control, .dataTable-input {
+    display: block;
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1;
+    color: #69707a;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #c5ccd6;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.35rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.nav-borders .nav-link.active {
+    color: #0061f2;
+    border-bottom-color: #0061f2;
+}
+.nav-borders .nav-link {
+    color: #69707a;
+    border-bottom-width: 0.125rem;
+    border-bottom-style: solid;
+    border-bottom-color: transparent;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+    </style>
+    <!-- <script>
+        function previewImage(inputId, imgId) {
+        const input = document.getElementById(inputId);
+        const img = document.getElementById(imgId);
+        // const labeltext = document.getElementById(label)
+        // Check if a file was selected
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          // Set up a function to run when the image is loaded
+          reader.onload = function (e) {
+            img.src = e.target.result;
+            labeltext.style.display = 'none'
+          };
+
+          // Read the selected file as a data URL and load it into the img tag
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          // If no file was selected or the browser doesn't support FileReader, clear the image
+          img.src = "";
+        }
+      } 
+    </script>-->
+    <%-include('../partials/footer')-%>
+    <%-include('../layout/footer')-%>

@@ -14,6 +14,29 @@
 
 <body>
 <%-include('../partials/admin-sample-nav')-%>
+<%products.forEach((data)=>{%>
+
+  <div class="modal fade" id="deleteconfirmation<%=data._id%>" tabindex="-1" role="dialog" aria-labelledby="deleteconfirmationLabel<%=data._id%>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you want to delete the <%=data.name%>?
+        </div>
+        <div class="modal-footer">
+          <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+          <a href="/admin/product/delete/<%=data._id%>" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<%})%>
 <section class="main">
   
   <%if(errmsg.length>0){%>
@@ -101,7 +124,7 @@
                           colors="outline:#121331,primary:#646e78,secondary:#ebe6ef,tertiary:#4cb4fd"
                           style="width:25px;height:25px">
                       </lord-icon></a>
-                      <a href="/admin/product/delete/<%=data._id%>" onclick="return confirm('Do you want to Remove <%-data.name%> ?')">
+                      <a  data-bs-toggle="modal" data-bs-target="#deleteconfirmation<%=data._id%>">
                       <lord-icon
                         src="https://cdn.lordicon.com/exkbusmy.json"
                         trigger="morph"
@@ -110,6 +133,7 @@
                         style="width:25px;height:25px">
                     </lord-icon></a>
                       </div>
+                      
                     </td>
                   </tr>
                     

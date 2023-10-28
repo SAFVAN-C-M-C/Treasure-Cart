@@ -57,8 +57,9 @@ const category_add = async (req, res) => {
         const {
             Category_name
         } = req.body;
-
+        const check= await Categories.findOne({name:Category_name});
         console.log("name is " + Category_name);
+       if(!check){
         const data = {
             name: Category_name,
             images: {
@@ -67,6 +68,7 @@ const category_add = async (req, res) => {
             timeStamp: Date.now(),
         };
         const insert = await Categories.insertMany([data]);
+       }
         res.redirect("/admin/categories");
     } catch (err) {
         console.log("error found" + err);
@@ -97,28 +99,51 @@ const category_edit_get = async (req, res) => {
 
 const category_edit = async (req, res) => {
     try {
-        const id = req.params.id;
-        console.log("hello it here on the edit post");
-        const main = req.files["main"][0];
-
-        // Do whatever you want with these files.
-        console.log("Uploaded files:");
-        console.log(main);
-
-        const {
-            Category_name,
-        } = req.body;
-
-        console.log("name is " + Category_name);
-        const data = {
-            name: Category_name,
-            images: {
-                mainimage: main.filename,
-            },
-            timeStamp: Date.now(),
-        };
-        await Categories.updateOne({ _id: new ObjectId(id) }, { $set: data });
-        res.redirect("/admin/categories");
+        if(req.files["main"]){
+            const id = req.params.id;
+            console.log("hello it here on the edit post");
+            const main = req.files["main"][0];
+    
+            // Do whatever you want with these files.
+            console.log("Uploaded files:");
+            console.log(main);
+    
+            const {
+                Category_name,
+            } = req.body;
+            const check=Categories.findOne({name:Category_name})
+            if(!check){
+                const data = {
+                    name: Category_name,
+                    images: {
+                        mainimage: main.filename,
+                    },
+                    timeStamp: Date.now(),
+                };
+                await Categories.updateOne({ _id: new ObjectId(id) }, { $set: data });
+               }
+            console.log("name is " + Category_name);
+            
+            res.redirect("/admin/categories");
+        }else{
+            const id = req.params.id;
+            console.log("hello it here on the edit post");
+            const {
+                Category_name,
+            } = req.body;
+    
+            console.log("name is " + Category_name);
+            const check=Categories.findOne({name:Category_name});
+            if(!check){
+                const data = {
+                    name: Category_name,
+                    timeStamp: Date.now(),
+                };
+                await Categories.updateOne({ _id: new ObjectId(id) }, { $set: data });
+            }
+            
+            res.redirect("/admin/categories");
+        }
     } catch (err) {
         throw err;
     }

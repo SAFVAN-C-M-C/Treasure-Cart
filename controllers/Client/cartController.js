@@ -144,6 +144,7 @@ const updateQuantity=async(req,res)=>{
       const couponValue = 50; 
       total -= couponValue;
     }
+    req.session.totalAmount=total
 
     res.json({
       success: true,
