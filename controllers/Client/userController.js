@@ -10,11 +10,9 @@ const Products = require("../../Models/product");
 const { ObjectId } = require('mongodb')
 const Brands = require("../../Models/brand")
 const Categories = require("../../Models/category")
-const Users = require("../../Models/user")
-const Cart = require("../../Models/cart")
-const CART = require("../../Models/cart")
-const user = require("../../routers/userRoutes")
-const Orders = require("../../Models/oreder")
+
+
+
 
 //=================================================================================================================
 
@@ -26,35 +24,24 @@ const home_get = (req, res) => {
 //=================================================================================================================
 
 const userSignup_get = (req, res) => {
-
     res.render("./User/Signup", { title: "Signup", errmsg: req.flash("errmsg") })
-
 }
 //=================================================================================================================
 
 const otp_page = (req, res) => {
-    // if (req.session.signotp || req.session.forgot) {
     res.render("./User/otp");
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
 }
 //=================================================================================================================
 
 
 const forgot_password_page = (req, res) => {
-    // if (req.session.logged) {
-    //     res.redirect('/user/home');
-    // } else {
     req.session.forgot = true
     res.render("./User/forgot-pass", { errmsg: req.flash("errmsg") })
-    // }
 }
 
 //=================================================================================================================
 
 const home_logged = async (req, res) => {
-    // if (req.session.logged || req.user) {
     console.log(req.session.logged);
     const find = await USER.findOne({ email: req.session.email })
     console.log(find);
@@ -63,66 +50,20 @@ const home_logged = async (req, res) => {
     console.log(data);
     res.render("./User/home", { title: "Home", user: data })
 }
-// else {
-//     console.log(req.session.logged);
-//     res.redirect("/user/logout")
-// }
+
 
 
 //=================================================================================================================
 
-const get_product_details = async (req, res) => {
-    // if (req.session.logged) {
-    try {
-        const id = req.params.id;
-        const data = await Products.findOne({ _id: new ObjectId(id) });
-        console.log(data);
-        const brandId = data.brandId
-        const brand = await Brands.findOne({ _id: brandId })
-        console.log(brandId);
-        console.log(brand);
-        const categoryId = data.categoryId
-        console.log(categoryId);
-        const category = await Categories.findOne({ _id: categoryId })
-        console.log(category);
-        const user = req.session.name ? req.session.name : "User"
-        res.render("./User/product-detail", { data, user, brand, category });
-        //   res.render("./User/product-sample",{data});
-    } catch (err) {
-        console.log(err)
-        req.session.err = true
-        res.redirect("/user/404")
 
-    }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
-}
 
 //=================================================================================================================
 
-const get_product = async (req, res) => {
-    // if (req.session.logged) {
-    try {
 
-        const products = await Products.find();
-        console.log(products);
-        const data = req.session.name
-        res.render("./User/products", { title: "products", products: products, user: data })
-    } catch (err) {
-        req.session.err = true
-        res.redirect("/user/404")
-        console.log(err);
-    }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
-}
 
 //=================================================================================================================
 
 const get_Explore = (req, res) => {
-    // if (req.session.logged) {
     try {
         res.render("./User/explore");
     } catch (err) {
@@ -130,9 +71,6 @@ const get_Explore = (req, res) => {
         res.redirect("/user/404")
         console.log(err);
     }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
 }
 //=================================================================================================================
 
@@ -141,7 +79,6 @@ const get_Explore = (req, res) => {
 //=================================================================================================================
 
 const get_contactUs = (req, res) => {
-    // if (req.session.logged) {
     try {
         res.render("./User/contact-us")
     } catch (err) {
@@ -149,32 +86,24 @@ const get_contactUs = (req, res) => {
         res.redirect("/user/404")
         console.log(err);
     }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
 }
 //=================================================================================================================
-const get_profile = async(req, res) => {
-    // if (req.session.logged) {
+const get_profile = async (req, res) => {
     try {
-        const user=req.session.name;
-        const UserId=req.session.userid;
-        const UserData=await USER.findOne({_id:UserId})
+        const user = req.session.name;
+        const UserId = req.session.userid;
+        const UserData = await USER.findOne({ _id: UserId })
         console.log(UserData.dob);
-        res.render("./User/profile",{user,UserData})
+        res.render("./User/profile", { user, UserData })
     } catch (err) {
         req.session.err = true
         res.redirect("/user/404")
         console.log(err);
     }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
 }
 //=================================================================================================================
 
 const get_wishlist = (req, res) => {
-    // if (req.session.logged) {
     try {
         const data = req.session.name
         res.render("./User/user-wishlist", { user: data })
@@ -183,47 +112,40 @@ const get_wishlist = (req, res) => {
         res.redirect("/user/404")
         console.log(err);
     }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
 }
 
 //=================================================================================================================
-const get_manageAddress = async(req, res) => {
-    // if (req.session.logged) {
+const get_manageAddress = async (req, res) => {
     try {
-        const user=req.session.name;
-        const UserId=req.session.userid;
-        const UserData=await USER.findOne({_id:UserId})
-        const address=UserData.address;
+        const user = req.session.name;
+        const UserId = req.session.userid;
+        const UserData = await USER.findOne({ _id: UserId })
+        const address = UserData.address;
         console.log(address);
-        res.render("./User/address-manage",{user,UserData,address})
+        res.render("./User/address-manage", { user, UserData, address })
     } catch (err) {
         req.session.err = true
         res.redirect("/user/404")
         console.log(err);
     }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
 }
 
 // ===================================================
-const addAddress=async(req,res)=>{
-    try{
-        const userId=req.session.userid
-        const {
-            name,
-            address,
-            city,
-            pincode,
-            state,
-            mobile
-        }=req.body;
+const addAddress = async (req, res) => {
+    try {
+        const userId = req.session.userid
+        const data={
+            name:req.body.name,
+            address:req.body.address,
+            city:req.body.city,
+            pincode:req.body.pincode,
+            state:req.body.state,
+            mobile:req.body.mobile,
+        }
         console.log(req.body);
-        const insert=await USER.updateOne({_id:userId},{$push:{address:req.body}})
+        const insert = await USER.updateOne({ _id: userId }, { $push: { address: data } })
         res.redirect('/user/manage-address')
-    }catch(err){
+    } catch (err) {
         console.log(err);
         res.redirect('/user/manage-address')
 
@@ -231,7 +153,6 @@ const addAddress=async(req,res)=>{
 }
 //=================================================================================================================
 const get_order = (req, res) => {
-    // if (req.session.logged) {
     try {
         res.render("./User/orders")
     } catch (err) {
@@ -239,13 +160,9 @@ const get_order = (req, res) => {
         res.redirect("/user/404")
         console.log(err);
     }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
 }
 //=================================================================================================================
 const get_history = (req, res) => {
-    // if (req.session.logged) {
     try {
         res.render("./User/history");
     } catch (err) {
@@ -253,9 +170,6 @@ const get_history = (req, res) => {
         res.redirect("/user/404")
         console.log(err);
     }
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
 }
 
 //=================================================================================================================
@@ -297,7 +211,6 @@ const userSignup = async (req, res) => {
 
 
 const otpSender = async (req, res) => {
-    // if (req.session.signotp || req.session.forgot) {
     try {
         console.log(req.session.email);
         console.log("otp route");
@@ -317,7 +230,6 @@ const otpSender = async (req, res) => {
         }
         res.redirect("/user/SignUp");
     }
-    // }
 }
 
 //=================================================================================================================
@@ -473,8 +385,6 @@ const OtpConfirmation = async (req, res) => {
                     res.redirect("/user/otp")
                 }
             }
-
-
         } catch (err) {
             console.log(err);
             res.redirect("/user/otp")
@@ -495,12 +405,7 @@ const logout = (req, res) => {
 }
 //==================================================================================
 const get_password_reset = (req, res) => {
-    // if (req.session.pass_reset) {
     res.render("./User/password-reset");
-
-    // } else {
-    //     res.redirect("/user/logout")
-    // }
 }
 
 //=================================================================================================================
@@ -531,125 +436,25 @@ const error_get = (req, res) => {
 
 
 //get check out
-const getcheckout=async(req,res)=>{
-    try{
-        const userId=req.session.userid
-        const user =req.session.name
-        const data=await USER.findOne({_id:userId})
-        const Address=data.address;
+const getcheckout = async (req, res) => {
+    try {
+        const userId = req.session.userid
+        const user = req.session.name
+        const data = await USER.findOne({ _id: userId })
+        const Address = data.address;
         console.log(Address);
-        res.render("./User/checkout",{user,Address});
-    }catch(err){
-        console.log(err);
-    }
-}
-const postCheckout=async(req,res)=>{
-    try{
-        console.log("inside body", req.body);
-        // const PaymentMethod = req.body.paymentMethod;
-        // const Address = req.body.Address;
-        const userId = req.session.userid;
-        const amount = req.session.totalAmount;
-        const user = await USER.findById(userId);
-        const Email = user.email;
-        const {
-            Address,
-            PaymentMethod
-        }=req.body
-        const cart = await Cart.findOne({ UserId: userId }).populate(
-          "products.productId"
-        );
-        console.log(req.session.totalPrice);
-    
-        const newOrders = new Orders({
-            userId: userId,
-            items: cart.products,
-            orederDate: moment(new Date()).format("llll"),
-          expectedDeliveryDate: moment().add(7, "days").format("llll"),
-          totalPrice: amount,
-          address: Address,
-          payMethod: PaymentMethod,
-        });
-        //delete the items in the cart after checkout
-        await Cart.findByIdAndDelete(cart._id);
-        //save order to database
-        const order = await newOrders.save();
-        console.log(order, "in orders");
-        req.session.orderId = order._id;
-    
-        for (const item of order.items) {
-          const productId = item.productId;
-          const quantity = item.quantity;
-    
-          const product = await Products.findById(productId);
-    
-          if (product) {
-            const updatedQuantity = product.stock - quantity;
-    
-            if (updatedQuantity < 0) {
-              product.stock = 0;
-            //   product.Status = "Out of Stock";
-            } else {
-              // Update the product's available quantity
-              product.stock = updatedQuantity;
-    
-              // Save the updated product back to the database
-              await product.save();
-            }
-          }
-        }
-        if (PaymentMethod === "cod") {
-          //send email with details of orders
-          const transporter = nodemailer.createTransport({
-            port: 465,
-            host: "smtp.gmail.com",
-            auth: {
-              user: "tickerpage@gmail.com",
-              pass: "vfte pvyn gvat uylk",
-            },
-            secure: true,
-          });
-          const mailData = {
-            from: "tickerpage@gmail.com",
-            to: Email,
-            subject: "Your Orders!",
-            text:
-              `Hello! ${user.Username} Your order has been received and will be processed within one business day.` +
-              ` your total price is ${req.session.totalPrice}`,
-          };
-          transporter.sendMail(mailData, (error, info) => {
-            if (error) {
-              return console.log(error);
-            }
-            console.log("Success");
-          });
-          res.json({ codSuccess: true });
-        } else {
-          console.log("hereeeeeee");
-          const order = {
-            amount: amount,
-            currency: "INR",
-            receipt: req.session.orderId,
-          };
-          await razorpay
-            .createRazorpayOrder(order)
-            .then((createdOrder) => {
-              console.log("payment response", createdOrder);
-              res.json({ createdOrder, order });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-    }catch(err){
+        res.render("./User/checkout", { user, Address });
+    } catch (err) {
         console.log(err);
     }
 }
 
 
-const edit_profile=async(req,res)=>{
-    try{
-        const userId=req.session.userid
+
+
+const edit_profile = async (req, res) => {
+    try {
+        const userId = req.session.userid
         console.log("hello it here on the edit post");
         const main = req.files["main"][0];
 
@@ -669,16 +474,16 @@ const edit_profile=async(req,res)=>{
         console.log("name is " + name);
         const data = {
             userName: name,
-            email:email,
-            phone:phone,
-            dob:dob,
+            email: email,
+            phone: phone,
+            dob: dob,
             profile: [{
                 mainimage: main.filename,
             }],
         };
         await USER.updateOne({ _id: new ObjectId(userId) }, { $set: data });
         res.redirect("/user/profile");
-    }catch(err){
+    } catch (err) {
         console.log(err);
         res.redirect("/user/profile")
 
@@ -696,8 +501,8 @@ module.exports = {
     otp_page,
     forgot_password_page,
     home_logged,
-    get_product_details,
-    get_product,
+    // get_product_details,
+    // get_product,
     get_contactUs,
     get_profile,
     get_wishlist,
@@ -706,13 +511,10 @@ module.exports = {
     get_order,
     get_history,
     get_Explore,
-    // get_cart,
     get_password_reset,
     password_reset,
     error_get,
     getcheckout,
     edit_profile,
     addAddress,
-    postCheckout
-    // addTocart,
 }

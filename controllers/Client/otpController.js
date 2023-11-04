@@ -46,47 +46,5 @@ const sendOTP=async (email)=>{
         throw err;
     }
 }
-const orderPlacementConfirmationdOTP=async (email)=>{
-    try{
-        if(!(email)){
-            throw Error("provide values for email,subject,message")
-        }
-        
-        //clear old otp
-        // await OTP.deleteOne({email})
 
-        //generate new otp
-        // const generatedOTP=await generateOTP();
-
-        //sending email to the user
-        const mailOptions={
-            from:AUTH_EMAIL,
-            to:email,
-            subject:"Hello you succesfully placed order in treassure cart",
-            html:`<p>Hello you succesfully placed order in treassure cart </p><p style="color:tomato;font-size:25px;letter-spacing:2px;">
-            
-            </p>`
-        }
-        await sendEmail(mailOptions);
-
-        //save otp record
-        
-        const hashedData=await bcrypt.hash(generatedOTP,10);
-        function addMinutesToDate(date, minutes) {
-            return new Date(date.getTime() + minutes * 60000); // 60000 milliseconds in a minute
-          }
-        const currentDate =new Date();
-        const newDate = addMinutesToDate(currentDate, 10);
-        const newOTP= await new OTP({
-            email,
-            otp:hashedData,
-            createdAt:Date.now(),
-            expireAt:newDate,
-        })
-        const createdOTPrecord=await newOTP.save()
-        return createdOTPrecord
-    }catch(err){
-        throw err;
-    }
-}
 module.exports={sendOTP};

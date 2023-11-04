@@ -59,11 +59,19 @@
                                   onclick="quantityChanger('<%= data.productId._id %>',-1,'<%= cart._id %>','<%=data.quantity%>','<%=data.productId.stock%>')">
                                   <i class="fas fa-minus"></i> </button>
                               </li>
+                              <%if(data.quantity<data.productId.stock){%>
                               <li class="page-item"><input type="text" data-min-value="1"
                                   data-available-quantity="<%= data.productId.stock %>"
                                   id="count_<%=data.productId._id %>" name="" class="page-link"
                                   value="<%=data.quantity%>">
                               </li>
+                              <%}else{%>
+                                <li class="page-item"><input type="text" data-min-value="1"
+                                  data-available-quantity="<%= data.productId.stock %>"
+                                  id="count_<%=data.productId._id %>" name="" class="page-link"
+                                  value="<%=data.productId.stock%>">
+                              </li>
+                                <%}%>
                               <li class="page-item">
                                 <button class="page-link increase-quantity" data-product-id="<%=data.productId._id%>"
                                   onclick="quantityChanger('<%= data.productId._id %>',1,'<%= cart._id %>','<%=data.quantity%>','<%=data.productId.stock%>')">

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treassure Cart</title>
+    <link rel="stylesheet" href="/static/css/admin-head.css" />
+    <link rel="stylesheet" href="/static/css/category.css" />
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <%-include('../partials/admin-sample-nav')-%>
+    <%brand.forEach((data)=>{%>
+        <div class="modal fade" id="viewOrderDetails<%=data._id%>" tabindex="-1" role="dialog" aria-labelledby="viewOrderDetailsLabel<%=data._id%>" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <!-- <span aria-hidden="true">&times;</span>
+                </button> -->
+              </div>
+              <div class="modal-body">
+                <div class="card shadow-0 border rounded-3">
+                    <div class="card-body">
+                      <div class="row g-0">
+                        <div class="col-xl-3 col-md-4 d-flex justify-content-center">
+                          <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
+                            <img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" class="w-100" />
+                            <a href="#!">
+                              <div class="hover-overlay">
+                                <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                              </div>
+                            </a>
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-md-5 col-sm-7">
+                         <a href="/user/product/details/<%-data._id%>"> <h5><%=data.name%></h5></a>
+                          <br>
+                          <!-- <div class="d-flex flex-row">
+                            <div class="text-warning mb-1 me-2">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fas fa-star-half-alt"></i>
+                              <span class="ms-1">
+                                4.5
+                              </span>
+                            </div>
+                            <span class="text-muted">154 orders</span>
+                          </div> -->
+      
+                          <p class="text mb-4 mb-md-0">
+                            <%=data.description%>
+                          </p>
+                        </div>
+                        <div class="col-xl-3 col-md-3 col-sm-5">
+                          <div class="d-flex flex-row align-items-center mb-1">
+                            <h4 class="mb-1 me-1">₹<%=data.descountedPrice%></h4>
+                            <span class="text-danger"><s>₹<%=data.basePrice%></s></span>
+                          </div>
+                          <%if(data.stock>0){%>
+                          <h6 class="text-success">In stock</h6>
+                          <%}else{%>
+                          <h6 class="text-danger">out of stock</h6>
+                            <%}%>
+                            <%if(data.stock>0){%>
+                              <div class="mt-4">
+                                <button onclick="addtoCart('<%= data._id %>')" class="btn btn-primary shadow-0" type="button">Add to cart</button>
+                                <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
+                              </div>
+                              <%}else{%>
+                                <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to cart</button>
+                                <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
+                                  <%}%>
+                                
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        
+                <!-- <a href="/admin/brand/delete/<%=data._id%>" class="btn btn-danger">Delete</a> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <%})%>
+        <section class="main">
+            <div class="container">
+                <div class="row d-flex header">
+                    <div class="col-6">
+                        <h2>Brands</h2>
+                    </div>
+                    <!-- <div class="col-6 d-flex justify-content-end"><a href="/admin/add-brand" class="btn-custom">Add Brands</a></div> -->
+                </div>
+
+                <div class="row mt-3">
+                    <div class="products-main col-12">
+                        <div class="search col-12">
+                            <div class="d-flex justify-content-end align-items-center">
+                                <form action="/admin/order/search" method="post">
+                                    <div class="input-group">
+                                        <div class="form-outline d-flex p-3">
+                                            <input type="search" class="form-control" name="search"
+                                                placeholder="Search">
+                                            <button id="search-button" type="submit" class="btn btn-custom  mx-2"
+                                                style="width: 40px;height: 40px;border-radius: 6px;">
+
+                                                <lord-icon src="https://cdn.lordicon.com/rlizirgt.json" trigger="hover"
+                                                    colors="primary:#ffffff" style="width:25px;height:25px">
+                                                </lord-icon>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <%if(Array.isArray(orders)){%>
+                                <table class="table  table-shadow table-bordered mt-3">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Sr No.</th>
+                                            <th scope="col">Order ID</th>
+                                            <th scope="col">Customer ID</th>
+                                            <th scope="col">Ordered Date</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Payment Method</th>
+                                            <th scope="col">Payment Status</th>
+                                            <th scope="col">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <%orders.forEach((data)=>{%>
+                                        <tbody>
+
+                                            <tr>
+                                                <td>
+                                                    <%= ++x %>
+                                                </td>
+                                                <td>
+                                                    <a data-bs-toggle="modal" data-bs-target="#viewOrderDetails<%=data._id%>" style="text-decoration: none;"></a><%= data._id %>
+                                                </td>
+                                                <td>
+                                                    <%= data.userId %>
+                                                </td>
+                                                <td>
+                                                    <% const orderDate=new Date(data.orderDate); %>
+                                                        <%= orderDate.toLocaleString('default', { month: 'short' }) %>
+                                                            <%= orderDate.getDate() %>,
+                                                                <%= orderDate.getFullYear() %>
+                                                                    <%= orderDate.toLocaleTimeString([], {
+                                                                        hour: '2-digit' , minute: '2-digit' }) %>
+                                                </td>
+                                                <td><%if(data.status !== 'Cancelled') { %>
+                                                    <% const currentStatus=data.status || 'Order Placed' ; %>
+                                                        <select class="form-select" id="statusSelect<%= data._id %>"
+                                                            onchange="updateOrderStatus('<%= data._id %>', this.value)">
+                                                            <option value="Order Placed"
+                                                                <%=currentStatus==='Order Placed' ? 'selected' : '' %>
+                                                                >Order Placed</option>
+                                                            <option value="Shipped" <%=currentStatus==='Shipped'
+                                                                ? 'selected' : '' %>>Shipped</option>
+                                                            <option value="Delivered" <%=currentStatus==='Delivered'
+                                                                ? 'selected' : '' %>>Delivered</option>
+                                                            <option value="Rejected" <%=currentStatus==='Rejected'
+                                                                ? 'selected' : '' %>>Rejected</option>
+                                                        </select>
+
+                                                        <% } else { %>
+                                                            Cancelled
+                                                            <% } %>
+
+                                                </td>
+                                                <td>
+                                                    <%= data.payMethod %>
+                                                </td>
+                                                <td>
+                                                    <%= data.paymentStatus %>
+                                                </td>
+                                                <td>
+                                                    <%= data.totalPrice %>
+                                                </td>
+                                                
+
+                                            </tr>
+
+                                        </tbody>
+                                        <% })%>
+
+
+                                </table>
+                                <%}else{%>
+                                    <h1>nothing here to see</h1>
+                                    <%}%>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <hr>
+        <br>
+        <div class="col-lg-12 d-flex justify-content-end">
+            <nav aria-label="page navigation example ">
+                <ul class="pagination" style="margin-right: 40px;">
+                    <%for(let i=1;i<=count;i++){%>
+                        <li class="page-item"><a class="page-link" href="/admin/orders?<%=i%>">
+                                <%=i%>
+                            </a></li>
+                        <%}%>
+
+                </ul>
+            </nav>
+        </div>
+        <script>
+            function updateOrderStatus(orderId, newStatus) {
+                console.log("changed");
+          fetch(`/admin/updateStatus/${orderId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert('Order status updated successfully!');
+              } else {
+                alert('Failed to update order status.');
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        }
+        
+        </script>
+        <style>
+            a {
+                text-decoration: none;
+                color: #191919;
+            }
+        </style>
+        <%-include('../layout/footer')-%>

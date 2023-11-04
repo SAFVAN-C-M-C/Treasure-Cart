@@ -5,6 +5,8 @@ const brandController = require("../controllers/Admin/brandController");
 const categoryController = require("../controllers/Admin/categoryController");
 const productController = require("../controllers/Admin/productController");
 const customerController = require("../controllers/Admin/customerController");
+const orderController = require("../controllers/Admin/orderController");
+
 const Products = require("../Models/product");
 const {upload,uploadFields,categoryFields} = require("../util/upload");
 const { verifyadmin, existingadmin } = require("../middlewares/adminAuth");
@@ -79,6 +81,9 @@ admin.get("/customers/block/:id",verifyadmin,customerController.customers_block)
 admin.get("/customers/unblock/:id",verifyadmin,customerController.customers_unblock)
 admin.post("/customers/search",verifyadmin,customerController.customers_search)
 
+// orders===========================================================================================================================================
+admin.get("/orders",verifyadmin,orderController.getOrders)
+admin.post('/updateStatus/:orderId',verifyadmin,orderController.updateOrderStatus)
 // ===========================================================================================================================================
 
 

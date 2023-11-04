@@ -1,15 +1,26 @@
 const express=require("express");
 const user=express.Router()
+
+//controllers
 const userControl=require("../controllers/Client/userController");
+const orderController=require("../controllers/Client/orderController")
 const cartConrller=require("../controllers/Client/cartController")
+const productController=require("../controllers/Client/productController")
+
+//auths
 const passport=require("passport")
 require("../config/passport")
 require("../config/login-auth")
+
+//models
 const Users = require("../Models/user");
+
+//middlewares
 const { verifyUser,existingUser, otpverify, passrest } = require("../middlewares/userAuth");
 const { err } = require("../middlewares/err");
-const { profile, upload } = require("../util/upload");
 
+//utility
+const { profile, upload } = require("../util/upload");
 
 
 
@@ -48,8 +59,8 @@ user.get("/user/logout",userControl.logout)
 
 //products==================================================================================
 
-user.get("/user/product/details/:id",verifyUser,userControl.get_product_details)
-user.get("/user/products",verifyUser,userControl.get_product)
+user.get("/user/product/details/:id",verifyUser,productController.get_product_details)
+user.get("/user/products",verifyUser,productController.get_product)
 
 //contact us==================================================================================
 
@@ -72,9 +83,11 @@ user.post("/user/addAddress",verifyUser,userControl.addAddress)
 
 //order==================================================================================
 
-user.get("/user/order",verifyUser,userControl.get_order)
-user.get("/user/order-history",verifyUser,userControl.get_history)
-
+// user.get("/user/order",verifyUser,userControl.get_order)
+// user.get("/user/order-history",verifyUser,userControl.get_history)
+user.get("/user/order-sucesss",verifyUser,orderController.getOrderSuccess)
+user.get("/user/order-history",verifyUser,orderController.orderHistory)
+user.get("/user/cancelorder/:orderId",verifyUser,orderController.cancelorder)
 //explore==================================================================================
 
 user.get("/user/explore",verifyUser,userControl.get_Explore)
@@ -90,7 +103,7 @@ user.post('/removefromcart',verifyUser,cartConrller.removeFromCart)
 //checkout==================================================================================
 
 user.get("/user/checkout",verifyUser,userControl.getcheckout);
-user.post("/user/checkout",verifyUser,userControl.postCheckout)
+user.post("/user/checkout",verifyUser,orderController.placeOrder)
 
 //reset password==================================================================================
 

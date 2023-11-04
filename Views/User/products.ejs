@@ -256,6 +256,17 @@
           Product Added to cart
         </div>
       </div>
+      <div class="toast bg-light  start-50 translate-middle-x" style="position: fixed;bottom: 10px;z-index: 9999; background-color: #0b5ed7;" id="alertstock" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-danger  ">
+          <!-- <img src="..." class="rounded me-2" alt="..."> -->
+          <strong class="me-auto text-light ">Treasure Cart</strong>
+          <!-- <small>11 mins ago</small> -->
+          <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> -->
+        </div>
+        <div class="toast-body text-dark ">
+          Product is out of stock
+        </div>
+      </div>
           <div class="row justify-content-center mb-3">
             <div class="col-md-12">
               <div class="card shadow-0 border rounded-3">
@@ -302,10 +313,17 @@
                       <%}else{%>
                       <h6 class="text-danger">out of stock</h6>
                         <%}%>
-                      <div class="mt-4">
-                        <button onclick="addtoCart('<%= data._id %>')" class="btn btn-primary shadow-0" type="button">Add to cart</button>
-                        <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
-                      </div>
+                        <%if(data.stock>0){%>
+                          <div class="mt-4">
+                            <button onclick="addtoCart('<%= data._id %>')" class="btn btn-primary shadow-0" type="button">Add to cart</button>
+                            <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
+                          </div>
+                          <%}else{%>
+                            <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to cart</button>
+                            <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
+                              <%}%>
+                            
+                      
                     </div>
                   </div>
                 </div>
@@ -350,7 +368,7 @@
 
   <script>
     function addtoCart(productId) {
-      var element=document.getElementById("toastCart");
+              var element=document.getElementById("toastCart");
               var option={
                 animation:true,
                 delay:2000,
@@ -378,6 +396,16 @@
             }
           });
         
+      }
+      function showalert(){
+        var element=document.getElementById("alertstock");
+              var option={
+                animation:true,
+                delay:2000,
+                autohide: true
+              }
+              var toastElement=new bootstrap.Toast(element, option)
+              toastElement.show()
       }
   </script>
 

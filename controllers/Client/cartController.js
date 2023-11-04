@@ -1,4 +1,5 @@
 const CART = require("../../Models/cart");
+const Products = require("../../Models/product");
 const Users = require("../../Models/user");
 const { ObjectId } = require('mongodb');
 // const { getUserCartData, getCartCount, getTotalAmount } = require("../../helper/cart-helper");
@@ -35,6 +36,7 @@ const get_cart = async (req, res) => {
             // console.log(data[0].productId, "============================");
             // console.log(data[0].productId.images[0].mainimage, "============================");
             console.log(data);
+            req.session.totalAmount=total
 
             res.render("./User/SampleCart", {
                 user: user,
@@ -49,7 +51,12 @@ const get_cart = async (req, res) => {
         } else {
             data = null
             console.log(user)
-            res.render("./User/SampleCart", { user, data });
+            res.render("./User/SampleCart", { user, data,cart: [],
+                subtotal: 0,
+                gstAmount: 0,
+                totalQuantity: 0,
+                coupon: '',
+                total: 0, });
         }
     } catch (err) {
         console.log("Error found in User cart " + err);
@@ -183,6 +190,7 @@ const removeFromCart=async(req,res)=>{
         const userId = req.session.userid;
         console.log(userId);
         console.log(productId);
+        const product=Products.findOne({_id:productId})
         const check = await CART.findOne({ userId: new ObjectId(userId) });
         console.log(check);
 
@@ -192,7 +200,10 @@ const removeFromCart=async(req,res)=>{
                 item.productId.equals(productId)
             );
             if (existingCart) {
+                if(product.stock>existingCart.quantity){
                 existingCart.quantity += 1;
+                req.session.productId_qnty=existingCart.quantity
+                }
             } else {
                 check.products.push({ productId: productId, quantity: 1 });
             }
