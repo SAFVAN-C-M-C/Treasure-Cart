@@ -16,7 +16,7 @@ require("../config/login-auth")
 const Users = require("../Models/user");
 
 //middlewares
-const { verifyUser,existingUser, otpverify, passrest } = require("../middlewares/userAuth");
+const { verifyUser,existingUser, otpverify, passrest,isBlocked } = require("../middlewares/userAuth");
 const { err } = require("../middlewares/err");
 
 //utility
@@ -51,7 +51,7 @@ user.post("/user/forgot-pass",userControl.forgotPass)
 
 //home==================================================================================
 
-user.get("/user/home",verifyUser,userControl.home_logged)
+user.get("/user/home",verifyUser,isBlocked,userControl.home_logged)
 
 //logout==================================================================================
 
@@ -59,51 +59,52 @@ user.get("/user/logout",userControl.logout)
 
 //products==================================================================================
 
-user.get("/user/product/details/:id",verifyUser,productController.get_product_details)
-user.get("/user/products",verifyUser,productController.get_product)
+user.get("/user/product/details/:id",verifyUser,isBlocked,productController.get_product_details)
+user.get("/user/products",verifyUser,isBlocked,productController.get_product)
 
 //contact us==================================================================================
 
-user.get("/user/contact-us",verifyUser,userControl.get_contactUs)
+user.get("/user/contact-us",verifyUser,isBlocked,userControl.get_contactUs)
 
 //profile==================================================================================
 
-user.get('/user/profile',verifyUser,userControl.get_profile)
-user.post('/user/edit',upload.fields(profile),verifyUser,userControl.edit_profile)
+user.get('/user/profile',verifyUser,isBlocked,userControl.get_profile)
+user.post('/user/edit',upload.fields(profile),verifyUser,isBlocked,userControl.edit_profile)
 
 
 //wishlist==================================================================================
 
-user.get("/user/wishlist",verifyUser,userControl.get_wishlist)
+user.get("/user/wishlist",verifyUser,isBlocked,userControl.get_wishlist)
 
 //manage address==================================================================================
 
-user.get("/user/manage-address",verifyUser,userControl.get_manageAddress)
-user.post("/user/addAddress",verifyUser,userControl.addAddress)
+user.get("/user/manage-address",verifyUser,isBlocked,userControl.get_manageAddress)
+user.post("/user/addAddress",verifyUser,isBlocked,userControl.addAddress)
 
 //order==================================================================================
 
 // user.get("/user/order",verifyUser,userControl.get_order)
 // user.get("/user/order-history",verifyUser,userControl.get_history)
-user.get("/user/order-sucesss",verifyUser,orderController.getOrderSuccess)
-user.get("/user/order-history",verifyUser,orderController.orderHistory)
-user.get("/user/cancelorder/:orderId",verifyUser,orderController.cancelorder)
+user.get("/user/order-sucesss",verifyUser,isBlocked,orderController.getOrderSuccess)
+user.get("/user/order-history",verifyUser,isBlocked,orderController.orderHistory)
+user.get("/user/cancelorder/:orderId",verifyUser,isBlocked,orderController.cancelorder)
 //explore==================================================================================
 
-user.get("/user/explore",verifyUser,userControl.get_Explore)
+user.get("/user/explore",verifyUser,isBlocked,userControl.get_Explore)
 
 //cart==================================================================================
 
-user.get("/user/cart",verifyUser,cartConrller.get_cart)
-user.get("/user/addToCart/:prodId",verifyUser,cartConrller.addTocart);
-user.post("/user/addtoCart",verifyUser,cartConrller.addtoCart)
-user.post('/updatequantity',verifyUser,cartConrller.updateQuantity)
-user.post('/removefromcart',verifyUser,cartConrller.removeFromCart)
+user.get("/user/cart",verifyUser,isBlocked,cartConrller.get_cart)
+user.get("/user/addToCart/:prodId",verifyUser,isBlocked,cartConrller.addTocart);
+user.post("/user/addtoCart",verifyUser,isBlocked,cartConrller.addtoCart)
+user.post('/updatequantity',verifyUser,isBlocked,cartConrller.updateQuantity)
+user.post('/removefromcart',verifyUser,isBlocked,cartConrller.removeFromCart)
 
 //checkout==================================================================================
 
-user.get("/user/checkout",verifyUser,userControl.getcheckout);
-user.post("/user/checkout",verifyUser,orderController.placeOrder)
+user.get("/user/checkout",verifyUser,isBlocked,userControl.getcheckout);
+user.post("/user/checkout",verifyUser,isBlocked,orderController.placeOrder)
+user.post("/user/addAddress-Checkout",verifyUser,isBlocked,userControl.addAddressCheckout)
 
 //reset password==================================================================================
 
@@ -245,11 +246,14 @@ user.get("/auth/google/callback",(req, res, next) => {
               console.log(user);
         
               if(user){
+                console.log(user.emails[0].value);
                 const check= await Users.findOne({email:user.emails[0].value});
+                console.log(check.status);
                 if (check.status === "Active"){
                   req.session.email = user.emails[0].value;
               // Redirect to the desired page (e.g., /setSession)
               req.session.logged=true
+              req.session.userid=check._id
                res.redirect("/user/home");
                 }else{
                   req.flash("errmsg", "*user blocked")

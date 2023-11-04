@@ -57,7 +57,9 @@ const category_add = async (req, res) => {
         const {
             Category_name
         } = req.body;
-        const check= await Categories.findOne({name:Category_name});
+        const check= await Categories.findOne({
+            name: { $regex: `^${Category_name}$`, $options: "i" },
+        });
         console.log("name is " + Category_name);
        if(!check){
         const data = {

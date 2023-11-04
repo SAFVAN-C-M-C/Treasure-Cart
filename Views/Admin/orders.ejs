@@ -16,7 +16,7 @@
 
 <body>
     <%-include('../partials/admin-sample-nav')-%>
-    <%brand.forEach((data)=>{%>
+    <%orders.forEach((data)=>{%>
         <div class="modal fade" id="viewOrderDetails<%=data._id%>" tabindex="-1" role="dialog" aria-labelledby="viewOrderDetailsLabel<%=data._id%>" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -27,65 +27,21 @@
                 </button> -->
               </div>
               <div class="modal-body">
-                <div class="card shadow-0 border rounded-3">
-                    <div class="card-body">
-                      <div class="row g-0">
-                        <div class="col-xl-3 col-md-4 d-flex justify-content-center">
-                          <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
-                            <img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" class="w-100" />
-                            <a href="#!">
-                              <div class="hover-overlay">
-                                <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                        <div class="col-xl-6 col-md-5 col-sm-7">
-                         <a href="/user/product/details/<%-data._id%>"> <h5><%=data.name%></h5></a>
-                          <br>
-                          <!-- <div class="d-flex flex-row">
-                            <div class="text-warning mb-1 me-2">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fas fa-star-half-alt"></i>
-                              <span class="ms-1">
-                                4.5
-                              </span>
+                <%data.items.forEach((item)=>{%>
+                <div class="card">
+                    <div class="container-fluid ">
+                        <div class="row">
+                            <div class="col-4"><img src="<%=item.productId.images[0].mainimage?'/static/product-images/'+item.productId.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="img" width="100px" height="100px"></div>
+                            <div class="col-8">
+                                <span>ID: <%=item.productId._id%></span><br>
+                                <span>Name: <%=item.productId.name%></span><br>
+                                <span>Price: ₹<%=item.productId.descountedPrice%>/-</span><br>
                             </div>
-                            <span class="text-muted">154 orders</span>
-                          </div> -->
-      
-                          <p class="text mb-4 mb-md-0">
-                            <%=data.description%>
-                          </p>
                         </div>
-                        <div class="col-xl-3 col-md-3 col-sm-5">
-                          <div class="d-flex flex-row align-items-center mb-1">
-                            <h4 class="mb-1 me-1">₹<%=data.descountedPrice%></h4>
-                            <span class="text-danger"><s>₹<%=data.basePrice%></s></span>
-                          </div>
-                          <%if(data.stock>0){%>
-                          <h6 class="text-success">In stock</h6>
-                          <%}else{%>
-                          <h6 class="text-danger">out of stock</h6>
-                            <%}%>
-                            <%if(data.stock>0){%>
-                              <div class="mt-4">
-                                <button onclick="addtoCart('<%= data._id %>')" class="btn btn-primary shadow-0" type="button">Add to cart</button>
-                                <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
-                              </div>
-                              <%}else{%>
-                                <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to cart</button>
-                                <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
-                                  <%}%>
-                                
-                          
-                        </div>
-                      </div>
                     </div>
-                  </div>
+                </div>
+                <%})%>
+                    
               </div>
               <div class="modal-footer">
                 <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -148,7 +104,7 @@
                                                     <%= ++x %>
                                                 </td>
                                                 <td>
-                                                    <a data-bs-toggle="modal" data-bs-target="#viewOrderDetails<%=data._id%>" style="text-decoration: none;"></a><%= data._id %>
+                                                    <a href="" data-bs-toggle="modal" data-bs-target="#viewOrderDetails<%=data._id%>" style="text-decoration: none;"><%= data._id %></a>
                                                 </td>
                                                 <td>
                                                     <%= data.userId %>

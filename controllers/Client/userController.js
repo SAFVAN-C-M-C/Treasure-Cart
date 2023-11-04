@@ -151,6 +151,27 @@ const addAddress = async (req, res) => {
 
     }
 }
+// ===================================================
+const addAddressCheckout = async (req, res) => {
+    try {
+        const userId = req.session.userid
+        const data={
+            name:req.body.name,
+            address:req.body.address,
+            city:req.body.city,
+            pincode:req.body.pincode,
+            state:req.body.state,
+            mobile:req.body.mobile,
+        }
+        console.log(req.body);
+        const insert = await USER.updateOne({ _id: userId }, { $push: { address: data } })
+        res.redirect('/user/checkout')
+    } catch (err) {
+        console.log(err);
+        res.redirect('/user/checkout')
+
+    }
+}
 //=================================================================================================================
 const get_order = (req, res) => {
     try {
@@ -289,31 +310,38 @@ const userLogin = async (req, res) => {
                     console.log("Login success");
                     res.redirect("/user/home");
                 } else {
-                    req.flash("errmsg", "*user blocked")
+                    res.json({ faild: true,msg:"user blocked" });
+                    // req.flash("errmsg", "*user blocked")
 
-                    req.session.errmsg = "user blocked"
-                    res.redirect('/')
+                    // req.session.errmsg = "user blocked"
+                    // res.redirect('/')
                     console.log("user blocked");
                 }
             }
             else {
-                req.flash("errmsg", "*invalid password")
+                res.json({ faild: true,msg:"invalid password" });
 
-                req.session.errmsg = "invalid password"
-                res.redirect('/')
+                // req.flash("errmsg", "*invalid password")
+
+                // req.session.errmsg = "invalid password"
+                // res.redirect('/')
                 console.log("invalid password");
             }
         } else {
-            req.flash("errmsg", "*User not found")
-            res.redirect('/')
-            req.session.errmsg = "User not found"
+            res.json({ faild: true,msg:"User not found" });
+
+            // req.flash("errmsg", "*User not found")
+            // res.redirect('/')
+            // req.session.errmsg = "User not found"
             console.log("User not found");
 
         }
     } catch {
-        req.flash("errmsg", "*invalid user name or password")
-        req.session.errmsg = "invalid user name or password"
-        res.redirect('/')
+        res.json({ faild: true,msg:"uinvalid user name or password" });
+
+        // req.flash("errmsg", "*invalid user name or password")
+        // req.session.errmsg = "invalid user name or password"
+        // res.redirect('/')
         console.log("user not found");
     }
 }
@@ -517,4 +545,5 @@ module.exports = {
     getcheckout,
     edit_profile,
     addAddress,
+    addAddressCheckout
 }

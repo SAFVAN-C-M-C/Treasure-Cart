@@ -5,8 +5,19 @@ const getOrders=async(req,res)=>{
         const pageNum = req.query.page ? req.query.page : 1;
         console.log(pageNum);
         const perPage = 10;
-        const orders = await Orders.find().skip((pageNum - 1) * perPage)
+        const orders = await Orders.find().populate(
+            "items.productId"
+        ).skip((pageNum - 1) * perPage)
             .limit(perPage);
+
+
+            console.log(orders[0].items[0].productId.name);
+            console.log(orders[0].items[0].productId.images[0].mainimage);
+            console.log(orders[0].items[0].productId._id);
+
+            // console.log(orders[0].items.productId._id);
+            // console.log(orders[0].items.productId.images[0]);
+            
         let x = Number((pageNum - 1) * perPage);
         console.log(x);
         console.log(orders.length);

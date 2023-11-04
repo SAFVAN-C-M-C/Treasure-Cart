@@ -28,9 +28,11 @@
                     <span id="err" class="alert-danger"><%=errmsg%></span>
                     
                   <%}%>
+                  <span id="msg" class="alert-danger"><%=errmsg%></span>
+
                   <h1 class="mt-5"><b>Login</b></h1>
                   <div class="d-flex justify-content-center align-items-center form-body">
-                    <form action="/user/login" method="POST" id="loginForm" onsubmit="return validateForm()">
+                    <form   id="loginForm" onsubmit="return validateForm()">
                         <div class="textfield mt-5">
                             <iconify-icon icon="mdi:email-outline" style="color: #787878;" width="28" height="28"></iconify-icon>
                             <input required type="email" placeholder="Email" id="email" name="email">
@@ -78,10 +80,29 @@
       text-decoration: none;
     }
   </style>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   <script src="/static/js/login.js"></script>
   <script>
-    function validCheck(){
-      
-    }
+    $("#loginForm").submit((e) => {
+      e.preventDefault()
+      console.log("clicked");
+      $.ajax({
+        url:'/user/login',
+        method: 'post',
+        data: $('#loginForm').serialize(),
+        success: (response) => {
+          if (response.faild) {
+            console.log('response got')
+            document.getElementById("msg").innerHTML=response.msg
+            setTimeout(()=>{
+              document.getElementById("msg").innerHTML=""
+            }, 5000);
+          }
+          else{
+            window.location.reload();
+          }
+        }
+      })
+    })
   </script>
 <%-include('../layout/footer')-%>

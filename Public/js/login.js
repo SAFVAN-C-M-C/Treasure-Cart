@@ -39,7 +39,7 @@ function validateForm() {
   var passwordError = document.getElementById('passwordError');
 
   // Reset previous errors
-  nameError.innerHTML = "";
+  // nameError.innerHTML = "";
   emailError.innerHTML = "";
   passwordError.innerHTML = "";
 
