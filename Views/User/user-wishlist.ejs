@@ -4,167 +4,310 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="/static/css/header.css">
-  <link rel="stylesheet" href="/static/css/sample.css">
-  
+  <link rel="stylesheet" href="/static/css/header.css">  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
   <%-include('../partials/header')-%>
-  <!-- <%-include('../partials/sample-nav')-%> -->
-  <div class="topbar">
-    <div class="toggle">
-      <iconify-icon icon="ep:menu" style="color: #020d2a;" width="28" height="28"></iconify-icon>
+  <div class="toast bg-light  start-50 translate-middle-x" style="position: fixed;bottom: 10px;z-index: 9999; background-color: #0b5ed7;" id="toastCart" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-success ">
+      <!-- <img src="..." class="rounded me-2" alt="..."> -->
+      <strong class="me-auto text-light ">Treasure Cart</strong>
+      <!-- <small>11 mins ago</small> -->
+      <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> -->
     </div>
-</div>
-  <div class="wishlist py-3 py-md-5 bg-light">
-    <div class="container " style="width: 100%;">
-
+    <div class="toast-body text-dark ">
+      Product Added to cart
+    </div>
+  </div>
+  <div class="toast bg-light  start-50 translate-middle-x" style="position: fixed;bottom: 10px;z-index: 9999; background-color: #0b5ed7;" id="alertstock" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-danger  ">
+      <!-- <img src="..." class="rounded me-2" alt="..."> -->
+      <strong class="me-auto text-light ">Treasure Cart</strong>
+      <!-- <small>11 mins ago</small> -->
+      <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> -->
+    </div>
+    <div class="toast-body text-dark ">
+      Product is out of stock
+    </div>
+  </div>
+  <!-- <%-include('../partials/sample-nav')-%> -->
+  <div class="cart-wrap">
+    <div class="container">
+        
         <div class="row">
+            <% if (wishlist.length === 0) { %>
+     
+                <div class="col-md-12 mt-5" style="height: 225px;" >
+                  <div class="card border-rounded shadow p-5 m-4">
+                      <div class="card-body">
+                          <h3 class="card-title">No wishlist</h3>
+                      </div>
+                      
+                  </div>
+                </div>
+                
+              <% } else { %>
+            
             <div class="col-md-12">
-                <div class="shopping-cart">
+                <div class="main-heading mb-10"><h4>My wishlist</h4></div>
+                <div class="table-wishlist">
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="45%">Product Name</th>
+                                <th width="15%">Unit Price</th>
+                                <th width="15%">Stock Status</th>
+                                <th width="15%"></th>
+                                <th width="10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                    <div class="cart-header d-none d-sm-none d-mb-block d-lg-block">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Products</h4>
-                            </div>
-                            <div class="col-md-2">
-                                <h4>Price</h4>
-                            </div>
-                            <!-- <div class="col-md-2">
-                                <h4>Quantity</h4>
-                            </div> -->
-                            <!-- <div class="col-md-2">
-                                <h4>Remove</h4>
-                            </div> -->
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <div class="row">
-                            <div class="col-md-6 my-auto">
-                                <a href="">
-                                    <label class="product-name">
-                                        <img src="https://m.media-amazon.com/images/I/61vJtKbAssL._SL1500_.jpg" style="width: 50px; height: 50px;border-radius: 25px;" alt="">
-                                        Sony WH-1000XM5
-                                    </label>
-                                </a>
-                            </div>
-                            <div class="col-md-2 my-auto">
-                                <label class="price">Rs.1,54,654 </label>
-                            </div>
-                            <!-- <div class="col-md-2 col-7 my-auto">
-                                <div class="quantity">
-                                    <div class="input-group">
-                                        <span class="btn btn1"><i class="fa fa-minus"></i></span>
-                                        <input type="text" value="1" class="input-quantity" />
-                                        <span class="btn btn1"><i class="fa fa-plus"></i></span>
+                            <% wishlist.forEach((item) => { %>
+                            <tr>
+                                <td width="45%">
+                                    <div class="display-flex align-center">
+                                        <div class="img-product">
+                                            <img src="<%=item.productId.images[0].mainimage?'/static/product-images/'+item.productId.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="" class="mCS_img_loaded">
+                                        </div>
+                                        <div class="name-product">
+                                            <%=item.productId.name%>
+                                        </div>
                                     </div>
-                                </div>
-                            </div> -->
-                            <div class="col-md-2 col-2 my-auto">
-                                <div class="remove">
-                                    <a href="" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-trash"></i> 
-                                    </a>
-                                    <a href="" class="btn btn-info btn-sm">
-                                      <i class="fa-solid fa-cart-arrow-down" style="color: #ffffff;"></i> 
-                                  </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="cart-item">
-                        <div class="row">
-                            <div class="col-md-6 my-auto">
-                                <a href="">
-                                    <label class="product-name">
-                                        <img src="https://m.media-amazon.com/images/I/71I0lybSq+L._SL1500_.jpg" style="width: 50px; height: 50px;border-radius: 25px;" alt="">
-                                        Skullcandy Crusher Evo
-                                    </label>
-                                </a>
-                            </div>
-                            <div class="col-md-2 my-auto">
-                                <label class="price">Rs.89,999 </label>
-                            </div>
-                            <!-- <div class="col-md-2 col-7 my-auto">
-                                <div class="quantity">
-                                    <div class="input-group">
-                                        <span class="btn btn1"><i class="fa fa-minus"></i></span>
-                                        <input type="text" value="1" class="input-quantity" />
-                                        <span class="btn btn1"><i class="fa fa-plus"></i></span>
+                                </td>
+                                <td width="15%" class="price">₹<%=item.productId.descountedPrice%>/-</td>
+                                <td width="15%"><%if(item.productId.stock>0){%>
+                                    <h6 class="text-success">In stock</h6>
+                                    <%}else{%>
+                                    <h6 class="text-danger">out of stock</h6>
+                                      <%}%></td>
+                                <td width="15%"><%if(item.productId.stock>0){%>
+                                    <div class="mt-4">
+                                      <button onclick="addtoCart('<%= item.productId._id %>')" class="btn btn-primary shadow-0" type="button">Add to cart</button>
                                     </div>
-                                </div>
-                            </div> -->
-                            <div class="col-md-2 col-5 my-auto">
-                                <div class="remove">
-                                    <a href="" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-trash"></i> 
-                                    </a>
-                                    <a href="" class="btn btn-info btn-sm">
-                                      <i class="fa-solid fa-cart-arrow-down" style="color: #ffffff;"></i> 
-                                  </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="cart-item">
-                        <div class="row">
-                            <div class="col-md-6 my-auto">
-                                <a href="">
-                                    <label class="product-name">
-                                        <img src="https://m.media-amazon.com/images/I/71ISIssoVFL._SY450_.jpg" style="width: 50px; height: 50px; border-radius: 25px;" alt="">
-                                        boAt Nirvana 751
-                                    </label>
-                                </a>
-                            </div>
-                            <div class="col-md-2 my-auto">
-                                <label class="price">Rs.12999 </label>
-                            </div>
-                            <!-- <div class="col-md-2 col-7 my-auto">
-                                <div class="quantity">
-                                    <div class="input-group">
-                                        <span class="btn btn1"><i class="fa fa-minus"></i></span>
-                                        <input type="text" value="1" class="input-quantity" />
-                                        <span class="btn btn1"><i class="fa fa-plus"></i></span>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <div class="col-md-2 col-5 my-auto">
-                                <div class="remove">
-                                    <a href="" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-trash"></i> 
-                                    </a>
-                                    <a href="" class="btn btn-info btn-sm">
-                                      <i class="fa-solid fa-cart-arrow-down" style="color: #ffffff;"></i> 
-                                  </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
+                                    <%}else{%>
+                                      <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to cart</button>
+                                        <%}%></td>
+                                <td width="10%" class="text-center"><a onclick="deletewishitem('<%= item.productId._id %>')" class="trash-icon"><i class="far fa-trash-alt"></i></a></td>
+                            </tr>
+                            <%})%>
                             
+                            
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            <%}%>
         </div>
-
     </div>
 </div>
 
-<script>
-let toggle = document.querySelector(".toggle");
-let navigation = document.querySelector(".navigation");
-let main = document.querySelector(".main");
+<style>
+    .cart-wrap {
+	padding: 40px 0;
+	font-family: 'Open Sans', sans-serif;
+}
+.main-heading {
+	font-size: 19px;
+	margin-bottom: 20px;
+}
+.table-wishlist table {
+    width: 100%;
+}
+.table-wishlist thead {
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 5px;
+}
+.table-wishlist thead tr th {
+    padding: 8px 0 18px;
+    color: #484848;
+    font-size: 15px;
+    font-weight: 400;
+}
+.table-wishlist tr td {
+    padding: 25px 0;
+    vertical-align: middle;
+}
+.table-wishlist tr td .img-product {
+    width: 72px;
+    float: left;
+    margin-left: 8px;
+    margin-right: 31px;
+    line-height: 63px;
+}
+.table-wishlist tr td .img-product img {
+	width: 100%;
+}
+.table-wishlist tr td .name-product {
+    font-size: 15px;
+    color: #484848;
+    padding-top: 8px;
+    line-height: 24px;
+    width: 50%;
+}
+.table-wishlist tr td.price {
+    font-weight: 600;
+}
+.table-wishlist tr td .quanlity {
+    position: relative;
+}
 
-toggle.onclick = function () {
-  navigation.style.display=(navigation.style.display === "none") ? "block" : "none";;
-  main.classList.toggle("active");
-};</script>
-<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+.total {
+	font-size: 24px;
+	font-weight: 600;
+	color: #8660e9;
+}
+.display-flex {
+	display: flex;
+}
+.align-center {
+	align-items: center;
+}
+.round-black-btn {
+	border-radius: 25px;
+    background: #212529;
+    color: #fff;
+    padding: 5px 20px;
+    display: inline-block;
+    border: solid 2px #212529; 
+    transition: all 0.5s ease-in-out 0s;
+    cursor: pointer;
+    font-size: 14px;
+}
+.round-black-btn:hover,
+.round-black-btn:focus {
+	background: transparent;
+	color: #212529;
+	text-decoration: none;
+}
+.mb-10 {
+    margin-bottom: 10px !important;
+}
+.mt-30 {
+    margin-top: 30px !important;
+}
+.d-block {
+    display: block;
+}
+.custom-form label {
+    font-size: 14px;
+    line-height: 14px;
+}
+.pretty.p-default {
+    margin-bottom: 15px;
+}
+.pretty input:checked~.state.p-primary-o label:before, 
+.pretty.p-toggle .state.p-primary-o label:before {
+    border-color: #8660e9;
+}
+.pretty.p-default:not(.p-fill) input:checked~.state.p-primary-o label:after {
+    background-color: #8660e9 !important;
+}
+.main-heading.border-b {
+    border-bottom: solid 1px #ededed;
+    padding-bottom: 15px;
+    margin-bottom: 20px !important;
+}
+.custom-form .pretty .state label {
+    padding-left: 6px;
+}
+.custom-form .pretty .state label:before {
+    top: 1px;
+}
+.custom-form .pretty .state label:after {
+    top: 1px;
+}
+.custom-form .form-control {
+    font-size: 14px;
+    height: 38px;
+}
+.custom-form .form-control:focus {
+    box-shadow: none;
+}
+.custom-form textarea.form-control {
+    height: auto;
+}
+.mt-40 {
+    margin-top: 40px !important; 
+}
+.in-stock-box {
+	background: #ff0000;
+	font-size: 12px;
+	text-align: center;
+	border-radius: 25px;
+	padding: 4px 15px;
+	display: inline-block;  
+    color: #fff;
+}
+.trash-icon {
+    font-size: 20px;
+    color: #212529;
+}
+</style>
+<script>
+    function addtoCart(productId) {
+              var element=document.getElementById("toastCart");
+              var option={
+                animation:true,
+                delay:2000,
+                autohide: true
+              }
+              var toastElement=new bootstrap.Toast(element, option)
+              
+          console.log("hello");
+
+          $.ajax({
+            url: '/addtoCart',
+            method: 'POST',
+            data: {
+              productId: productId,
+            },
+            success: function (response) {
+              // alert("product added to the cart")
+              // window.location.reload();
+              console.log(response);
+
+              toastElement.show()
+            },
+            error: function (error) {
+              console.error('Error while product added to the cart:', error);
+            }
+          });
+        
+      }
+      function showalert(){
+        var element=document.getElementById("alertstock");
+              var option={
+                animation:true,
+                delay:2000,
+                autohide: true
+              }
+              var toastElement=new bootstrap.Toast(element, option)
+              toastElement.show()
+      }
+      function deletewishitem(productId) {
+              
+          console.log("hello");
+
+          $.ajax({
+      url: '/wishlistdelete/',
+      method: 'POST',
+      data: {
+        productId: productId,
+  },
+      success: function (response) {
+       location.reload()
+      },
+      error: function (error) {
+        console.error('Error updating wishlist:', error);
+      }
+    });
+        
+      }
+</script>
 </body>
 </html>

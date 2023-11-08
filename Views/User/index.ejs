@@ -48,7 +48,7 @@
                         </div>
                         <span id="passwordError" class="error"></span>
                         <div class="forgot-pass d-flex justify-content-end">
-                          <a href="/user/forgot-pass">Forgot password?</a>
+                          <a href="/forgot-pass">Forgot password?</a>
                         </div>
                         <div class="button mt-4 mb-2">
                           <input class="btn-custom" type="submit" value="Login"></button>
@@ -62,7 +62,7 @@
                           <a href="/auth/login" class="btn-google"><i class="fab fa-google"></i> Signin with google</a>
                         </div>
                         <div class="register mb-2 d-flex justify-content-center align-items-center">
-                          Don't have an account?<a href="/user/signUp">Sign up</a>
+                          Don't have an account?<a href="/signUp">Sign up</a>
                         </div>
                     </form>
                   </div>
@@ -87,7 +87,7 @@
       e.preventDefault()
       console.log("clicked");
       $.ajax({
-        url:'/user/login',
+        url:'/login',
         method: 'post',
         data: $('#loginForm').serialize(),
         success: (response) => {

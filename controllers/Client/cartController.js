@@ -83,7 +83,7 @@ const addTocart = async (req, res) => {
             }
             await check.save();
             req.flash("msg", "Item added to the cart")
-            res.redirect('/user/products')
+            res.redirect('/products')
         } else {
             console.log("else");
 
@@ -101,12 +101,12 @@ const addTocart = async (req, res) => {
                 ]
             )
             req.flash("msg", "Item added to the cart")
-            res.redirect("/user/products");
+            res.redirect("/products");
         }
     } catch (err) {
         console.log("error while add product to cart",err);
         req.flash("errmsg", "sorry at this momment we can't reach");
-        res.redirect("/user/products")
+        res.redirect("/products")
     }
 }
 const updateQuantity=async(req,res)=>{

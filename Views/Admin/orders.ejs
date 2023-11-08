@@ -28,7 +28,7 @@
               </div>
               <div class="modal-body">
                 <%data.items.forEach((item)=>{%>
-                <div class="card">
+                <div class="card mt-2 mb-2 ">
                     <div class="container-fluid ">
                         <div class="row">
                             <div class="col-4"><img src="<%=item.productId.images[0].mainimage?'/static/product-images/'+item.productId.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="img" width="100px" height="100px"></div>
@@ -64,7 +64,7 @@
                 <div class="row mt-3">
                     <div class="products-main col-12">
                         <div class="search col-12">
-                            <div class="d-flex justify-content-end align-items-center">
+                            <!-- <div class="d-flex justify-content-end align-items-center">
                                 <form action="/admin/order/search" method="post">
                                     <div class="input-group">
                                         <div class="form-outline d-flex p-3">
@@ -81,7 +81,7 @@
 
                                     </div>
                                 </form>
-                            </div>
+                            </div> -->
                             <%if(Array.isArray(orders)){%>
                                 <table class="table  table-shadow table-bordered mt-3">
                                     <thead>

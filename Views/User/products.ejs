@@ -283,7 +283,7 @@
                       </div>
                     </div>
                     <div class="col-xl-6 col-md-5 col-sm-7">
-                     <a href="/user/product/details/<%-data._id%>"> <h5><%=data.name%></h5></a>
+                     <a href="/product/details/<%-data._id%>"> <h5><%=data.name%></h5></a>
                       <br>
                       <!-- <div class="d-flex flex-row">
                         <div class="text-warning mb-1 me-2">
@@ -316,11 +316,15 @@
                         <%if(data.stock>0){%>
                           <div class="mt-4">
                             <button onclick="addtoCart('<%= data._id %>')" class="btn btn-primary shadow-0" type="button">Add to cart</button>
-                            <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
+                            <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"  data-product-id="<%= data._id %>">
+                              <i class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(data._id))) { %>text-danger<% } %>"></i>
+                            </a>
                           </div>
                           <%}else{%>
                             <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to cart</button>
-                            <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"><iconify-icon icon="ph:heart-light" style="color: #020d2a;" width="28" height="28"></iconify-icon></a>
+                            <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"  data-product-id="<%= data._id %>">
+                              <i class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(data._id))) { %>text-danger<% } %>"></i>
+                            </a>
                               <%}%>
                             
                       
@@ -379,7 +383,7 @@
           console.log("hello");
 
           $.ajax({
-            url: '/user/addtoCart',
+            url: '/addtoCart',
             method: 'POST',
             data: {
               productId: productId,
@@ -407,6 +411,35 @@
               var toastElement=new bootstrap.Toast(element, option)
               toastElement.show()
       }
+      document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+
+                const productId = this.getAttribute('data-product-id');
+                const icon = this.querySelector('.fa-heart');
+
+                $.ajax({
+                    url: '/wishlist/',
+                    method: 'POST',
+                    data: {
+                        productId: productId,
+                    },
+                    success: function (response) {
+                        console.log(icon.style.color)
+                        if (response.added) {
+                            icon.classList.add('text-danger')
+                          
+                        } else {
+                            icon.classList.remove('text-danger')
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error updating wishlist:', error);
+                    }
+                });
+            });
+        });
   </script>
 
 <%-include('../partials/footer')-%>

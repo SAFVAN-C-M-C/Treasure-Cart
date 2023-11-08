@@ -17,7 +17,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/user/addAddress" method="post">
+                    <form action="/addAddress" method="post">
                         <div class="mb-3">
                             <label for="fullName" class="form-label">Full Name</label>
                             <input type="text" class="form-control" name="name" id="fullName" placeholder="Enter your full name" required />
@@ -61,7 +61,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form action="/user/editAddress/<%=address._id%>" method="post">
+            <form action="/editAddress/<%=address._id%>" method="post">
                 <div class="mb-3">
                     <label for="fullName" class="form-label">Full Name</label>
                     <input type="text" class="form-control"  name="name" id="fullName" placeholder="Enter your full name" value="<%=address.name%>" required />
@@ -99,12 +99,12 @@
     <div class="container-xl px-2 mt-4">
         <!-- Account page navigation-->
         <nav class="nav nav-borders">
-            <a class="nav-link  ms-0" href="/user/profile" >Profile</a>
-            <a class="nav-link active" href="#" >Addresses</a>
-            <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page" target="__blank">Reset Password</a>
+            <a class="nav-link  ms-0" href="/profile" >Profile</a>
+            <a class="nav-link active" href="/manage-address" >Addresses</a>
+            <a class="nav-link" href="#">Reset Password</a>
             <!-- <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Wish List</a> -->
-            <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">My Orders</a>
-
+            <a class="nav-link " href="/order-history" >My Orders</a>
+      
         </nav>
         <hr class="mt-0 mb-4">
         <div class="row">

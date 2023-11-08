@@ -27,7 +27,7 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form action="/user/addAddress-Checkout" method="post">
+        <form action="/addAddress-Checkout" method="post">
             <div class="mb-3">
                 <label for="fullName" class="form-label">Full Name</label>
                 <input type="text" class="form-control" name="name" id="fullName" placeholder="Enter your full name" required />
@@ -147,7 +147,7 @@
               <button class="btn btn-success mt-4" type="submit" id="pay-button">
                 Confirm Order
               </button>
-              <a href="/user/explore"><button class="btn btn-secondary mt-4" type="button">Back to Shop</button></a>
+              <a href="/"><button class="btn btn-secondary mt-4" type="button">Back to Shop</button></a>
             </div>
           </div>
         </div>
@@ -253,7 +253,7 @@
     cursor: pointer;
   }
 </style>
-<!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
@@ -263,22 +263,70 @@
     e.preventDefault()
     console.log("clicked");
     $.ajax({
-      url:'/user/checkout',
+      url:'/checkout',
       method: 'post',
       data: $('#form-checkout').serialize(),
       success: (response) => {
         if (response.success) {
           console.log('response got')
-          window.location="/user/order-sucesss";
+          window.location="/order-sucesss";
         } else {
           console.log('going to initial')
           console.log(response.createdOrder)
           console.log(response.order)
-          // handlePayNowClick(response)
+          handlePayNow(response)
         }
       }
     })
   })
+  function handlePayNow (order) {
+    console.log('Order',order)
+    var options = {
+    "key": "rzp_test_CIKAnQDq14gGoE",
+    "amount": order.createdOrder.amount, 
+    "currency": "INR",
+    "name": "Treassure Cart",
+    "description": "Test Transaction",
+    "image": "http://localhost:7000/static/images/logo.png",
+    "order_id": order.createdOrder.id, 
+    "handler": function (response){
+      console.log(response)
+        verifyPayment(response, order)
+    },
+    "prefill": {
+        "user": order.order.userId,
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#020d2a"
+    }
+  };
+  var payGateWay = new Razorpay(options);
+  payGateWay.open();
+  }
+
+  function verifyPayment (payment, order) {
+    console.log('now in verifyPayment')
+    $.ajax({
+      url: '/verifypPayment',
+      data: {
+        payment,
+        order
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.success) {
+          console.log('response got')
+          location.href = '/order-sucesss'
+        }else{
+          console.log('response not get');
+          location.href = '*'
+        }
+      }
+    })
+  }
 </script>
 
 <%-include('../partials/footer')-%>

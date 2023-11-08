@@ -3,9 +3,12 @@ const Orders = require("../../Models/order");
 const Users = require("../../Models/user");
 const sendEmail = require("../../util/mail");
 const moment = require("moment");
-const {AUTH_EMAIL}=process.env;
+const { AUTH_EMAIL } = process.env;
 const Products = require("../../Models/product");
 const { ObjectId } = require('mongodb')
+const razorpay = require("../../util/RazorPay");
+const crypto = require('crypto');
+const { updateQuantity } = require("../../helper/updateQuantity");
 
 
 
@@ -42,10 +45,9 @@ const { ObjectId } = require('mongodb')
 
 
 
-
-const getOrderSuccess=(req,res)=>{
-    const user =req.session.name;
-    res.render("./User/OrderSuccess",{user});
+const getOrderSuccess = (req, res) => {
+    const user = req.session.name;
+    res.render("./User/OrderSuccess", { user });
 }
 //place order
 const placeOrder = async (req, res) => {
@@ -53,14 +55,14 @@ const placeOrder = async (req, res) => {
         console.log("inside body", req.body);
         const userId = req.session.userid;
         const amount = req.session.totalAmount;
-        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",typeof amount);
+        // console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",typeof amount);
         const user = await Users.findById(userId);
         const {
             Address,
             paymentMethod
         } = req.body
 
-       const cart = await CART.findOne({ userId: userId }).populate(
+        const cart = await CART.findOne({ userId: userId }).populate(
             "products.productId"
         );
         // console.log(cart.products);
@@ -68,16 +70,16 @@ const placeOrder = async (req, res) => {
         const address = await Users.findOne(
             { _id: userId },
             { address: { $elemMatch: { _id: Address } } }
-          )
+        )
         //   console.log("addddddddreeeeeeeeeeeeeeeesssssssssssssssss",address);
-          const Address_distruct={
-            name:address.address[0].name,
-            address:address.address[0].address,
-            city:address.address[0].city,
-            pincode:address.address[0].pincode,
-            state:address.address[0].state,
-            mobile:address.address[0].mobile,
-          }
+        const Address_distruct = {
+            name: address.address[0].name,
+            address: address.address[0].address,
+            city: address.address[0].city,
+            pincode: address.address[0].pincode,
+            state: address.address[0].state,
+            mobile: address.address[0].mobile,
+        }
 
         const newOrders = new Orders({
             userId: userId,
@@ -89,30 +91,16 @@ const placeOrder = async (req, res) => {
             payMethod: paymentMethod,
         });
 
-        //delete the items in the cart after checkout
-        await CART.findByIdAndDelete(cart._id);
+
+        req.session.cartId = cart._id
+
 
         const order = await newOrders.save();
         console.log(order, "in orders");
         req.session.orderId = order._id;
-
+        req.session.items = order.items;
         // Updating the stock quantity
-        for (const item of order.items) {
-            const productId = item.productId;
-            const quantity = item.quantity;
-            const product = await Products.findById(productId);
 
-            if (product) {
-                const updatedQuantity = product.stock - quantity;
-                if (updatedQuantity < 0) {
-                    product.stock = 0;
-                } else {
-                    product.stock = updatedQuantity;
-                }
-                await product.save();
-                console.log("stock updated")
-            }
-        }
         if (paymentMethod === "cod") {
             console.log("cod section");
             //send email with details of orders
@@ -120,7 +108,7 @@ const placeOrder = async (req, res) => {
                 from: AUTH_EMAIL,
                 to: req.session.email,
                 subject: "Your Orders!",
-                html:`<!DOCTYPE html>
+                html: `<!DOCTYPE html>
                 <html lang="en">
                 <head>
                     <meta charset="UTF-8">
@@ -181,32 +169,49 @@ const placeOrder = async (req, res) => {
             }
             await sendEmail(mailOptions);
             console.log("order email sended");
+            updateQuantity(req.session.items, req.session.cartId)
             res.json({ success: true });
+        }
+        else {
+            const order = {
+                amount: amount,
+                currency: "INR",
+                receipt: req.session.orderId,
+            };
+            await razorpay
+                .createRazorpayOrder(order)
+                .then((createdOrder) => {
+                    console.log("payment response", createdOrder);
+                    res.json({ createdOrder, order });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         }
     } catch (err) {
         console.log(err);
     }
 }
 //order history
-const orderHistory=async(req,res)=>{
+const orderHistory = async (req, res) => {
     try {
-        const userId=req.session.userid
-        const user=req.session.name
+        const userId = req.session.userid
+        const user = req.session.name
         const orders = await Orders.find({ userId: userId })
-        .sort({ orderDate: -1 })
-        .populate(
-            'items.productId'
-        );
-    // console.log("hellllllllllllllllllllllllllll",orders.items)
+            .sort({ orderDate: -1 })
+            .populate(
+                'items.productId'
+            );
+        // console.log("hellllllllllllllllllllllllllll",orders.items)
         // console.log('Orders:', orders);
         if (orders.length === 0) {
-            return res.render('./User/orderHistory', { user ,orders:[]});
-          } else {
-            res.render('./User/orderHistory', { 
-                user, 
-                orders: orders 
+            return res.render('./User/orderHistory', { user, orders: [] });
+        } else {
+            res.render('./User/orderHistory', {
+                user,
+                orders: orders
             });
-          }
+        }
     } catch (error) {
         console.log("error in track order");
         res.render('error/404')
@@ -215,38 +220,79 @@ const orderHistory=async(req,res)=>{
 //cancel order
 const cancelorder = async (req, res) => {
     try {
-      const orderId = req.params.orderId;
-      
-      const order = await Orders.findById(orderId);
-  
-      if (!order) {
-        console.log('Order not found');
-      }
-  
-      if (order.status === "Order Placed") {
-        const productsToUpdate = order.items;
-        for (const product of productsToUpdate) {
-          const cancelProduct = await Products.findById(product.productId);
-  
-          if (cancelProduct) {
-            cancelProduct.AvailableQuantity += product.quantity;
-            await cancelProduct.save();
-          }
+        const orderId = req.params.orderId;
+
+        const order = await Orders.findById(orderId);
+
+        if (!order) {
+            console.log('Order not found');
         }
-        order.status = "Cancelled";
-        await order.save();
-        return res.redirect("/user/order-history");
-      } else {
-        console.log("Order cannot be cancelled");
-      }
+
+        if (order.status === "Order Placed") {
+            const productsToUpdate = order.items;
+            for (const product of productsToUpdate) {
+                const cancelProduct = await Products.findById(product.productId);
+
+                if (cancelProduct) {
+                    cancelProduct.AvailableQuantity += product.quantity;
+                    await cancelProduct.save();
+                }
+            }
+            order.status = "Cancelled";
+            await order.save();
+            return res.redirect("/order-history");
+        } else {
+            console.log("Order cannot be cancelled");
+        }
     } catch (error) {
-      console.error("Error cancelling the order:", error);
-      res.render('error/404');
+        console.error("Error cancelling the order:", error);
+        res.render('error/404');
     }
-  };
-module.exports={
+};
+
+
+//verufy paymment
+const verifypayment = async (req, res) => {
+    try {
+
+        let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
+        console.log(
+            req.body.payment.razorpay_order_id +
+            "|" +
+            req.body.payment.razorpay_payment_id
+        );
+        hmac.update(
+            req.body.payment.razorpay_order_id +
+            "|" +
+            req.body.payment.razorpay_payment_id
+        );
+
+        hmac = hmac.digest("hex");
+        if (hmac === req.body.payment.razorpay_signature) {
+            const orderId = new mongoose.Types.ObjectId(
+                req.body.order.createdOrder.receipt
+            );
+            console.log("reciept", req.body.order.createdOrder.receipt);
+            const updateOrderDocument = await Orders.findByIdAndUpdate(orderId, {
+                PaymentStatus: "Paid",
+                PaymentMethod: "Online",
+            });
+            // console.log("hmac success");
+            updateQuantity(req.session.items, req.session.cartId)
+            res.json({ success: true });
+        } else {
+            // console.log("hmac failed");
+            res.json({ failure: true });
+        }
+
+    } catch (error) {
+        console.error("failed to verify the payment", error);
+    }
+}
+module.exports = {
     orderHistory,
     getOrderSuccess,
     placeOrder,
-    cancelorder
+    cancelorder,
+    verifypayment
 }

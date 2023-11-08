@@ -2,7 +2,8 @@
 const Products = require("../../Models/product");
 const { ObjectId } = require('mongodb')
 const Brands = require("../../Models/brand")
-const Categories = require("../../Models/category")
+const Categories = require("../../Models/category");
+const Wishlist = require("../../Models/wishlist");
 
 
 const get_product_details = async (req, res) => {
@@ -23,19 +24,25 @@ const get_product_details = async (req, res) => {
     } catch (err) {
         console.log(err)
         req.session.err = true
-        res.redirect("/user/404")
+        res.redirect("/404")
 
     }
 }
 const get_product = async (req, res) => {
     try {
         const products = await Products.find();
-        console.log(products);
+        // console.log(products);
         const data = req.session.name
-        res.render("./User/products", { title: "products", products: products, user: data })
+        const userId=req.session.userid;
+        const userWishlist = await Wishlist.findOne({ userId: userId });
+        const wishlist = userWishlist ? userWishlist.products : [];
+        console.log("hello wish list",wishlist);
+        console.log(products[0]._id);
+        console.log(wishlist.includes(products[0]._id));
+        res.render("./User/products", { title: "products", products: products, user: data,wishlist })
     } catch (err) {
         req.session.err = true
-        res.redirect("/user/404")
+        res.redirect("/404")
         console.log(err);
     }
 }

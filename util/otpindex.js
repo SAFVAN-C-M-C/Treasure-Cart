@@ -1,3 +1,3 @@
-const routes=require("./otprouter");
+// const routes=require("./otprouter");
 
-module.exports=routes;
+// module.exports=routes;

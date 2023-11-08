@@ -4,12 +4,12 @@ function verifyUser(req, res, next) {
     if (req.session.logged) {
       next();
     } else {
-      res.redirect("/user/logout");
+      res.redirect("/logout");
     }
   }
 function existingUser(req,res,next){
   if (req.session.logged) {
-    res.redirect('/user/home');
+    res.redirect('/');
   } else {
     next();
   }
@@ -18,7 +18,7 @@ function otpverify(req,res,next){
   if (req.session.signotp || req.session.forgot) {
     next();
   }else{
-    res.redirect("/user/logout")
+    res.redirect("/logout")
   }
 }
 async function isBlocked(req,res,next){
@@ -34,14 +34,14 @@ async function isBlocked(req,res,next){
   }
   }catch(err){
     console.log(err);
-    res.redirect("/user/logout")
+    res.redirect("/logout")
   }
 }
 function passrest(req,res,next){
   if (req.session.pass_reset) {
     next()
   }else{
-    res.redirect("/user/logout")
+    res.redirect("/logout")
   }
 
 }

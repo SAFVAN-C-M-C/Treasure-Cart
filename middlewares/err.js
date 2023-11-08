@@ -2,7 +2,7 @@ function err(req,res,next){
     if (req.session.err) {
         next()
     }else{
-        res.redirect("/user/logout");
+        res.redirect("/logout");
     }
 }
 module.exports={err}

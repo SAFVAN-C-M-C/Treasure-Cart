@@ -1,0 +1,26 @@
+const CART = require("../Models/cart");
+const Products = require("../Models/product");
+
+const updateQuantity = async (items, cartId) => {
+
+    for (const item of items) {
+        const productId = item.productId;
+        const quantity = item.quantity;
+        const product = await Products.findById(productId);
+
+        if (product) {
+            const updatedQuantity = product.stock - quantity;
+            if (updatedQuantity < 0) {
+                product.stock = 0;
+            } else {
+                product.stock = updatedQuantity;
+            }
+            await product.save();
+            console.log("stock updated")
+        }
+    }
+    await CART.findByIdAndDelete(cartId);
+}
+module.exports = {
+    updateQuantity
+}
