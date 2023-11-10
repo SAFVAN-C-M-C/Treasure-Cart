@@ -1,28 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!DOCTYPE html>
-    <html lang="en">
-
-    <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
-        <link rel="stylesheet" href="/static/css/header.css" />
-        <link rel="stylesheet" href="/static/css/footer.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
-            <script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
+        
+  <%-include('../layout/header_links')-%>
+        
     </head>
 </head>
 
@@ -34,11 +18,6 @@
                 <div class="row gx-5">
                     <aside class="col-lg-6">
                         <div class="border rounded-4 mb-3 d-flex justify-content-center" id="img-show">
-                            <!-- <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image"
-                                href="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>">
-                                <img  style="max-width: 100%; max-height: 70vh; margin: auto;" class="rounded-4 fit"
-                                    src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" />
-                            </a> -->
                             <img  style="max-width: 100%; max-height: 70vh; margin: auto;" class="rounded-4 fit"
                             src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" />
 
@@ -66,14 +45,11 @@
                                     src="<%=data.images[0].image2?'/static/product-images/'+data.images[0].image2:'/static/images/img-bg.jpg'%>" />
                             </a>
                         </div>
-                        <!-- thumbs-wrap.// -->
-                        <!-- gallery-wrap .end// -->
                     </aside>
                     <main class="col-lg-6">
                         <div class="ps-lg-3">
                             <h4 class="title text-dark">
                                 <%=data.name%>
-
                             </h4>
                             <div class="d-flex flex-row my-3">
 
@@ -118,15 +94,6 @@
                             <hr />
 
                             <div class="row mb-4">
-                                <!-- <div class="col-md-4 col-6">
-                                    <label class="mb-2">Size</label>
-                                    <select class="form-select border border-secondary" style="height: 35px;">
-                                        <option>Small</option>
-                                        <option>Medium</option>
-                                        <option>Large</option>
-                                    </select>
-                                </div> -->
-                                <!-- col.// -->
                                 <div class="col-md-4 col-6 mb-3">
                                     <label class="mb-2 d-block">Quantity</label>
                                     <div class="input-group mb-3" style="width: 170px;">
@@ -177,5 +144,4 @@
 </script>
 
 <%-include('../partials/footer')-%>
-
 <%-include('../layout/footer')-%>

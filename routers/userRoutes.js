@@ -1,6 +1,5 @@
 const express=require("express");
 const user=express.Router()
-
 //controllers
 const userControl=require("../controllers/Client/userController");
 const orderController=require("../controllers/Client/orderController")
@@ -11,14 +10,11 @@ const wishlistController=require("../controllers/Client/wishlistConroller");
 const passport=require("passport")
 require("../config/passport")
 require("../config/login-auth")
-
 //models
 const Users = require("../Models/user");
-
 //middlewares
 const { verifyUser,existingUser, otpverify, passrest,isBlocked } = require("../middlewares/userAuth");
 const { err } = require("../middlewares/err");
-
 //utility
 const { profile, upload } = require("../util/upload");
 
@@ -44,7 +40,7 @@ user.post("/forgot-pass",userControl.forgotPass)
 
 //home==================================================================================
 
-user.get("/",verifyUser,isBlocked,userControl.home_logged)
+user.get("/",isBlocked,userControl.home_logged)
 
 //logout==================================================================================
 
@@ -52,8 +48,8 @@ user.get("/logout",userControl.logout)
 
 //products==================================================================================
 
-user.get("/product/details/:id",verifyUser,isBlocked,productController.get_product_details)
-user.get("/products",verifyUser,isBlocked,productController.get_product)
+user.get("/product/details/:id",isBlocked,productController.get_product_details)
+user.get("/products",isBlocked,productController.get_product)
 
 //contact us==================================================================================
 

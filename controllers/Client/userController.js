@@ -43,18 +43,41 @@ const forgot_password_page = (req, res) => {
 //=================================================================================================================
 
 const home_logged = async (req, res) => {
-    console.log(req.session.logged);
-    const userId=req.session.userid
-    const find = await USER.findOne({ email: req.session.email })
-    console.log(find);
-    const data = find.userName
-    req.session.name = data
-    console.log(data);
-    const product=await Products.find()
-    const wishlists = await Wishlist.findOne({ userId: userId }).populate('products.productId');
-    const wishlist=wishlists.products
-    res.render("./User/home", { title: "Home", user: data,product,wishlist })
-}
+    if (req.session.logged) {
+        try {
+            console.log(req.session.logged);
+            const userId=req.session.userid
+            const find = await USER.findOne({ email: req.session.email })
+            // console.log(find);
+            const data = find.userName
+            req.session.name = data
+            console.log(data);
+            const product=await Products.find()
+            const wishlists = await Wishlist.findOne({ userId: userId }).populate('products.productId');
+            const wishlist=wishlists.products
+            res.render("./User/home", { title: "Home", user: data,product,wishlist,logged:true })
+        } catch (error) {
+            console.log(error);
+            req.session.err = true
+            res.redirect("/404")
+        }
+      } else {
+        try {
+            console.log(req.session.logged);
+            const data = null
+            req.session.name = data
+            console.log(data);
+            const product=await Products.find()
+            const wishlist=[]
+            res.render("./User/home", { title: "Home", user: data,product,wishlist,logged:false })
+        } catch (error) {
+            console.log(error);
+            req.session.err = true
+            res.redirect("/404")
+        }
+      }
+    }
+
 
 
 

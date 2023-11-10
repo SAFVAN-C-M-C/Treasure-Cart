@@ -23,8 +23,6 @@ const nocache = require("nocache");
 app.set("view engine", "ejs");
 app.use(nocache());
 app.use("/static", express.static(path.join(__dirname, "Public")));
-
-
 app.use(
   session({
 
@@ -40,7 +38,7 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:7000",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
@@ -64,4 +62,6 @@ const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
   console.log(`The app is working on the port ${PORT}
     http://localhost:${PORT}`);
+    console.log(`The admin is working on the port ${PORT}
+    http://localhost:${PORT}/admin`);
 })

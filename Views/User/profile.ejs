@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <%-include('../layout/header_links')-%>
 </head>
 <body>
@@ -14,8 +13,7 @@
         <nav class="nav nav-borders">
             <a class="nav-link active ms-0" href="/profile" >Profile</a>
             <a class="nav-link  " href="/manage-address" >Addresses</a>
-            <a class="nav-link" href="#">Reset Password</a>
-            <!-- <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Wish List</a> -->
+            <!-- <a class="nav-link" href="#">Reset Password</a> -->
             <a class="nav-link " href="/order-history" >My Orders</a>
       
         </nav>
@@ -50,7 +48,7 @@
                             <!-- Form Group (username)-->
                             <div class="mb-3">
                                 <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
-                                <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username" name="name" value="<%=UserData.userName%>" required>
+                                <input class="form-control-cus" id="inputUsername" type="text" placeholder="Enter your username" name="name" value="<%=UserData.userName%>" required>
                             </div>
                             <!-- Form Row-->
                             <!-- <div class="row gx-3 mb-3"> -->
@@ -68,20 +66,20 @@
                             <!-- Form Group (email address)-->
                             <div class="mb-3">
                                 <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                                <input disabled class="form-control" id="inputEmailAddress" name="email" type="email" placeholder="Enter your email" value="<%=UserData.email%>">
+                                <input disabled class="form-control-cus" id="inputEmailAddress" name="email" type="email" placeholder="Enter your email" value="<%=UserData.email%>">
                             </div>
                             <!-- Form Row-->
                             <div class="row gx-3 mb-3">
                                 <!-- Form Group (phone number)-->
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="inputPhone">Phone number</label>
-                                    <input class="form-control" id="inputPhone" type="number" name="phone" maxlength="10" placeholder="Enter your 10 digit phone number" value="<%=UserData.phone?UserData.phone:0%>"  >
+                                    <input class="form-control-cus" id="inputPhone" type="number" name="phone" maxlength="10" placeholder="Enter your 10 digit phone number" value="<%=UserData.phone?UserData.phone:0%>"  >
                                 </div>
                                 <!-- Form Group (birthday)-->
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="inputBirthday">DOB</label>
                                     <%var date=UserData.dob.toString().slice(0, 10)%>
-                                    <input class="form-control" id="dob" type="date" name="dob" placeholder="DD-MM-YYYY" value="<%=date%>" required>
+                                    <input class="form-control-cus" id="dob" type="date" name="dob" placeholder="DD-MM-YYYY" value="<%=date%>" required>
 
                                 </div>
                                 <!-- <input type="date" name="date" id="date" 
@@ -118,11 +116,7 @@
 
 
 
-    <style>
-        /* body{margin-top:20px;
-background-color:#f2f6fc;
-color:#69707a;
-} */
+<style>
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -153,7 +147,7 @@ input::-webkit-inner-spin-button {
     background-color: rgba(33, 40, 50, 0.03);
     border-bottom: 1px solid rgba(33, 40, 50, 0.125);
 }
-.form-control, .dataTable-input {
+.form-control-cus, .dataTable-input {
     display: block;
     width: 100%;
     padding: 0.875rem 1.125rem;
@@ -196,13 +190,11 @@ input::-webkit-inner-spin-button {
         // Check if a file was selected
         if (input.files && input.files[0]) {
           const reader = new FileReader();
-
           // Set up a function to run when the image is loaded
           reader.onload = function (e) {
             img.src = e.target.result;
             labeltext.style.display = 'none'
           };
-
           // Read the selected file as a data URL and load it into the img tag
           reader.readAsDataURL(input.files[0]);
         } else {
@@ -210,22 +202,6 @@ input::-webkit-inner-spin-button {
           img.src = "";
         }
       }
-
-      // Assuming you have the date-time string from the database
-    //   var dateTimeString = document.getElementById("dob").value;
-
-// // Create a new Date object
-// var dateTime = new Date(dateTimeString);
-
-// // Format the date as "YYYY-MM-DD"
-//         // Format the date as "YYYY-MM-DD"
-//         var formattedDate = dateTime.getFullYear() + '-' +
-//                             ('0' + (dateTime.getMonth() + 1)).slice(-2) + '-' +
-//                             ('0' + dateTime.getDate()).slice(-2);
-
-// Set the formatted date as the value of the input field
-// console.log(dateTimeString.slice(0, 10));
-// document.getElementById("dob").value = dateTimeString.slice(0, 10);
     </script>
     <%-include('../partials/footer')-%>
     <%-include('../layout/footer')-%>

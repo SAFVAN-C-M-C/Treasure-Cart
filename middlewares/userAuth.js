@@ -23,18 +23,22 @@ function otpverify(req,res,next){
 }
 async function isBlocked(req,res,next){
   try{
-  const user=await Users.findOne({_id:req.session.userid})
-  if(user.status==="Active"){
-    next();
-  }
-  else{
-    req.session.logged=false
-    res.redirect("/")
-    req.flash("errmsg", "*User blocked by admin")
-  }
+    if(req.session.logged){
+      const user=await Users.findOne({_id:req.session.userid})
+      if(user.status==="Active"){
+        next();
+      }
+      else{
+        req.session.logged=false
+        res.redirect("/login")
+        req.flash("errmsg", "*User blocked by admin")
+      }
+    }else{
+      next();
+    }
   }catch(err){
     console.log(err);
-    res.redirect("/logout")
+    res.redirect("/404")
   }
 }
 function passrest(req,res,next){

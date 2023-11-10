@@ -19,7 +19,7 @@ const get_product_details = async (req, res) => {
         console.log(categoryId);
         const category = await Categories.findOne({ _id: categoryId })
         console.log(category);
-        const user = req.session.name ? req.session.name : "User"
+        const user = req.session.name ? req.session.name : null
         res.render("./User/product-detail", { data, user, brand, category });
     } catch (err) {
         console.log(err)
