@@ -6,12 +6,15 @@
         <title>Document</title>
         
   <%-include('../layout/header_links')-%>
-        
+  <script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
     </head>
 </head>
 
 <body>
     <%-include('../partials/header')-%>
+    <%-include('../Alerts/addToCart')-%>
+    <%-include('../Alerts/outOfStock')-%>
+    <%-include('../Alerts/LoginAlert')-%>
 
         <section class="py-5">
             <div class="container">
@@ -93,7 +96,7 @@
 
                             <hr />
 
-                            <div class="row mb-4">
+                            <!-- <div class="row mb-4">
                                 <div class="col-md-4 col-6 mb-3">
                                     <label class="mb-2 d-block">Quantity</label>
                                     <div class="input-group mb-3" style="width: 170px;">
@@ -110,12 +113,26 @@
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                            <a href="#" class="btn btn-warning shadow-0 text-white"> Buy now </a>
-                            <a href="#" class="btn btn-primary shadow-0 text-white"> <i class="me-1 fa fa-shopping-basket"></i> Add
-                                to cart </a>
-                            <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
-                                    class="me-1 fa fa-heart fa-lg"></i> Save </a>
+                            </div> -->
+                            <!-- <a href="#" class="btn btn-warning shadow-0 text-white"> Buy now </a> -->
+                            <%if(user){%>
+                                <%if(data.stock>0){%>
+                                    <button onclick="addtoCart('<%= data._id %>')"  class="btn btn-primary shadow-0 text-white"> <i class="me-1 fa fa-shopping-cart"></i> Add
+                                        to cart </button>
+                                    <a href="#" class="btn btn-light border border-secondary py-2 add-to-wishlist-button px-3"> <i
+                                            class="me-1 fa fa-heart <% if (wishlist.find(item => item.productId.equals(data._id))) { %>text-danger<% } %>"></i> Save to Wishlist </a>
+                                <%}else{%>
+                                    <button onclick="showalert()" class="btn btn-primary shadow-0 text-white"> <i class="me-1 fa fa-shopping-cart"></i> Add
+                                        to cart </button>
+                                    <a href="#" class="btn btn-light border border-secondary py-2 icon-hover add-to-wishlist-button px-3"> <i
+                                            class="me-1 fa fa-heart fa-lg"></i> Save </a>
+                                <%}%>  
+                                <%}else{%>
+                                    <button onclick="showwarning()"  class="btn btn-primary shadow-0 text-white"> <i class="me-1 fa fa-shopping-cart"></i> Add
+                                        to cart </button>
+                                    <button onclick="showwarning()" class="btn btn-light border border-secondary py-2 px-3"> <i
+                                            class="me-1 fa fa-heart"></i> Save to Wishlist </a>
+                                    <%}%>  
                         </div>
                     </main>
                 </div>
@@ -133,6 +150,7 @@
                 color: #3b71ca !important;
             }
         </style>
+        <script src="/static/js/productManupulation.js"></script>
 <script>
     var options = {
         width: 400,
@@ -140,7 +158,6 @@
         offset: { vertical: 0, horizontal: 100 }
     };
     new ImageZoom(document.getElementById("img-show"), options);
-
 </script>
 
 <%-include('../partials/footer')-%>

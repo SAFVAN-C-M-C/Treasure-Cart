@@ -50,6 +50,7 @@ user.get("/logout",userControl.logout)
 
 user.get("/product/details/:id",isBlocked,productController.get_product_details)
 user.get("/products",isBlocked,productController.get_product)
+user.post("/filter",isBlocked,productController.filter)
 
 //contact us==================================================================================
 

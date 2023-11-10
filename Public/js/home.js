@@ -67,3 +67,15 @@ function addtoCart(productId) {
       });
     });
   });
+
+  function showwarning() {
+    console.log("clicked");
+    var element=document.getElementById("alertlog");
+      var option={
+        animation:true,
+        delay:5000,
+        autohide: true
+      }
+      var toastElement=new bootstrap.Toast(element, option)
+      toastElement.show()
+  }

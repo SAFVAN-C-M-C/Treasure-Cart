@@ -13,6 +13,7 @@
     <%-include('../partials/slider')-%>
       <%-include('../Alerts/addToCart')-%>
         <%-include('../Alerts/outOfStock')-%>
+        <%-include('../Alerts/LoginAlert')-%>
           <div class="py-3 py-md-5 bg-light">
             <div class="container">
               <div class="row">
@@ -52,23 +53,33 @@
                             </a>
                             <div class="mt-2 d-flex justify-content-around  ">
                               <div class="mt-4">
-                                <%if(product.stock>0){%>
-                                  <button onclick="addtoCart('<%= product._id %>')" class="btn btn-primary shadow-0"
-                                    type="button">Add to cart</button>
-                                  <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
-                                    data-product-id="<%= product._id %>">
-                                    <i
-                                      class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(product._id))) { %>text-danger<% } %>"></i>
-                                  </a>
-                                  <%}else{%>
-                                    <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to
-                                      cart</button>
+                                <%if(user){%>
+                                  <%if(product.stock>0){%>
+                                    <button onclick="addtoCart('<%= product._id %>')" class="btn btn-primary shadow-0"
+                                      type="button">Add to cart</button>
                                     <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
-                                      data-product-id="<%= data._id %>">
+                                      data-product-id="<%= product._id %>">
                                       <i
                                         class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(product._id))) { %>text-danger<% } %>"></i>
                                     </a>
-
+                                    <%}else{%>
+                                      <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to
+                                        cart</button>
+                                      <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
+                                        data-product-id="<%= data._id %>">
+                                        <i
+                                          class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(product._id))) { %>text-danger<% } %>"></i>
+                                      </a>
+  
+                                      <%}%>
+                                  <%}else{%>
+                                    <button onclick="showwarning()" class="btn btn-primary shadow-0" type="button">Add to
+                                      cart</button>
+                                      <button onclick="showwarning()" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
+                                      data-product-id="">
+                                      <i
+                                        class="fa fa-heart "></i>
+                                      </button>
                                     <%}%>
                               </div>
                             </div>

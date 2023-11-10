@@ -429,7 +429,7 @@ const logout = (req, res) => {
             console.log(err);
             res.send('Error');
         } else {
-            res.redirect('/login');
+            res.redirect('/');
         }
     });
 }

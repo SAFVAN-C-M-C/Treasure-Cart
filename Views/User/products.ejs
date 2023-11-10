@@ -1,440 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>hello</title>
-    <link rel="stylesheet" href="/static/css/product.css" />
-    <%-include('../layout/header_links')-%>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- <link rel="stylesheet" href="/static/css/product.css" /> -->
+  <%-include('../layout/header_links')-%>
 </head>
+
 <body id="body">
-    <%-include('../partials/header')-%>
-  <br><br>
-<!-- sidebar + content -->
-<section class="">
-    <div class="container">
-      <div class="row">
-        <!-- sidebar -->
-        <div class="col-lg-3">
-          <!-- Toggle button -->
-          <button
-                  class="btn btn-outline-secondary mb-3 w-100 d-lg-none"
-                  type="button"
-                  data-mdb-toggle="collapse"
-                  data-mdb-target="#navbarSupportedContent"
-                  aria-controls="navbarSupportedContent"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation"
-                  >
-            <span>Show filter</span>
-          </button>
-          <!-- Collapsible wrapper -->
-          <div class="collapse card d-lg-block mb-5" id="navbarSupportedContent">
-            <div class="accordion" id="accordionPanelsStayOpenExample">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button
-                          class="accordion-button text-dark bg-light"
-                          type="button"
-                          data-mdb-toggle="collapse"
-                          data-mdb-target="#panelsStayOpen-collapseTwo"
-                          aria-expanded="true"
-                          aria-controls="panelsStayOpen-collapseTwo"
-                          >
-                    Categories
-                  </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
-                  <div class="accordion-body">
-                    <div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked />
-                        <label class="form-check-label" for="flexCheckChecked1">Bluetooth Headsets</label>
-                        <span class="badge badge-secondary float-end">120</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked />
-                        <label class="form-check-label" for="flexCheckChecked2">Wired Headsets</label>
-                        <span class="badge badge-secondary float-end">15</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked />
-                        <label class="form-check-label" for="flexCheckChecked3">Mitsubishi</label>
-                        <span class="badge badge-secondary float-end">35</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked />
-                        <label class="form-check-label" for="flexCheckChecked4">Neck Bands</label>
-                        <span class="badge badge-secondary float-end">89</span>
-                      </div>
-                      <!-- Default checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                        <label class="form-check-label" for="flexCheckDefault">Ear Buds</label>
-                        <span class="badge badge-secondary float-end">30</span>
-                      </div>
-                      <!-- Default checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                        <label class="form-check-label" for="flexCheckDefault">Wired Earphones</label>
-                        <span class="badge badge-secondary float-end">30</span>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                        <label class="form-check-label" for="flexCheckDefault">Gaming Headset</label>
-                        <span class="badge badge-secondary float-end">30</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button
-                          class="accordion-button text-dark bg-light"
-                          type="button"
-                          data-mdb-toggle="collapse"
-                          data-mdb-target="#panelsStayOpen-collapseTwo"
-                          aria-expanded="true"
-                          aria-controls="panelsStayOpen-collapseTwo"
-                          >
-                    Brands
-                  </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
-                  <div class="accordion-body">
-                    <div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked />
-                        <label class="form-check-label" for="flexCheckChecked1">SkullCandy</label>
-                        <span class="badge badge-secondary float-end">120</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked />
-                        <label class="form-check-label" for="flexCheckChecked2">boAt</label>
-                        <span class="badge badge-secondary float-end">15</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked />
-                        <label class="form-check-label" for="flexCheckChecked3">Sony</label>
-                        <span class="badge badge-secondary float-end">35</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked />
-                        <label class="form-check-label" for="flexCheckChecked4">audio-technica</label>
-                        <span class="badge badge-secondary float-end">89</span>
-                      </div>
-                      <!-- Default checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                        <label class="form-check-label" for="flexCheckDefault">JBL!</label>
-                        <span class="badge badge-secondary float-end">30</span>
-                      </div>
-                      <!-- Default checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                        <label class="form-check-label" for="flexCheckDefault">Bowers & Wilkins</label>
-                        <span class="badge badge-secondary float-end">30</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button
-                          class="accordion-button text-dark bg-light"
-                          type="button"
-                          data-mdb-toggle="collapse"
-                          data-mdb-target="#panelsStayOpen-collapseTwo"
-                          aria-expanded="true"
-                          aria-controls="panelsStayOpen-collapseTwo"
-                          >
-                    Price
-                  </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
-                  <div class="accordion-body">
-                    <div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked />
-                        <label class="form-check-label" for="flexCheckChecked1">Highest to Lowest</label>
-                        <span class="badge badge-secondary float-end">120</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked />
-                        <label class="form-check-label" for="flexCheckChecked2">Lowest to Highest</label>
-                        <span class="badge badge-secondary float-end">15</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked />
-                        <label class="form-check-label" for="flexCheckChecked3">Below ₹1,000</label>
-                        <span class="badge badge-secondary float-end">35</span>
-                      </div>
-                      <!-- Checked checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked />
-                        <label class="form-check-label" for="flexCheckChecked4">₹1,000  -  ₹5,000</label>
-                        <span class="badge badge-secondary float-end">89</span>
-                      </div>
-                      <!-- Default checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                        <label class="form-check-label" for="flexCheckDefault">₹5,000  -  ₹10,000</label>
-                        <span class="badge badge-secondary float-end">30</span>
-                      </div>
-                      <!-- Default checkbox -->
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                        <label class="form-check-label" for="flexCheckDefault">₹10,000  -  ₹20,000</label>
-                        <span class="badge badge-secondary float-end">30</span>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                        <label class="form-check-label" for="flexCheckDefault">Above  ₹20,000</label>
-                        <span class="badge badge-secondary float-end">30</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              
-
+  <%-include('../partials/header')-%>
+    <%-include('../Alerts/addToCart')-%>
+      <%-include('../Alerts/outOfStock')-%>
+        <%-include('../Alerts/LoginAlert')-%>
+        <div
+        class="modal fade"
+        id="filterModal"
+        tabindex="-1"
+        aria-labelledby="filterModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="filterModalLabel">Filter</h5>
+              <button
+              type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
+            <div class="modal-body">
+              <form action="/filter" method="post" >
+                <h3 class="form-label ">Category</h3>
+                <%category.forEach((data)=>{%>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="<%=data._id%>" id="<%=data._id%>" name="Category"  />
+                    <label class="form-check-label" for="<%=data._id%>"><%=data.name%></label>
+                  </div>
+                <%})%>
+                <h3 class="form-label ">Brand</h3>
+                <%brand.forEach((data)=>{%>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="<%=data._id%>" id="<%=data._id%>" name="Brand"  />
+                  <label class="form-check-label" for="<%=data._id%>"><%=data.name%></label>
+                </div>
+             <% })%>
+
+                 
+                  <button type="submit" class="btn btn-info" >Submit</button>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
           </div>
         </div>
-        <!-- sidebar -->
-        <!-- content -->
-        <div class="col-lg-9">
-          <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3">
-            <!-- <strong class="d-block py-2">32 Items found </strong> -->
-            <!-- <div class="ms-auto">
-              <select class="form-select d-inline-block w-auto border pt-1">
-                <option value="0">Best match</option>
-                <option value="1">Recommended</option>
-                <option value="2">High rated</option>
-                <option value="3">Randomly</option>
-              </select>
-              <div class="btn-group shadow-0 border">
-                <a href="#" class="btn btn-light" title="List view">
-                  <i class="fa fa-bars fa-lg"></i>
-                </a>
-                <a href="#" class="btn btn-light active" title="Grid view">
-                  <i class="fa fa-th fa-lg"></i>
-                </a>
-              </div>
-            </div> -->
-          </header>
-  <%if(products){%>
-    <%products.forEach((data)=>{ %>
-      <div class="toast bg-light  start-50 translate-middle-x" style="position: fixed;bottom: 10px;z-index: 9999; background-color: #0b5ed7;" id="toastCart" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-success ">
-          <!-- <img src="..." class="rounded me-2" alt="..."> -->
-          <strong class="me-auto text-light ">Treasure Cart</strong>
-          <!-- <small>11 mins ago</small> -->
-          <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> -->
-        </div>
-        <div class="toast-body text-dark ">
-          Product Added to cart
-        </div>
       </div>
-      <div class="toast bg-light  start-50 translate-middle-x" style="position: fixed;bottom: 10px;z-index: 9999; background-color: #0b5ed7;" id="alertstock" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-danger  ">
-          <!-- <img src="..." class="rounded me-2" alt="..."> -->
-          <strong class="me-auto text-light ">Treasure Cart</strong>
-          <!-- <small>11 mins ago</small> -->
-          <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> -->
-        </div>
-        <div class="toast-body text-dark ">
-          Product is out of stock
-        </div>
-      </div>
-          <div class="row justify-content-center mb-3">
-            <div class="col-md-12">
-              <div class="card shadow-0 border rounded-3">
-                <div class="card-body">
-                  <div class="row g-0">
-                    <div class="col-xl-3 col-md-4 d-flex justify-content-center">
-                      <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
-                        <img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" class="w-100" />
-                        <a href="#!">
-                          <div class="hover-overlay">
-                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
-                          </div>
-                        </a>
+          <br><br>
+          <section>
+            <div class="container-fluid ">
+              <div class="row p-3 ">
+                <div class="row">
+                  <div class="col-md-9 ms-3 ">
+                    <h3 class="mb-4">Our Shop</h3>
+                  </div>
+                  <div class="col-md-2 d-flex justify-content-around ">
+                    <div class="filtter"><button data-bs-toggle="modal"
+                      data-bs-target="#filterModal" class="btn btn-primary d-flex justify-content-around align-items-center "><iconify-icon icon="mdi:filter" style="color: #fff;" width="25" height="25"></iconify-icon>filter</button></div>
+                    <div class="sort">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-info ">Sort by</button>
+                        <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                          <span class="visually-hidden">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="/products?key=low">Low to high</a></li>
+                          <li><a class="dropdown-item" href="/products?key=high">High to Low</a></li>
+                          <li><a class="dropdown-item" href="/products?key=abc">Alphabetical (a-z)</a></li>
+                          <li><a class="dropdown-item" href="/products?key=cba">Alphabetical (z-a)</a></li>
+                        </ul>
                       </div>
-                    </div>
-                    <div class="col-xl-6 col-md-5 col-sm-7">
-                     <a href="/product/details/<%-data._id%>"> <h5><%=data.name%></h5></a>
-                      <br>
-                      <!-- <div class="d-flex flex-row">
-                        <div class="text-warning mb-1 me-2">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fas fa-star-half-alt"></i>
-                          <span class="ms-1">
-                            4.5
-                          </span>
-                        </div>
-                        <span class="text-muted">154 orders</span>
-                      </div> -->
-  
-                      <p class="text mb-4 mb-md-0">
-                        <%=data.description%>
-                      </p>
-                    </div>
-                    <div class="col-xl-3 col-md-3 col-sm-5">
-                      <div class="d-flex flex-row align-items-center mb-1">
-                        <h4 class="mb-1 me-1">₹<%=data.descountedPrice%></h4>
-                        <span class="text-danger"><s>₹<%=data.basePrice%></s></span>
-                      </div>
-                      <%if(data.stock>0){%>
-                      <h6 class="text-success">In stock</h6>
-                      <%}else{%>
-                      <h6 class="text-danger">out of stock</h6>
-                        <%}%>
-                        <%if(data.stock>0){%>
-                          <div class="mt-4">
-                            <button onclick="addtoCart('<%= data._id %>')" class="btn btn-primary shadow-0" type="button">Add to cart</button>
-                            <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"  data-product-id="<%= data._id %>">
-                              <i class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(data._id))) { %>text-danger<% } %>"></i>
-                            </a>
-                          </div>
-                          <%}else{%>
-                            <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to cart</button>
-                            <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"  data-product-id="<%= data._id %>">
-                              <i class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(data._id))) { %>text-danger<% } %>"></i>
-                            </a>
-                              <%}%>
-                            
-                      
                     </div>
                   </div>
                 </div>
+                <% product.forEach(product=> { %>
+                  <div class="col-md-3 mt-3 mb-3 ">
+
+                    <div class="product-card shadow-lg p-3 bg-body rounded-3">
+                      <% if (product.stock> 0) { %>
+                        <span class="bg-success  text-white p-2 rounded ">In Stock</span>
+                        <% } else { %>
+                          <span class="bg-danger text-white p-2 rounded ">Out of Stock</span>
+
+                          <% } %>
+                            <a href="/product/details/<%= product._id%>" style="text-decoration: none;">
+                              <div class="d-flex justify-content-center" >
+                                <img width="200px" height="200px"
+                                    src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                                    alt="">
+                              </div>
+                              <div class="product-card-body">
+                                <h5 class="product-name d-flex justify-content-center">
+                                  <%= product.name %>
+                                </h5>
+                                <div class="d-flex justify-content-center align-items-center ">
+                                  <span class="me-1 text-danger"><s>₹<%=product.basePrice%></s></span>
+                                  <h4 class="mb-1 me-1 text-success ">₹<%=product.descountedPrice%>
+                                  </h4>
+                                </div>
+                              </div>
+                            </a>
+                            <div class="mt-2 d-flex justify-content-around  ">
+                              <div class="mt-4">
+                                <%if(user){%>
+                                  <%if(product.stock>0){%>
+                                    <button onclick="addtoCart('<%= product._id %>')" class="btn btn-primary shadow-0"
+                                      type="button">Add to cart</button>
+                                    <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
+                                      data-product-id="<%= product._id %>">
+                                      <i
+                                        class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(product._id))) { %>text-danger<% } %>"></i>
+                                    </a>
+                                    <%}else{%>
+                                      <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to
+                                        cart</button>
+                                      <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
+                                        data-product-id="<%= data._id %>">
+                                        <i
+                                          class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(product._id))) { %>text-danger<% } %>"></i>
+                                      </a>
+  
+                                      <%}%>
+                                  <%}else{%>
+                                    <button onclick="showwarning()" class="btn btn-primary shadow-0" type="button">Add to
+                                      cart</button>
+                                      <button onclick="showwarning()" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
+                                      data-product-id="">
+                                      <i
+                                        class="fa fa-heart "></i>
+                                      </button>
+                                    <%}%>
+                              </div>
+                            </div>
+                    </div>
+                  </div>
+                  <% }); %>
               </div>
             </div>
-          </div>
-  
+          </section>
+
+          <script src="/static/js/productManupulation.js"></script>
+          <script>
+            $("#filterform").submit((e) => {
+    e.preventDefault()
+    console.log("clicked");
+    $.ajax({
+      url:'/filter',
+      method: 'post',
+      data: $('#filterform').serialize(),
+      success: (response) => {
+        if (response.success) {
+          console.log('response got')
+          window.location.reload()
+         
+        } else {
+          console.log(response)
+          // window.location.reload()
           
-  
-          <hr />
-          <%})%>
-  
-          <!-- Pagination -->
-          <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
-            <ul class="pagination">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">4</a></li>
-              <li class="page-item"><a class="page-link" href="#">5</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-          
-    <%}else{%>
-      <h1>404 not found</h1>
-      <%}%>
-          <!-- Pagination -->
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    function addtoCart(productId) {
-              var element=document.getElementById("toastCart");
-              var option={
-                animation:true,
-                delay:2000,
-                autohide: true
-              }
-              var toastElement=new bootstrap.Toast(element, option)
-              
-          console.log("hello");
-
-          $.ajax({
-            url: '/addtoCart',
-            method: 'POST',
-            data: {
-              productId: productId,
-            },
-            success: function (response) {
-              // alert("product added to the cart")
-              // window.location.reload();
-              console.log(response);
-
-              toastElement.show()
-            },
-            error: function (error) {
-              console.error('Error while product added to the cart:', error);
-            }
-          });
-        
+        }
       }
-      function showalert(){
-        var element=document.getElementById("alertstock");
-              var option={
-                animation:true,
-                delay:2000,
-                autohide: true
-              }
-              var toastElement=new bootstrap.Toast(element, option)
-              toastElement.show()
-      }
-      document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
-            button.addEventListener('click', function (event) {
-                event.preventDefault();
+    })
+  })
+          </script>
 
-
-                const productId = this.getAttribute('data-product-id');
-                const icon = this.querySelector('.fa-heart');
-
-                $.ajax({
-                    url: '/wishlist/',
-                    method: 'POST',
-                    data: {
-                        productId: productId,
-                    },
-                    success: function (response) {
-                        console.log(icon.style.color)
-                        if (response.added) {
-                            icon.classList.add('text-danger')
-                          
-                        } else {
-                            icon.classList.remove('text-danger')
-                        }
-                    },
-                    error: function (error) {
-                        console.error('Error updating wishlist:', error);
-                    }
-                });
-            });
-        });
-  </script>
-
-<%-include('../partials/footer')-%>
-<%-include('../layout/footer')-%>
+          <%-include('../partials/footer')-%>
+            <%-include('../layout/footer')-%>
