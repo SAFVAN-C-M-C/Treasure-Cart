@@ -4,12 +4,166 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="/static/css/index.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-</head>
+  <link rel="stylesheet" href="/static/css/admin-head.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/css/admin-dash.css">
+  </head>
 <body>
-<%-include('../partials/admin-nav')-%>
+  <%-include('../partials/admin-sample-nav')-%>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Select Date Range</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate">
+
+            <div class="row mt-5">
+              <div class="col-sm-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="downloadFormat" value="pdf" id="pdfCheckbox">
+                  <label class="form-check-label" for="pdfCheckbox">
+                    PDF
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="downloadFormat" value="excel" id="excelCheckbox">
+                  <label class="form-check-label" for="excelCheckbox">
+                    Excel
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="generateReportBtn">Generate Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid ">
+      
+        <div class="d-flex justify-content-end mt-3 pe-4  ">
+          <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary  d-flex justify-content-around align-items-center "><iconify-icon icon="material-symbols:download" style="color: white;" width="25" height="25"></iconify-icon>
+            Sales Report</button>
+        </div>
+        <div class="container mt-4">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card mb-4 shadow" style="background-color: #fff;">
+                <h2 class="card-header">Sales Analysis</h2>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="dropdown">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="timeIntervalDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        By Day
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="timeIntervalDropdown">
+                        <li><a class="dropdown-item" id="byDayOption">By Day</a></li>
+                        <li><a class="dropdown-item" id="byMonthOption">By Month</a></li>
+                        <li><a class="dropdown-item" id="byYearOption">By Year</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-lg-12 d-flex justify-content-center ">
+                      <canvas id="salesGraphAmount" width="500" height="200"></canvas>
+                    </div>
+                    <div class="col-lg-12 d-flex justify-content-center">
+                      <canvas id="salesGraphCount" width="500" height="200"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card mb-4 shadow" style="background-color: #fff;">
+                <div class="card-header d-flex justify-content-between ">
+
+                  <h2 class="">Latest Orders</h2>
+                <a href="">show more></a>
+                </div>
+                <div class="card-body ">
+                  <div class="table-responsive">
+                    <table class="table table-borderless">
+                      <thead>
+                        <tr>
+                          <th>Order ID</th>
+                          <th>Date</th>
+                          <th>Total</th>
+                          <th>Payment</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="latestOrdersTable">
+                        <%if(order.length>0){%>
+                          <%order.forEach((data)=>{%>
+                            <tr>
+                              <td><%=data._id%></td>
+                              <td><% const orderDate=new Date(data.orderDate); %>
+                                <%= orderDate.toLocaleString('default', { month: 'short' }) %>
+                                    <%= orderDate.getDate() %>,
+                                        <%= orderDate.getFullYear() %>
+                                            <%= orderDate.toLocaleTimeString([], {
+                                                hour: '2-digit' , minute: '2-digit' }) %></td>
+                              <td><%=data.totalPrice%></td>
+                              <td>
+                                <%%>
+                                <%=data.paymentStatus%>
+                              </td>
+                              <td><%=data.status%></td>
     
-<%-include('../layout/footer')-%>
+                            </tr>
+                            <%})%>
+                          <%}%>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card shadow" style="background-color: #fff;">
+                <h2 class="card-header">Best Sellers</h2>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-borderless">
+                      <thead>
+                        <tr>
+                          <th>Product Image</th>
+                          <th>Product</th>
+                          <th>Product Name</th>
+                          <th>Price</th>
+                          <th>Status</th>
+                          <th>Sold</th>
+                        </tr>
+                      </thead>
+                      <tbody id="bestSellersTable">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/admin-dash.js"></script>
+    <%-include('../layout/footer')-%>

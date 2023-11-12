@@ -269,7 +269,7 @@ const verifypayment = async (req, res) => {
 
         hmac = hmac.digest("hex");
         if (hmac === req.body.payment.razorpay_signature) {
-            const orderId = new mongoose.Types.ObjectId(
+            const orderId = new ObjectId(
                 req.body.order.createdOrder.receipt
             );
             console.log("reciept", req.body.order.createdOrder.receipt);
@@ -289,6 +289,7 @@ const verifypayment = async (req, res) => {
         console.error("failed to verify the payment", error);
     }
 }
+
 module.exports = {
     orderHistory,
     getOrderSuccess,

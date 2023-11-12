@@ -90,13 +90,13 @@
 
                     <div class="product-card shadow-lg p-3 bg-body rounded-3">
                       <% if (product.stock> 0) { %>
-                        <span class="bg-success  text-white p-2 rounded ">In Stock</span>
+                        <span class="bg-success z-3   text-white p-2 rounded ">In Stock</span>
                         <% } else { %>
-                          <span class="bg-danger text-white p-2 rounded ">Out of Stock</span>
+                          <span class="bg-danger z-3 text-white p-2 rounded ">Out of Stock</span>
 
                           <% } %>
                             <a href="/product/details/<%= product._id%>" style="text-decoration: none;">
-                              <div class="d-flex justify-content-center" >
+                              <div class="d-flex justify-content-center mt-2 " >
                                 <img width="200px" height="200px"
                                     src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
                                     alt="">
@@ -127,7 +127,7 @@
                                       <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to
                                         cart</button>
                                       <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
-                                        data-product-id="<%= data._id %>">
+                                        data-product-id="<%= product._id %>">
                                         <i
                                           class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(product._id))) { %>text-danger<% } %>"></i>
                                       </a>

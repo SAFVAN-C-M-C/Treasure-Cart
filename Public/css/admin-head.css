@@ -1,7 +1,9 @@
 body {
     font-family: "Lato", sans-serif;
   }
-  
+  body::-webkit-scrollbar {
+    width: 0px;
+  }
   .sidenav {
     height: 100%;
     width: 250px;

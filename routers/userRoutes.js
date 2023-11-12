@@ -52,6 +52,7 @@ user.get("/product/details/:id",isBlocked,productController.get_product_details)
 user.get("/products",isBlocked,productController.get_product)
 user.post("/filter",isBlocked,productController.filter)
 
+
 //contact us==================================================================================
 
 user.get("/contact-us",verifyUser,isBlocked,userControl.get_contactUs)
@@ -95,7 +96,7 @@ user.post('/removefromcart',verifyUser,isBlocked,cartConrller.removeFromCart)
 
 user.get("/checkout",verifyUser,isBlocked,userControl.getcheckout);
 user.post("/checkout",verifyUser,isBlocked,orderController.placeOrder)
-user.post("/checkout",verifyUser,isBlocked,orderController.verifypayment)
+user.post("/verifyPayment",verifyUser,isBlocked,orderController.verifypayment)
 
 user.post("/addAddress-Checkout",verifyUser,isBlocked,userControl.addAddressCheckout)
 

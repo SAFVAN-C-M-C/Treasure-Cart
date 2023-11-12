@@ -4,13 +4,14 @@
   "description": "",
   "main": "App.js",
   "scripts": {
-    "start": "nodemon App.js"
+    "start": "nodemon --inspect App.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "chart.js": "^4.4.0",
     "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",

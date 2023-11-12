@@ -8,7 +8,12 @@
 
     <a href="/contact-us" class="d-flex align-items-center"><iconify-icon icon="bx:support" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Contact Us</span></a>
 </div>
-
+<style>
+    a{
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
 <div class="main-navbar shadow-sm sticky-top">
     <div class="top-navbar">
         <div class="container-fluid">
@@ -21,9 +26,9 @@
                     </h5>
                 </div>
                 <div class=" col-4 col-sm-6 col-md-5 my-auto">
-                    <form role="search">
+                    <form id="searchForm" role="search">
                         <div class="input-group">
-                            <input type="search" placeholder="Find..." class="form-control" />
+                            <input type="search" placeholder="Find..." class="form-control" id="searchInput" />
                             <button class="btn bg-white" type="submit">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -34,14 +39,26 @@
                     <ul class="nav justify-content-end">
 
                         <li class="nav-item">
-                            <a class="nav-link" href="/cart">
-                                <i class="fa fa-shopping-cart"></i>
-                            </a>
+                            <%if(user){%>
+                                <a class="nav-link" href="/cart">
+                                    <i class="fa fa-shopping-cart"></i>
+                                </a>
+                                <%}else{%>
+                                    <a class="nav-link"  onclick="showwarning()">
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </a>
+                                    <%}%>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/wishlist">
-                                <i class="fa fa-heart"></i>
-                            </a>
+                            <%if(user){%>
+                                <a class="nav-link" href="/wishlist">
+                                    <i class="fa fa-heart"></i>
+                                </a>
+                                <%}else{%>
+                                    <a class="nav-link" onclick="showwarning()">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                    <%}%>
                         </li>
                         
                         <li class="nav-item dropdown">
@@ -112,4 +129,15 @@
 function closeNav() {
   document.getElementById("mySidenav").style.display = "none";
 }
+
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevents the form from submitting the traditional way
+
+      const searchTerm = document.getElementById('searchInput').value;
+      const searchURL = `/products?search=${encodeURIComponent(searchTerm)}`;
+
+      // Redirect to the search URL
+      window.location.href = searchURL;
+    });
+  
 </script>

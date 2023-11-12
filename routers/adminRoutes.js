@@ -40,9 +40,16 @@ const { err } = require("../middlewares/err");
 
 admin.get("/",existingadmin,adminController.admin_login_get)
 admin.post("/login",adminController.adminLogin)
-admin.get("/Dashbord",verifyadmin,adminController.admin_dash)
 admin.get("/logout",adminController.logout)
 admin.get("/404",err,adminController.error_get)
+
+// Dash===========================================================================================================================================
+admin.get("/Dashbord",verifyadmin,adminController.admin_dash)
+admin.get('/count-orders-by-day',verifyadmin, adminController.getCountDay)
+admin.get('/count-orders-by-month',verifyadmin, adminController.getCountMonth)
+admin.get('/count-orders-by-year',verifyadmin, adminController.getCountYear)
+
+
 
 // product===========================================================================================================================================
 
