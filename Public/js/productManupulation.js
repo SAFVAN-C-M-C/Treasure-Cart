@@ -41,13 +41,17 @@ var element=document.getElementById("alertstock");
 document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
   button.addEventListener('click', function (event) {
       event.preventDefault();
-
+      console.log("clickdd");
 
       const productId = this.getAttribute('data-product-id');
+      console.log(productId);
       const icon = this.querySelector('.fa-heart');
+      var label = this.querySelector('.lablewish');
+      console.log("label",label);
+
 
       $.ajax({
-          url: '/wishlist/',
+          url: '/wishlist',
           method: 'POST',
           data: {
               productId: productId,
@@ -56,9 +60,11 @@ document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
               console.log(icon.style.color)
               if (response.added) {
                   icon.classList.add('text-danger')
+                  label.innerHTML="Saved to wishlist";
                 
               } else {
                   icon.classList.remove('text-danger')
+                  label.innerHTML="Save to wishlist";
               }
           },
           error: function (error) {

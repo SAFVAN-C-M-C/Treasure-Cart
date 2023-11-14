@@ -27,19 +27,57 @@
                 </button> -->
               </div>
               <div class="modal-body">
-                <%data.items.forEach((item)=>{%>
+                <%data.itemsDetails.forEach((item)=>{%>
                 <div class="card mt-2 mb-2 ">
                     <div class="container-fluid ">
                         <div class="row">
-                            <div class="col-4"><img src="<%=item.productId.images[0].mainimage?'/static/product-images/'+item.productId.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="img" width="100px" height="100px"></div>
+                            <div class="col-4"><img src="<%=item.images[0].mainimage?'/static/product-images/'+item.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="img" width="100px" height="100px"></div>
                             <div class="col-8">
-                                <span>ID: <%=item.productId._id%></span><br>
-                                <span>Name: <%=item.productId.name%></span><br>
-                                <span>Price: ₹<%=item.productId.descountedPrice%>/-</span><br>
+                                <span>ID: <%=item._id%></span><br>
+                                <span>Name: <%=item.name%></span><br>
+                                <span>Price: ₹<%=item.descountedPrice%>/-</span><br>
+                                <span>Quantity: ₹<%=item.quantity%>/-</span><br>
+
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="card mt-2 mb-2 ">
+                    <div class="container-fluid ">
+                        <div class="row">
+                            <h3>Shipping Adddress</h3>
+                            <table>
+                                <tr>
+                                    <td>Name:</td>
+                                    <td><%=data.address.name%></td>
+                                </tr>
+                                <tr>
+                                    <td>Address:</td>
+                                    <td><%=data.address.address%></td>
+                                </tr>
+                                <tr>
+                                    <td>City:</td>
+                                    <td><%=data.address.city%></td>
+                                </tr>
+                                <tr>
+                                    <td>Pincode:</td>
+                                    <td><%=data.address.pincode%></td>
+                                </tr>
+                                <tr>
+                                    <td>State:</td>
+                                    <td><%=data.address.state%></td>
+                                </tr>
+                                <tr>
+                                    <td>Phone:</td>
+                                    <td><%=data.address.mobile%></td>
+                                </tr>
+                            </table>
+                             
+
+                        </div>
+                    </div>
+                </div>
+
                 <%})%>
                     
               </div>
@@ -56,7 +94,7 @@
             <div class="container">
                 <div class="row d-flex header">
                     <div class="col-6">
-                        <h2>Brands</h2>
+                        <h2>Orders</h2>
                     </div>
                     <!-- <div class="col-6 d-flex justify-content-end"><a href="/admin/add-brand" class="btn-custom">Add Brands</a></div> -->
                 </div>
@@ -170,7 +208,7 @@
             <nav aria-label="page navigation example ">
                 <ul class="pagination" style="margin-right: 40px;">
                     <%for(let i=1;i<=count;i++){%>
-                        <li class="page-item"><a class="page-link" href="/admin/orders?<%=i%>">
+                        <li class="page-item"><a class="page-link" href="/admin/orders?page=<%=i%>">
                                 <%=i%>
                             </a></li>
                         <%}%>

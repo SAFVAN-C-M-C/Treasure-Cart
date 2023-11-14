@@ -1,29 +1,29 @@
-const nodemailer=require("nodemailer");
-const {AUTH_EMAIL,AUTH_PASS}=process.env;
+const nodemailer = require("nodemailer");
+const { AUTH_EMAIL, AUTH_PASS } = process.env;
 
-let mailTransporter=nodemailer.createTransport({
+let mailTransporter = nodemailer.createTransport({
     service: 'gmail',
-    auth:{
-        user:AUTH_EMAIL,
-        pass:AUTH_PASS,
+    auth: {
+        user: AUTH_EMAIL,
+        pass: AUTH_PASS,
     }
 })
-mailTransporter.verify((error,success)=>{
-    if(error){
+mailTransporter.verify((error, success) => {
+    if (error) {
         console.log(error);
-    }else{
+    } else {
         console.log("email ready");
         console.log(success);
     }
 })
-const sendEmail=async (mailOptions)=>{
-    try{
+const sendEmail = async (mailOptions) => {
+    try {
         await mailTransporter.sendMail(mailOptions)
         console.log("email sended");
         return;
-    }catch(err){
+    } catch (err) {
         throw err;
     }
 }
 
-module.exports=sendEmail;
+module.exports = sendEmail;

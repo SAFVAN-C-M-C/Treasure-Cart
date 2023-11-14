@@ -19,7 +19,7 @@ function validateName() {
     var msg = document.getElementById("descriptionError");
     var signupButton = document.getElementById("signupButton");
   
-    if (Pattern.test(name) ) {
+    // if (Pattern.test(name) ) {
         console.log(name.trim().length);
         if(name.trim().length >=3){
         msg.innerHTML = "";
@@ -29,10 +29,10 @@ function validateName() {
         signupButton.disabled = true;
         }
          
-    } else {
-        msg.innerHTML = "description not match";
-        signupButton.disabled = true; // Disable the button
-    }
+    // } else {
+    //     msg.innerHTML = "description not match";
+    //     signupButton.disabled = true; // Disable the button
+    // }
   }
 
 //   function validateDescription() {

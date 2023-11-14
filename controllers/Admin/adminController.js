@@ -54,9 +54,41 @@ const adminLogin = async (req, res) => {
 const admin_dash = async(req, res) => {
   // if (req.session.admin) {
   try {
-    const order=await Orders.find().sort({ orderDate: -1 }).limit(5)
-    console.log(order);
-    res.render("./Admin/Admin-dash",{order});
+    const order=await Orders.find().sort({ _id: -1 }).limit(5)
+
+
+    const bestSeller = await Orders.aggregate([
+      {
+        $unwind: "$items",
+      },
+      {
+        $group: {
+          _id: "$items.productId",
+          totalCount: { $sum: "$items.quantity" },
+        },
+      },
+      {
+        $sort: {
+          totalCount: -1,
+        },
+      },
+      {
+        $limit: 3,
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
+        $unwind: "$productDetails",
+      },
+    ]);
+    console.log(bestSeller);
+    res.render("./Admin/Admin-dash",{order,bestSeller});
   } catch (err) {
     res.render.err = true
     res.redirect("/admin/404");

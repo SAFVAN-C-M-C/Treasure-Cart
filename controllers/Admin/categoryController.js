@@ -6,26 +6,26 @@ const { ObjectId } = require("mongodb");
 //category page
 const category_list = async (req, res) => {
     // if (req.session.admin) {
-        try {
-            const pageNum = req.query.page ? req.query.page : 1;
-            console.log(pageNum);
-            const perPage = 10;
-            const data = await Categories.find().skip((pageNum - 1) * perPage)
-                .limit(perPage);
-            let x = Number((pageNum - 1) * perPage);
-            console.log(x);
-            console.log(data.length);
-            var count = Math.floor(data.length / 10) + 1;
-            console.log("categories:", data)
-            // if(!data){
-            //   data={}
-            // }
-            res.render("./Admin/categories", { category: data, count: count, x });
-        } catch (err) {
-            console.log(err);
-            res.render.err = true
-            res.redirect("/admin/404");
-        }
+    try {
+        const pageNum = req.query.page ? req.query.page : 1;
+        console.log(pageNum);
+        const perPage = 10;
+        const data = await Categories.find().skip((pageNum - 1) * perPage)
+            .limit(perPage);
+        let x = Number((pageNum - 1) * perPage);
+        console.log(x);
+        console.log(data.length);
+        var count = Math.floor(data.length / 10) + 1;
+        console.log("categories:", data)
+        // if(!data){
+        //   data={}
+        // }
+        res.render("./Admin/categories", { category: data, count: count, x });
+    } catch (err) {
+        console.log(err);
+        res.render.err = true
+        res.redirect("/admin/404");
+    }
     // } else {
     //     res.redirect("/admin/logout");
     // }
@@ -35,13 +35,13 @@ const category_list = async (req, res) => {
 //add category
 const category_add_get = (req, res) => {
     // if (req.session.admin) {
-        try {
-            res.render("./Admin/add-category");
-        } catch (err) {
-            console.log(err);
-            res.render.err = true
-            res.redirect("/admin/404");
-        }
+    try {
+        res.render("./Admin/add-category");
+    } catch (err) {
+        console.log(err);
+        res.render.err = true
+        res.redirect("/admin/404");
+    }
     // } else {
     //     res.redirect("/admin/logout");
     // }
@@ -57,20 +57,20 @@ const category_add = async (req, res) => {
         const {
             Category_name
         } = req.body;
-        const check= await Categories.findOne({
+        const check = await Categories.findOne({
             name: { $regex: `^${Category_name}$`, $options: "i" },
         });
         console.log("name is " + Category_name);
-       if(!check){
-        const data = {
-            name: Category_name,
-            images: {
-                mainimage: main.filename,
-            },
-            timeStamp: Date.now(),
-        };
-        const insert = await Categories.insertMany([data]);
-       }
+        if (!check) {
+            const data = {
+                name: Category_name,
+                images: {
+                    mainimage: main.filename,
+                },
+                timeStamp: Date.now(),
+            };
+            const insert = await Categories.insertMany([data]);
+        }
         res.redirect("/admin/categories");
     } catch (err) {
         console.log("error found" + err);
@@ -80,18 +80,18 @@ const category_add = async (req, res) => {
 
 const category_edit_get = async (req, res) => {
     // if (req.session.admin) {
-        try {
-            const id = req.params.id;
-            const category = await Categories.findOne({ _id: new ObjectId(id) });
-            console.log(category);
-            res.render("./Admin/edit-category", {
-                category: category,
-            });
-        } catch (err) {
-            console.log(err);
-            res.render.err = true
-            res.redirect("/admin/404");
-        }
+    try {
+        const id = req.params.id;
+        const category = await Categories.findOne({ _id: new ObjectId(id) });
+        console.log(category);
+        res.render("./Admin/edit-category", {
+            category: category,
+        });
+    } catch (err) {
+        console.log(err);
+        res.render.err = true
+        res.redirect("/admin/404");
+    }
     // } else {
     //     res.redirect("/admin/logout");
     // }
@@ -101,20 +101,20 @@ const category_edit_get = async (req, res) => {
 
 const category_edit = async (req, res) => {
     try {
-        if(req.files["main"]){
+        if (req.files["main"]) {
             const id = req.params.id;
             console.log("hello it here on the edit post");
             const main = req.files["main"][0];
-    
+
             // Do whatever you want with these files.
             console.log("Uploaded files:");
             console.log(main);
-    
+
             const {
                 Category_name,
             } = req.body;
-            const check=Categories.findOne({name:Category_name})
-            if(!check){
+            const check = Categories.findOne({ name: Category_name })
+            if (!check) {
                 const data = {
                     name: Category_name,
                     images: {
@@ -123,27 +123,27 @@ const category_edit = async (req, res) => {
                     timeStamp: Date.now(),
                 };
                 await Categories.updateOne({ _id: new ObjectId(id) }, { $set: data });
-               }
+            }
             console.log("name is " + Category_name);
-            
+
             res.redirect("/admin/categories");
-        }else{
+        } else {
             const id = req.params.id;
             console.log("hello it here on the edit post");
             const {
                 Category_name,
             } = req.body;
-    
+
             console.log("name is " + Category_name);
-            const check=Categories.findOne({name:Category_name});
-            if(!check){
+            const check = Categories.findOne({ name: Category_name });
+            if (!check) {
                 const data = {
                     name: Category_name,
                     timeStamp: Date.now(),
                 };
                 await Categories.updateOne({ _id: new ObjectId(id) }, { $set: data });
             }
-            
+
             res.redirect("/admin/categories");
         }
     } catch (err) {

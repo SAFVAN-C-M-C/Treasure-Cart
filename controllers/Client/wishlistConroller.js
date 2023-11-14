@@ -9,6 +9,7 @@ const addtoWishList=async(req,res)=>{
     try {
         const userId=req.session.userid
         const {  productId } = req.body;
+        console.log("body:",productId);
         const check = await Wishlist.findOne({ userId: userId });
         console.log(check);
         if(check!==null){

@@ -1,9 +1,9 @@
-const generateOTP=async ()=>{
-    try{
-        return (otp=`${Math.floor(100000+Math.random() * 900000)}`);
+const generateOTP = async () => {
+    try {
+        return (otp = `${Math.floor(100000 + Math.random() * 900000)}`);
     }
-    catch(err){ 
+    catch (err) {
         throw err;
     }
 }
-module.exports=generateOTP;
+module.exports = generateOTP;

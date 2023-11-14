@@ -54,6 +54,7 @@ const placeOrder = async (req, res) => {
     try {
         console.log("inside body", req.body);
         const userId = req.session.userid;
+        const username=req.session.name
         const amount = req.session.totalAmount;
         // console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",typeof amount);
         const user = await Users.findById(userId);
@@ -110,23 +111,25 @@ const placeOrder = async (req, res) => {
                 subject: "Your Orders!",
                 html: `<!DOCTYPE html>
                 <html lang="en">
+                
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Order Confirmation</title>
                     <style>
                         body {
-                            font-family: 'Arial', sans-serif;
-                            background-color: #f4f4f4;
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
                             margin: 0;
                             padding: 0;
+                            background-color: #f4f4f4;
                         }
                 
                         .container {
                             max-width: 600px;
                             margin: 20px auto;
-                            background-color: #fff;
                             padding: 20px;
+                            background-color: #fff;
                             border-radius: 8px;
                             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                         }
@@ -141,30 +144,56 @@ const placeOrder = async (req, res) => {
                 
                         .order-details {
                             margin-top: 20px;
-                            border-top: 1px solid #ddd;
+                            border-top: 2px solid #ddd;
                             padding-top: 10px;
                         }
                 
                         .footer {
                             margin-top: 20px;
+                            text-align: center;
                             color: #888;
+                        }
+                
+                        .logo {
+                            display: flex;
+                            justify-content: center;
+                            width: 100%;
+                        }
+                
+                        .logo img {
+                            width: 200px;
+                            height: auto;
                         }
                     </style>
                 </head>
+                
                 <body>
+                
                     <div class="container">
+                        <div class="logo">
+                            <img src="http://localhost:7000/static/images/logo.png" alt="img">
+                        </div>
                         <h1>Order Confirmation</h1>
-                        <p>Dear [Customer Name],</p>
-                        <p>Thank you for your order. We are currently processing it and will notify you once it has been shipped.</p>
+                        <p>Dear ${username},</p>
+                        <p>Thank you for your order. We're processing it and will notify you once it's shipped.</p>
                 
                         <div class="order-details">
                             <h2>Order Details</h2>
-                            <!-- Include order details here, such as itemized list, total, etc. -->
+                            <p><strong>Order ID:</strong> ${order._id}</p>
+                            <p><strong>Order Date:</strong> ${order.orderDate}</p>
+                            <p><strong>Total Amount:</strong> ${order.totalPrice}</p>
                         </div>
                 
-                        <p class="footer">If you have any questions, please contact our customer support at support@example.com.</p>
+                        <div class="footer">
+                            <p>Thank you for choosing Treasure Cart!</p>
+                            <p>For any queries contact <a href="mailto:
+                                        treasurecart05@gmail.com">
+                                    treasurecart05@gmail.com</a></p>
+                        </div>
                     </div>
+                
                 </body>
+                
                 </html>`
             }
             await sendEmail(mailOptions);
@@ -274,8 +303,8 @@ const verifypayment = async (req, res) => {
             );
             console.log("reciept", req.body.order.createdOrder.receipt);
             const updateOrderDocument = await Orders.findByIdAndUpdate(orderId, {
-                PaymentStatus: "Paid",
-                PaymentMethod: "Online",
+                paymentStatus: "Paid",
+                paymentMethod: "Online",
             });
             // console.log("hmac success");
             updateQuantity(req.session.items, req.session.cartId)

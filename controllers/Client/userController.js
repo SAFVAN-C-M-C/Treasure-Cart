@@ -11,6 +11,7 @@ const { ObjectId } = require('mongodb')
 const Brands = require("../../Models/brand")
 const Categories = require("../../Models/category")
 const Wishlist = require("../../Models/wishlist")
+const Orders = require("../../Models/order")
 
 
 
@@ -54,8 +55,41 @@ const home_logged = async (req, res) => {
             console.log(data);
             const product=await Products.find()
             const wishlists = await Wishlist.findOne({ userId: userId }).populate('products.productId');
-            const wishlist=wishlists.products
-            res.render("./User/home", { title: "Home", user: data,product,wishlist,logged:true })
+            let wishlist=[];
+            if(wishlists){
+                 wishlist=wishlists.products
+            }
+            const best = await Orders.aggregate([
+                {
+                  $unwind: "$items",
+                },
+                {
+                  $group: {
+                    _id: "$items.productId",
+                    totalCount: { $sum: "$items.quantity" },
+                  },
+                },
+                {
+                  $sort: {
+                    totalCount: -1,
+                  },
+                },
+                {
+                  $limit: 6,
+                },
+                {
+                  $lookup: {
+                    from: "products",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "productDetails",
+                  },
+                },
+                {
+                  $unwind: "$productDetails",
+                },
+              ]);
+            res.render("./User/home", { title: "Home", user: data,product,wishlist,best })
         } catch (error) {
             console.log(error);
             req.session.err = true
@@ -67,9 +101,39 @@ const home_logged = async (req, res) => {
             const data = null
             req.session.name = data
             console.log(data);
-            const product=await Products.find()
+            const product=await Products.find().limit(8)
             const wishlist=[]
-            res.render("./User/home", { title: "Home", user: data,product,wishlist,logged:false })
+            const best = await Orders.aggregate([
+                {
+                  $unwind: "$items",
+                },
+                {
+                  $group: {
+                    _id: "$items.productId",
+                    totalCount: { $sum: "$items.quantity" },
+                  },
+                },
+                {
+                  $sort: {
+                    totalCount: -1,
+                  },
+                },
+                {
+                  $limit: 6,
+                },
+                {
+                  $lookup: {
+                    from: "products",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "productDetails",
+                  },
+                },
+                {
+                  $unwind: "$productDetails",
+                },
+              ]);
+            res.render("./User/home", { title: "Home", user: data,product,wishlist,best })
         } catch (error) {
             console.log(error);
             req.session.err = true
@@ -407,7 +471,7 @@ const OtpConfirmation = async (req, res) => {
                     req.session.logged = true;
                     req.session.signotp = false
                     req.session.email = dataplus.email
-                    res.redirect("/home")
+                    res.redirect("/")
 
                 }
                 else {

@@ -1,19 +1,19 @@
-const bcrypt=require("bcrypt");
+const bcrypt = require("bcrypt");
 
-const hashOTP=async(data,saltRound=10)=>{
-    try{
-        const hashedData=await bcrypt.hash(data,saltRound);
+const hashOTP = async (data, saltRound = 10) => {
+    try {
+        const hashedData = await bcrypt.hash(data, saltRound);
         return hashedData
-    }catch(err){
+    } catch (err) {
         throw err;
     }
 }
-const verifyHashData=async (unhashed,hashed)=>{
-    try{
-        const match=await bcrypt.compare(unhashed,hashed);
+const verifyHashData = async (unhashed, hashed) => {
+    try {
+        const match = await bcrypt.compare(unhashed, hashed);
         return match;
-    }catch(err){
+    } catch (err) {
         throw err;
     }
 }
-module.exports={hashOTP,verifyHashData};
+module.exports = { hashOTP, verifyHashData };

@@ -16,6 +16,77 @@
         <%-include('../Alerts/LoginAlert')-%>
           <div class="py-3 py-md-5 bg-light">
             <div class="container">
+              <%if(best.length>0){%>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="mb-4">Our Best Products</h3>
+                </div>
+                <% best.forEach(product=> { %>
+                  <%product=product.productDetails%>
+                  <div class="col-md-4 mt-3 mb-3 ">
+
+                    <div class="product-card shadow-lg p-3 bg-body rounded-3">
+                      <% if (product.stock> 0) { %>
+                        <span class="bg-success z-3   text-white p-2 rounded ">In Stock</span>
+                        <% } else { %>
+                          <span class="bg-danger z-3 text-white p-2 rounded ">Out of Stock</span>
+
+                          <% } %>
+                            <a href="/product/details/<%= product._id%>" style="text-decoration: none;">
+                              <div class="d-flex justify-content-center mt-2 " >
+                                <img width="200px" height="200px"
+                                    src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                                    alt="">
+                              </div>
+                              <div class="product-card-body">
+                                <h5 class="product-name d-flex justify-content-center">
+                                  <%= product.name %>
+                                </h5>
+                                <div class="d-flex justify-content-center align-items-center ">
+                                  <span class="me-1 text-danger"><s>₹<%=product.basePrice%></s></span>
+                                  <h4 class="mb-1 me-1 text-success ">₹<%=product.descountedPrice%>
+                                  </h4>
+                                </div>
+                              </div>
+                            </a>
+                            <div class="mt-2 d-flex justify-content-around  ">
+                              <div class="mt-4">
+                                <%if(user){%>
+                                  <%if(product.stock>0){%>
+                                    <button onclick="addtoCart('<%= product._id %>')" class="btn btn-primary shadow-0"
+                                      type="button">Add to cart</button>
+                                    <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
+                                      data-product-id="<%= product._id %>">
+                                      <i
+                                        class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(product._id))) { %>text-danger<% } %>"></i>
+                                    </a>
+                                    <%}else{%>
+                                      <button onclick="showalert()" class="btn btn-primary shadow-0" type="button">Add to
+                                        cart</button>
+                                      <a href="#!" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
+                                        data-product-id="<%= product._id %>">
+                                        <i
+                                          class="fa fa-heart <% if (wishlist.find(item => item.productId.equals(product._id))) { %>text-danger<% } %>"></i>
+                                      </a>
+  
+                                      <%}%>
+                                  <%}else{%>
+                                    <button onclick="showwarning()" class="btn btn-primary shadow-0" type="button">Add to
+                                      cart</button>
+                                      <button onclick="showwarning()" class="btn btn-light  border px-2 pt-2 add-to-wishlist-button"
+                                      data-product-id="">
+                                      <i
+                                        class="fa fa-heart "></i>
+                                      </button>
+                                    <%}%>
+                              </div>
+                            </div>
+                    </div>
+                  </div>
+                  <% }); %>
+              </div>
+              <%}%>
+              <%if(product.length>0){%>
               <div class="row">
                 <div class="col-md-12">
                   <h3 class="mb-4">Explore</h3>
@@ -25,9 +96,10 @@
 
                     <div class="product-card shadow-lg p-3 bg-body rounded-3">
                       <% if (product.stock> 0) { %>
-                        <label class="stock bg-succes  ">In Stock</label>
+                        <span class="bg-success z-3   text-white p-2 rounded ">In Stock</span>
                         <% } else { %>
-                          <label class="stock bg-danger">Out of Stock</label>
+                          <span class="bg-danger z-3 text-white p-2 rounded ">Out of Stock</span>
+
                           <% } %>
                             <a href="/product/details/<%= product._id%>" style="text-decoration: none;">
                               <div class="product-card-img" style="padding: 30px;">
@@ -87,9 +159,12 @@
                   </div>
                   <% }); %>
               </div>
+              <%}%>
               
             </div>
           </div>
+        <script src="/static/js/productManupulation.js"></script>
+
           <%-include('../partials/footer')-%>
 
 <%-include('../layout/footer')-%>
