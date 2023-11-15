@@ -1,4 +1,3 @@
-require("../../util/otpindex")
 require("passport")
 require("../../config/passport")
 require("../../config/login-auth")
@@ -12,6 +11,7 @@ const Brands = require("../../Models/brand")
 const Categories = require("../../Models/category")
 const Wishlist = require("../../Models/wishlist")
 const Orders = require("../../Models/order")
+const Banner = require("../../Models/banner")
 
 
 
@@ -89,7 +89,14 @@ const home_logged = async (req, res) => {
                   $unwind: "$productDetails",
                 },
               ]);
-            res.render("./User/home", { title: "Home", user: data,product,wishlist,best })
+              const banner = await Banner.aggregate([
+                {
+                  $match: {
+                    status: "Active",
+                  },
+                },
+              ]);
+            res.render("./User/home", { title: "Home", user: data,product,wishlist,best,banner })
         } catch (error) {
             console.log(error);
             req.session.err = true
@@ -133,7 +140,14 @@ const home_logged = async (req, res) => {
                   $unwind: "$productDetails",
                 },
               ]);
-            res.render("./User/home", { title: "Home", user: data,product,wishlist,best })
+              const banner = await Banner.aggregate([
+                {
+                  $match: {
+                    status: "Active",
+                  },
+                },
+              ]);
+            res.render("./User/home", { title: "Home", user: data,product,wishlist,best ,banner})
         } catch (error) {
             console.log(error);
             req.session.err = true

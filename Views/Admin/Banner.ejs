@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/static/css/admin-head.css"/>
+  <link rel="stylesheet" href="/static/css/banner.css"/>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+<%-include('../partials/admin-sample-nav')-%>
+<div class="modal fade" id="addBanner" tabindex="-1" role="dialog" aria-labelledby="addBannerLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          
+      </div>
+      <div class="modal-body">
+        <form action="/admin/add-banner" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+              <label for="fullName" class="form-label">Banner Title</label>
+              <input type="text" class="form-control" name="title" id="fullName" placeholder="Enter Banner Tile" required />
+          </div>
+          upload a file in the ratio of 16:7
+          <div class="images d-flex justify-content-start">
+            
+            <input type="file" name="main" accept="image/*" id="main" required
+            onchange="previewImage('main', 'mn')">
+            <label for="main">
+      
+              <div class="img-main">
+                <img class="priview" src="/static/images/img-bg.jpg"  id="mn">
+              </div>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary " style="width: auto;height: 40px;border-radius: 12px;">Submit</button>
+      </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<%banner.forEach((data)=>{%>
+<div class="modal fade" id="deleteconfirmation<%=data._id%>" tabindex="-1" role="dialog" aria-labelledby="deleteconfirmationLabel<%=data._id%>" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          
+      </div>
+      <div class="modal-body">
+        Do you want to delete the <%=data.title%>?
+      </div>
+      <div class="modal-footer">
+        <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+        <a  class="btn btn-danger deletebtn" data-banner-id="<%=data._id%>">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+<%})%>
+<section class="main">
+  <div class="container">
+    <div class="row d-flex header">
+      <div class="col-6"><h2>Bannner</h2></div>
+      <div class="col-6 d-flex justify-content-end"><a data-bs-toggle="modal" data-bs-target="#addBanner" class="btn-custom">Add Banner</a></div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="products-main col-12">
+        <div class="search col-12">
+            <div class="d-flex justify-content-end align-items-center">
+              <form action="/admin/brand/search" method="post">
+                <div class="input-group">
+                  <div class="form-outline d-flex p-3">
+                    <input type="search" class="form-control" name="search" placeholder="Search">
+                        <button id="search-button" type="submit" class="btn btn-custom  mx-2" style="width: 40px;height: 40px;border-radius: 6px;">
+                          
+                          <lord-icon
+                          src="https://cdn.lordicon.com/rlizirgt.json"
+                          trigger="hover"
+                          colors="primary:#ffffff"
+                          style="width:25px;height:25px">
+                      </lord-icon>
+                        </button>
+                  </div>
+                  
+                </div>
+              </form>
+            </div>
+            <%if(Array.isArray(banner)){%>
+            <table class="table  table-shadow mt-3">
+                <thead>
+                    <tr>
+                        <th class="">Banner</th>
+                        <th class="text-center ">Status</th>
+                        <th class="text-center">Updated Date</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <%banner.forEach((data)=>{%>
+                <tbody>
+                    
+                        <tr style="height: 250;">
+                          <td><div class="table-data1"><img src="<%=data.image?'/static/product-images/'+data.image:'/static/images/img-bg.jpg'%>" style="height:100px;width: 229px;border-radius: 15px;  margin-right: 10px;"><span style="font-family: 700;font-size: 1.2rem;"><%=data.title%></span></div> </td>
+                          <td>
+                            <div class="table-data" st>
+                              <%if(data.status==="Active"){%>
+                                <span data-banner-id="<%=data._id%>" class="bg-success activebtn text-white p-2 rounded-2 ">Active</span>
+                              <%}else{%>
+                                <span data-banner-id="<%=data._id%>" class="bg-danger activebtn text-white p-2 rounded-2 ">Inacitve</span>
+                              <%}%>
+                            </div>
+                          </td>
+                          <td> <div class="table-data">
+                            <% let dt=new Date(data.timeStamp)%>
+                            <%=dt.getDate()%>/<%=dt.getMonth()+1%>/<%=dt.getFullYear()%>
+                          </div> </td>
+                          <td>
+                            <div class="table-data">
+                              
+                            <a  data-bs-toggle="modal" data-bs-target="#deleteconfirmation<%=data._id%>">
+                            <lord-icon
+                              src="https://cdn.lordicon.com/exkbusmy.json"
+                              trigger="morph"
+                              colors="outline:#121331,primary:#646e78,secondary:#4bb3fd,tertiary:#ebe6ef"
+                              state="morph-trash-in"
+                              style="width:25px;height:25px">
+                          </lord-icon></a>
+                            </div>
+                          </td>
+                        </tr>
+                    
+                </tbody>
+                <%})%>
+
+
+            </table>
+            <%}else{%>
+              <h1>nothing here to see</h1>
+            <%}%>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<hr>
+<br>
+<div class="col-lg-12 d-flex justify-content-end" >
+  <nav aria-label="page navigation example ">
+      <ul class="pagination" style="margin-right: 40px;">
+        <%for(let i=1;i<=count;i++){%>
+          <li class="page-item"><a class="page-link" href="/admin/banner?page=<%=i%>"><%=i%></a></li>
+        <%}%>
+
+      </ul>
+  </nav>
+</div>
+
+<style>
+    a{
+    text-decoration: none;
+    color: #191919;
+  }
+</style>
+<script>
+  
+    function previewImage(inputId, imgId) {
+        const input = document.getElementById(inputId);
+        const img = document.getElementById(imgId);
+        // const labeltext = document.getElementById(label)
+        // Check if a file was selected
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          // Set up a function to run when the image is loaded
+          reader.onload = function (e) {
+            img.src = e.target.result;
+            labeltext.style.display = 'none'
+          };
+
+          // Read the selected file as a data URL and load it into the img tag
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          // If no file was selected or the browser doesn't support FileReader, clear the image
+          img.src = "";
+        }
+      }
+
+
+
+      document.querySelectorAll(".deletebtn").forEach((button)=>{
+        button.addEventListener("click",function (event){
+          const id=this.getAttribute('data-banner-id');
+          $.ajax({
+            url:"/admin/banner-delete",
+            method:"POST",
+            data:{
+              id:id
+            },
+            success:(response)=>{
+              if(response.success){
+                window.location.reload()
+              }
+              else{
+                window.location.reload()
+              }
+            }
+          })
+        })
+      });
+      //togle active inactive
+      document.querySelectorAll(".activebtn").forEach((button)=>{
+        button.addEventListener("click",function (event){
+          const id=this.getAttribute('data-banner-id');
+          $.ajax({
+            url:"/admin/banner-active",
+            method:"PUT",
+            data:{
+              id:id
+            },
+            success:(response)=>{
+              if(response.success){
+                window.location.reload()
+              }
+              else{
+                window.location.reload()
+              }
+            }
+          })
+        })
+      });
+      
+</script>
+<%-include('../layout/footer')-%>

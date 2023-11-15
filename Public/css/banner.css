@@ -1,0 +1,109 @@
+.images {
+  width: 100%;
+  background-color: #fff;
+  height: 200px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.images input {
+  display: none;
+}
+.images label {
+    width: 100%;
+  }
+.priview {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+}
+input {
+  outline: none;
+  border: none;
+}
+.textfield {
+  width: 50%;
+  height: 50px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  border: 1px solid black;
+  padding: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.textfield input {
+  width: 98%;
+  background-color: transparent;
+}
+.header span {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.img-main {
+  /* height: 400px; */
+  width: 100%;
+  height: 150px;
+  border-radius: 15px;
+  background-color: #f0f0f0;
+}
+.action-buttons {
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 50%;
+}
+.main {
+  width: 100%;
+  margin-top: 50px;
+  /* padding: 15px; */
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+a {
+  text-decoration: none;
+  cursor: pointer;
+
+}
+.activebtn{
+    cursor: pointer;
+}
+.table-data {
+  height: 115px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.table-data1 {
+  height: 115px;
+  width: 100%;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+}
+.btn-custom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 50px;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  background-image: linear-gradient(to right, #444bef, #7b7ee3, #444bef);
+  background-size: 200%;
+  font-size: 0.7rem;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  /* margin: 1rem 0; */
+  cursor: pointer;
+  transition: ease 1s;
+}
+.btn-custom:hover {
+  background-position: right;
+}

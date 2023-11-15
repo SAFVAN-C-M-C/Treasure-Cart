@@ -4,21 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </head>
 <body>
-    <form action="/admin/sample" method="post">
-        <input type="text" name="name" placeholder="name">
-        <input type="text" name="images" placeholder="images">
-        <input type="text" name="description" placeholder="description">
-        <input type="number" name="stock" placeholder="stock">
-        <input type="name" name="basePrice" placeholder="basePrice">
-        <input type="number" name="descountedPrice" placeholder="descountedPrice">
-        <!-- <input type="text" name="variation" placeholder="variation"> -->
-        <!-- <input type="text" name="timeStamp" placeholder="name"> -->
-        <input type="text" name="brandid" placeholder="brandid">
-        <input type="text" name="categoryId" placeholder="categoryId">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-pause="false">
+        <div class="carousel-indicators">
+        <%if(banner.length>0){%>
+        <%banner.forEach((data,i)=>{%>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="<%=i%>" <%if(i==0){%>class="active"<%}%> aria-current="true" aria-label="Slide <%=++i%>"></button>
+        <%})%>
+        <%}else{%>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <%}%>
+        
+        </div>
+        <div class="carousel-inner">
+        <%if(banner.length>0){%>
+            <%banner.forEach((data,i)=>{%>
+                <div class="carousel-item <%if(i==0){%>active<%}%>">
+                    <img src="<%=data.image?'/static/product-images/'+data.image:'/static/images/img-bg.jpg'%>" class="d-block w-100" alt="...">
+                </div>
+            <%})%>
+        <%}else{%>
+          <div class="carousel-item active">
+            <img src="http://localhost:7000/static/product-images/1700029196994-12733d.png" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="http://localhost:7000/static/product-images/1700029165937-644aa9.png" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="http://localhost:7000/static/product-images/1700028048284-8e9f31.png" class="d-block w-100" alt="...">
+          </div>
+        <%}%>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <!-- <script>
+        const myCarouselElement = document.querySelector('#carouselExampleIndicators')
 
-        <input type="submit">
-    </form>
+const carousel = new bootstrap.Carousel(myCarouselElement, {
+  interval: 2000,
+  pause:false
+})
+      </script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 </html>

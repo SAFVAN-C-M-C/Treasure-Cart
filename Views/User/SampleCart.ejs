@@ -137,9 +137,8 @@
                     </a>
                     <div class="collapse" id="collapseExample">
                       <div class="mt-3">
-                        <input type="text" name="" id="discount_code1" class="form-control font-weight-bold"
+                        <input type="text" name="" id="discount_code" class="form-control font-weight-bold"
                           placeholder="Enter the discount code">
-                        <small id="error_trw" class="text-dark mt-3">code is thapa</small>
                       </div>
                       <button class="btn btn-primary btn-sm mt-3" onclick="discount_code()">Apply</button>
                     </div>
@@ -147,12 +146,16 @@
                 </div>
               </div>
               <!-- discount code ends -->
+              <%if(expectedDeliveryDate!==null){%>
               <div class="mt-3 shadow p-3 mb-lg-5 bg-white">
                 <div class="pt-4">
                   <h5 class="mb-4">Expected delivery date</h5>
-                  <p>July 27th 2020 - July 29th 2020</p>
+                  <p>
+                    <%=expectedDeliveryDate%>
+                  </p>
                 </div>
               </div>
+              <%}%>
             </div>
           </div>
         </div>

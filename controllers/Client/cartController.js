@@ -2,6 +2,8 @@ const CART = require("../../Models/cart");
 const Products = require("../../Models/product");
 const Users = require("../../Models/user");
 const { ObjectId } = require('mongodb');
+const moment = require("moment");
+
 // const { getUserCartData, getCartCount, getTotalAmount } = require("../../helper/cart-helper");
 
 
@@ -37,7 +39,7 @@ const get_cart = async (req, res) => {
             // console.log(data[0].productId.images[0].mainimage, "============================");
             console.log(data);
             req.session.totalAmount=total
-
+            let today=moment(new Date()).format("lll")
             res.render("./User/SampleCart", {
                 user: user,
                 data: data,
@@ -47,6 +49,7 @@ const get_cart = async (req, res) => {
                 totalQuantity: totalQuantity,
                 coupon: coupon,
                 total: total,
+                expectedDeliveryDate:moment().add(7, "days").format("ddd, MMM D, YYYY"),
             });
         } else {
             data = null
@@ -56,7 +59,8 @@ const get_cart = async (req, res) => {
                 gstAmount: 0,
                 totalQuantity: 0,
                 coupon: '',
-                total: 0, });
+                total: 0,
+                expectedDeliveryDate:null });
         }
     } catch (err) {
         console.log("Error found in User cart " + err);

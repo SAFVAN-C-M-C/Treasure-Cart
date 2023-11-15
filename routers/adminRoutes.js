@@ -1,16 +1,19 @@
 const express = require("express")
 const admin = express.Router();
 const adminController = require("../controllers/Admin/adminController");
+const bannerController = require("../controllers/Admin/bannerController")
 const brandController = require("../controllers/Admin/brandController");
 const categoryController = require("../controllers/Admin/categoryController");
 const productController = require("../controllers/Admin/productController");
 const customerController = require("../controllers/Admin/customerController");
 const orderController = require("../controllers/Admin/orderController");
+const couponcontroller = require("../controllers/Admin/couponcontroller");
 
 const Products = require("../Models/product");
-const { upload, uploadFields, categoryFields } = require("../util/upload");
+const { upload, uploadFields, categoryFields, banner } = require("../util/upload");
 const { verifyadmin, existingadmin } = require("../middlewares/adminAuth");
 const { err } = require("../middlewares/err");
+const Banner = require("../Models/banner");
 
 
 
@@ -91,7 +94,17 @@ admin.post("/customers/search", verifyadmin, customerController.customers_search
 // orders===========================================================================================================================================
 admin.get("/orders", verifyadmin, orderController.getOrders)
 admin.post('/updateStatus/:orderId', verifyadmin, orderController.updateOrderStatus)
-// ===========================================================================================================================================
+
+
+//Banner ===========================================================================================================================================
+
+admin.get("/banner", verifyadmin, bannerController.getBanner)
+admin.post("/add-banner", upload.fields(banner), bannerController.banner_add);
+admin.post("/banner-delete", verifyadmin, bannerController.deleteBanner);
+admin.put("/banner-active", verifyadmin, bannerController.banneractive)
+//Coupon ===========================================================================================================================================
+
+admin.get("/coupon", verifyadmin, couponcontroller.getCoupon)
 
 
 
@@ -112,12 +125,21 @@ admin.post('/updateStatus/:orderId', verifyadmin, orderController.updateOrderSta
 
 
 
+admin.get("/sample", async (req, res) => {
+  try {
 
-
-
-
-admin.get("/sample", (req, res) => {
-  res.render("./Admin/sample1")
+    const banner = await Banner.aggregate([
+      {
+        $match: {
+          status: "Active",
+        },
+      },
+    ]);
+    
+    res.render("./Admin/sample1",{banner})
+  } catch (err) {
+    console.log(err);
+  }
 })
 admin.post("/sample", async (req, res) => {
   console.log(req.body);

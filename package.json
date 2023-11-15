@@ -7,7 +7,7 @@
     "start": "nodemon --inspect App.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "SAFVAN CMC",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",

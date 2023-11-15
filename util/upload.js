@@ -29,4 +29,7 @@ const categoryFields = [
 const profile = [
   { name: "main", maxCount: 1 },
 ]
-module.exports = { upload, uploadFields, categoryFields, profile }
+const banner = [
+  { name: "main", maxCount: 1 },
+]
+module.exports = { upload, uploadFields, categoryFields, profile,banner }
