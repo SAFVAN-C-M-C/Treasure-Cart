@@ -22,8 +22,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            <span aria-hidden="true">&times;</span>
-          </button>
+            
         </div>
         <div class="modal-body">
           Do you want to delete the <%=data.name%>?
@@ -102,12 +101,12 @@
 
                     <td><div class="table-data"><img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%;"><%=data.name%> </div> </td>
                     <td> <div class="table-data"><%=data.stock%></div> </td>
-                    <td> <div class="table-data">₹<%=data.basePrice%></div> </td>
-                    <td> <div class="table-data">₹<%=data.descountedPrice%></div> </td>
-                    <td> <div class="table-data"><%if(data.stock>0){%>
-                      <h6 class="text-success">In stock</h6>
+                    <td> <div class="table-data">₹<%=data.basePrice.toLocaleString()%></div> </td>
+                    <td> <div class="table-data">₹<%=data.descountedPrice.toLocaleString()%></div> </td>
+                    <td> <div class="table-data"><%if(data.status==="Active"){%>
+                      <h6 class="text-success">Active</h6>
                       <%}else{%>
-                      <h6 class="text-danger">out of stock</h6>
+                      <h6 class="text-danger">Blocked</h6>
                         <%}%></div> </td>
                     <td>
                         <div class="table-data">
@@ -124,6 +123,7 @@
                           colors="outline:#121331,primary:#646e78,secondary:#ebe6ef,tertiary:#4cb4fd"
                           style="width:25px;height:25px">
                       </lord-icon></a>
+                      <%if(data.status==="Active"){%>
                       <a  data-bs-toggle="modal" data-bs-target="#deleteconfirmation<%=data._id%>">
                       <lord-icon
                         src="https://cdn.lordicon.com/exkbusmy.json"
@@ -132,6 +132,11 @@
                         state="morph-trash-in"
                         style="width:25px;height:25px">
                     </lord-icon></a>
+                    <%}else{%>
+                      <a href="/admin/product/active/<%=data._id%>">
+                        <iconify-icon icon="material-symbols:upload" style="color: #1aa260;" width="25" height="25"></iconify-icon>
+                      </a>
+                      <%}%>
                       </div>
                       
                     </td>

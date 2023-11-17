@@ -1,3 +1,7 @@
+function relod(){
+  console.log("gsdfhfh");
+  window.location.reload();
+}
 function addtoCart(productId) {
     var element = document.getElementById("toastCart");
     var option = {
@@ -7,7 +11,7 @@ function addtoCart(productId) {
     }
     var toastElement = new bootstrap.Toast(element, option)
 
-    console.log("hello");
+//    console.log("hello");
 
     $.ajax({
       url: '/addtoCart',
@@ -17,16 +21,26 @@ function addtoCart(productId) {
       },
       success: function (response) {
         // alert("product added to the cart")
-        // window.location.reload();
-        console.log(response);
+        if(response.success){
+          console.log(response);
 
-        toastElement.show()
+        // toastElement.show()
+        relod();
+        setTimeout(function() {
+          console.log("after 2000");
+          relod()
+      }, 2000);
+        }else{
+          console.log("no reponse")
+          relod()
+        }
+
       },
       error: function (error) {
         console.error('Error while product added to the cart:', error);
       }
     });
-
+    window.location.reload();
   }
   function showalert() {
     var element = document.getElementById("alertstock");

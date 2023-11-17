@@ -270,8 +270,10 @@
         if (response.success) {
           console.log('response got')
           window.location="/order-sucesss";
+          $("#cartCount").text('('+parseFloat(response.cartCount)+')');
         } else {
           console.log('going to initial')
+          $("#cartCount").text('('+parseFloat(response.cartCount)+')');
           console.log(response.createdOrder)
           console.log(response.order)
           handlePayNow(response)

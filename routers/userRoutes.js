@@ -13,10 +13,11 @@ require("../config/login-auth")
 //models
 const Users = require("../Models/user");
 //middlewares
-const { verifyUser, existingUser, otpverify, passrest, isBlocked } = require("../middlewares/userAuth");
+const { verifyUser, existingUser, otpverify, passrest, isBlocked, verifyCheckout } = require("../middlewares/userAuth");
 const { err } = require("../middlewares/err");
 //utility
-const { profile, upload } = require("../util/upload");
+const {   upload_profileImage,  profile, } = require("../util/upload");
+const { calculateCartCount } = require("../middlewares/cartTotals");
 
 
 
@@ -40,7 +41,7 @@ user.post("/forgot-pass", userControl.forgotPass)
 
 //home==================================================================================
 
-user.get("/", isBlocked, userControl.home_logged)
+user.get("/", isBlocked,calculateCartCount, userControl.home_logged)
 
 //logout==================================================================================
 
@@ -48,57 +49,57 @@ user.get("/logout", userControl.logout)
 
 //products==================================================================================
 
-user.get("/product/details/:id", isBlocked, productController.get_product_details)
-user.get("/products", isBlocked, productController.get_product)
-user.post("/filter", isBlocked, productController.filter)
+user.get("/product/details/:id", isBlocked,calculateCartCount, productController.get_product_details)
+user.get("/products", isBlocked,calculateCartCount, productController.get_product)
+user.post("/filter", isBlocked,calculateCartCount, productController.filter)
 
 
 //contact us==================================================================================
 
-user.get("/contact-us", verifyUser, isBlocked, userControl.get_contactUs)
+user.get("/contact-us", verifyUser, isBlocked,calculateCartCount, userControl.get_contactUs)
 
 //profile==================================================================================
 
-user.get('/profile', verifyUser, isBlocked, userControl.get_profile)
-user.post('/edit', upload.fields(profile), verifyUser, isBlocked, userControl.edit_profile)
+user.get('/profile', verifyUser, isBlocked,calculateCartCount, userControl.get_profile)
+user.post('/edit', upload_profileImage.fields(profile), verifyUser, isBlocked,calculateCartCount, userControl.edit_profile)
 
 
 //wishlist==================================================================================
 
-user.get("/wishlist", verifyUser, isBlocked, wishlistController.get_wishlist)
-user.post('/wishlist', verifyUser, isBlocked, wishlistController.addtoWishList)
-user.post('/wishlistdelete/', verifyUser, isBlocked, wishlistController.deletefromWishlist)
+user.get("/wishlist", verifyUser, isBlocked,calculateCartCount, wishlistController.get_wishlist)
+user.post('/wishlist', verifyUser, isBlocked,calculateCartCount, wishlistController.addtoWishList)
+user.post('/wishlistdelete/', verifyUser, isBlocked,calculateCartCount, wishlistController.deletefromWishlist)
 
 //manage address==================================================================================
 
-user.get("/manage-address", verifyUser, isBlocked, userControl.get_manageAddress)
-user.post("/addAddress", verifyUser, isBlocked, userControl.addAddress)
+user.get("/manage-address", verifyUser, isBlocked,calculateCartCount, userControl.get_manageAddress)
+user.post("/addAddress", verifyUser, isBlocked,calculateCartCount, userControl.addAddress)
 
 //order==================================================================================
 
 
-user.get("/order-sucesss", verifyUser, isBlocked, orderController.getOrderSuccess)
-user.get("/order-history", verifyUser, isBlocked, orderController.orderHistory)
-user.get("/cancelorder/:orderId", verifyUser, isBlocked, orderController.cancelorder)
+user.get("/order-sucesss",verifyCheckout, verifyUser, isBlocked,calculateCartCount, orderController.getOrderSuccess)
+user.get("/order-history", verifyUser, isBlocked,calculateCartCount, orderController.orderHistory)
+user.get("/cancelorder/:orderId", verifyUser, isBlocked,calculateCartCount, orderController.cancelorder)
 //explore==================================================================================
 
-user.get("/explore", verifyUser, isBlocked, userControl.get_Explore)
+user.get("/explore", verifyUser, isBlocked,calculateCartCount, userControl.get_Explore)
 
 //cart==================================================================================
 
-user.get("/cart", verifyUser, isBlocked, cartConrller.get_cart)
+user.get("/cart", verifyUser, isBlocked,calculateCartCount, cartConrller.get_cart)
 // user.get("/addToCart/:prodId",verifyUser,isBlocked,cartConrller.addTocart);
-user.post("/addtoCart", verifyUser, isBlocked, cartConrller.addtoCart)
-user.post('/updatequantity', verifyUser, isBlocked, cartConrller.updateQuantity)
-user.post('/removefromcart', verifyUser, isBlocked, cartConrller.removeFromCart)
+user.post("/addtoCart", verifyUser, isBlocked,calculateCartCount, cartConrller.addtoCart)
+user.post('/updatequantity', verifyUser, isBlocked,calculateCartCount, cartConrller.updateQuantity)
+user.post('/removefromcart', verifyUser, isBlocked,calculateCartCount, cartConrller.removeFromCart)
 
 //checkout==================================================================================
+user.get("/checkout-req",verifyUser,isBlocked,userControl.setCheckout)
+user.get("/checkout", verifyCheckout,verifyUser, isBlocked,calculateCartCount, userControl.getcheckout);
+user.post("/checkout", verifyCheckout,verifyUser, isBlocked,calculateCartCount, orderController.placeOrder)
+user.post("/verifyPayment",verifyCheckout, verifyUser, isBlocked,calculateCartCount, orderController.verifypayment)
 
-user.get("/checkout", verifyUser, isBlocked, userControl.getcheckout);
-user.post("/checkout", verifyUser, isBlocked, orderController.placeOrder)
-user.post("/verifyPayment", verifyUser, isBlocked, orderController.verifypayment)
-
-user.post("/addAddress-Checkout", verifyUser, isBlocked, userControl.addAddressCheckout)
+user.post("/addAddress-Checkout", verifyUser, isBlocked,calculateCartCount, userControl.addAddressCheckout)
 
 //reset password==================================================================================
 

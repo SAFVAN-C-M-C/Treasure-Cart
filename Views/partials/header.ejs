@@ -5,7 +5,8 @@
     <a href="/wishlist" class="d-flex align-items-center"><iconify-icon icon="mdi:heart" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Wish List</span></a>
     <a href="/profile" class="d-flex align-items-center"><iconify-icon icon="ic:baseline-person" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">My Account</span></a>
     <a href="/order-history" class="d-flex align-items-center"><iconify-icon icon="fa-solid:shipping-fast" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">My Account</span></a>
-
+    <a href="/cart" class="d-flex align-items-center"><iconify-icon icon="mdi:cart" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">My Cart</span></a>
+    <a href="/wallet" class="d-flex align-items-center"><iconify-icon icon="solar:wallet-bold" style="color:#787878 ;" width="25" height="25"></iconify-icon><span class="mx-2">My Wallet</span></a>
     <a href="/contact-us" class="d-flex align-items-center"><iconify-icon icon="bx:support" style="color: #787878;" width="25" height="25"></iconify-icon><span class="mx-2">Contact Us</span></a>
 </div>
 <style>
@@ -37,26 +38,41 @@
                 </div>
                 <div class="col-8 col-sm-6 col-md-5 my-auto">
                     <ul class="nav justify-content-end">
-
                         <li class="nav-item">
                             <%if(user){%>
-                                <a class="nav-link" href="/cart">
-                                    <i class="fa fa-shopping-cart"></i>
+                                <!-- <button type="button" class="btn btn-secondary" >
+                                    Popover on bottom
+                                  </button> -->
+                                  
+                                <a class="nav-link"data-bs-container="body" data-bs-title="Wallet" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Available Balance: 0 " >
+                                    <iconify-icon icon="solar:wallet-bold" style="color: white;" width="25" height="25"></iconify-icon>
                                 </a>
                                 <%}else{%>
                                     <a class="nav-link"  onclick="showwarning()">
-                                        <i class="fa fa-shopping-cart"></i>
+                                        <iconify-icon icon="solar:wallet-bold" style="color: white;" width="25" height="25"></iconify-icon>
+                                    </a>
+                                    <%}%>
+                        </li>
+                        <li class="nav-item">
+                            <%if(user){%>
+                                <a class="nav-link" href="/cart">
+                                    <iconify-icon icon="mdi:cart" style="color: white;" width="25" height="25"></iconify-icon><span id="cartCount">(<%= cartCount ? cartCount : 0 %>)</span>
+
+                                </a>
+                                <%}else{%>
+                                    <a class="nav-link"  onclick="showwarning()">
+                                        <iconify-icon icon="mdi:cart" style="color: white;" width="25" height="25"></iconify-icon>(0)
                                     </a>
                                     <%}%>
                         </li>
                         <li class="nav-item">
                             <%if(user){%>
                                 <a class="nav-link" href="/wishlist">
-                                    <i class="fa fa-heart"></i>
+                                    <iconify-icon icon="ph:heart-fill" style="color: white;" width="25" height="25"></iconify-icon>
                                 </a>
                                 <%}else{%>
                                     <a class="nav-link" onclick="showwarning()">
-                                        <i class="fa fa-heart"></i>
+                                        <iconify-icon icon="ph:heart-fill" style="color: white;" width="25" height="25"></iconify-icon>
                                     </a>
                                     <%}%>
                         </li>
@@ -122,6 +138,8 @@
 </div>
 
 <script>
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
     function openNav() {
   document.getElementById("mySidenav").style.display = "block";
 }

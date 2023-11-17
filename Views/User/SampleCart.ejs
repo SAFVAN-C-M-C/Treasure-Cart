@@ -113,18 +113,18 @@
                 </div>
                 <div class="price_indiv d-flex justify-content-between">
                   <p>Sub Total</p>
-                  <p>₹<span id="subtotalAmount"><%=subtotal%></span></p>
+                  <p>₹<span id="subtotalAmount"><%=parseFloat(subtotal).toLocaleString()%></span></p>
                 </div>
                 <div class="price_indiv d-flex justify-content-between">
                   <p>Tax</p>
-                  <p>₹<span id="gstAmount"><%=gstAmount%></span></p>
+                  <p>₹<span id="gstAmount"><%=parseFloat(gstAmount).toLocaleString()%></span></p>
                 </div>
                 <hr />
                 <div class="total-amt d-flex justify-content-between font-weight-bold">
-                  <p>The total amount of (including GST)</p>
-                  <p>₹<span id="totalPrice"><%=total%></span></p>
+                  <p>The total amount (including GST)</p>
+                  <p>₹<span id="totalPrice" class="text-success " style="font-size: 1.2rem;font-weight: 800;"><%=parseFloat(total).toLocaleString()%>/-</span></p>
                 </div>
-                <a href="/checkout" class="btn btn-primary text-uppercase">Checkout</a>
+                <a href="/checkout-req" class="btn btn-primary text-uppercase">Checkout</a>
               </div>
               <!-- discount code part -->
               <div class="discount_code mt-3 shadow">
@@ -202,10 +202,10 @@
             success: function (response) {
               console.log("Response from the server:", response);
 
-              $('#subtotalAmount').text(+ response.subtotal.toFixed(2));
-              $('#gstAmount').text( + response.gstAmount.toFixed(2));
+              $('#subtotalAmount').text(parseFloat(response.subtotal).toLocaleString());
+              $('#gstAmount').text( parseFloat(response.gstAmount).toLocaleString());
               $('#totalQuantityValue').text(response.totalQuantity);
-              $('#totalPrice').text(+ response.total.toFixed(2)+'/-');
+              $('#totalPrice').text(parseFloat(response.total).toLocaleString());
 
             }
           });

@@ -53,12 +53,21 @@ const home_logged = async (req, res) => {
             const data = find.userName
             req.session.name = data
             console.log(data);
-            const product=await Products.find()
-            const wishlists = await Wishlist.findOne({ userId: userId }).populate('products.productId');
-            let wishlist=[];
-            if(wishlists){
-                 wishlist=wishlists.products
-            }
+            // const product=await Products.find({status})
+            const product=await Products.aggregate([
+                {
+                    $match: {
+                        status: "Active",
+                    },
+                    
+                },{
+                    $limit:8,
+                }
+            ])
+            const wishlists = await Wishlist.findOne({ userId: userId });
+            
+            let wishlist=wishlists?wishlists.products:[];
+            
             const best = await Orders.aggregate([
                 {
                   $unwind: "$items",
@@ -75,7 +84,7 @@ const home_logged = async (req, res) => {
                   },
                 },
                 {
-                  $limit: 6,
+                  $limit: 3,
                 },
                 {
                   $lookup: {
@@ -88,7 +97,13 @@ const home_logged = async (req, res) => {
                 {
                   $unwind: "$productDetails",
                 },
+                {
+                  $match: {
+                    "productDetails.status": "Active",
+                  },
+                },
               ]);
+              
               const banner = await Banner.aggregate([
                 {
                   $match: {
@@ -96,7 +111,7 @@ const home_logged = async (req, res) => {
                   },
                 },
               ]);
-            res.render("./User/home", { title: "Home", user: data,product,wishlist,best,banner })
+            res.render("./User/home", { title: "Home", user: data,product,wishlist,best,banner,cartCount:req.session.cartCount })
         } catch (error) {
             console.log(error);
             req.session.err = true
@@ -108,7 +123,16 @@ const home_logged = async (req, res) => {
             const data = null
             req.session.name = data
             console.log(data);
-            const product=await Products.find().limit(8)
+            const product=await Products.aggregate([
+                {
+                    $match: {
+                        status: "Active",
+                    },
+                    
+                },{
+                    $limit:8,
+                }
+            ])
             const wishlist=[]
             const best = await Orders.aggregate([
                 {
@@ -126,7 +150,7 @@ const home_logged = async (req, res) => {
                   },
                 },
                 {
-                  $limit: 6,
+                  $limit: 3,
                 },
                 {
                   $lookup: {
@@ -138,6 +162,11 @@ const home_logged = async (req, res) => {
                 },
                 {
                   $unwind: "$productDetails",
+                },
+                {
+                  $match: {
+                    "productDetails.status": "Active",
+                  },
                 },
               ]);
               const banner = await Banner.aggregate([
@@ -156,17 +185,6 @@ const home_logged = async (req, res) => {
       }
     }
 
-
-
-
-//=================================================================================================================
-
-
-
-//=================================================================================================================
-
-
-
 //=================================================================================================================
 
 const get_Explore = (req, res) => {
@@ -178,15 +196,12 @@ const get_Explore = (req, res) => {
         console.log(err);
     }
 }
-//=================================================================================================================
-
-
 
 //=================================================================================================================
 
 const get_contactUs = (req, res) => {
     try {
-        res.render("./User/contact-us")
+        res.render("./User/contact-us",{cartCount:req.session.cartCount})
     } catch (err) {
         req.session.err = true
         res.redirect("/404")
@@ -200,16 +215,13 @@ const get_profile = async (req, res) => {
         const UserId = req.session.userid;
         const UserData = await USER.findOne({ _id: UserId })
         console.log(UserData.dob);
-        res.render("./User/profile", { user, UserData })
+        res.render("./User/profile", { user, UserData ,cartCount:req.session.cartCount})
     } catch (err) {
         req.session.err = true
         res.redirect("/404")
         console.log(err);
     }
 }
-//=================================================================================================================
-
-
 
 //=================================================================================================================
 const get_manageAddress = async (req, res) => {
@@ -219,7 +231,7 @@ const get_manageAddress = async (req, res) => {
         const UserData = await USER.findOne({ _id: UserId })
         const address = UserData.address;
         console.log(address);
-        res.render("./User/address-manage", { user, UserData, address })
+        res.render("./User/address-manage", { user, UserData, address,cartCount:req.session.cartCount })
     } catch (err) {
         req.session.err = true
         res.redirect("/404")
@@ -227,7 +239,7 @@ const get_manageAddress = async (req, res) => {
     }
 }
 
-// ===================================================
+// =============================================================================
 const addAddress = async (req, res) => {
     try {
         const userId = req.session.userid
@@ -248,7 +260,7 @@ const addAddress = async (req, res) => {
 
     }
 }
-// ===================================================
+// ============================================================================
 const addAddressCheckout = async (req, res) => {
     try {
         const userId = req.session.userid
@@ -542,7 +554,11 @@ const error_get = (req, res) => {
 }
 //=================================================================================================================
 
-
+//set checkout
+const setCheckout= (req,res)=>{
+    req.session.checkout=true;
+    res.redirect("/checkout");
+}
 //get check out
 const getcheckout = async (req, res) => {
     try {
@@ -551,7 +567,7 @@ const getcheckout = async (req, res) => {
         const data = await USER.findOne({ _id: userId })
         const Address = data.address;
         console.log(Address);
-        res.render("./User/checkout", { user, Address });
+        res.render("./User/checkout", { user, Address,cartCount:req.session.cartCount });
     } catch (err) {
         console.log(err);
     }
@@ -624,5 +640,6 @@ module.exports = {
     getcheckout,
     edit_profile,
     addAddress,
+    setCheckout,
     addAddressCheckout
 }

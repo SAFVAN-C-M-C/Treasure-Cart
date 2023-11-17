@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Treassure Cart</title>
     <link rel="stylesheet" href="/static/css/admin-head.css" />
-    <link rel="stylesheet" href="/static/css/category.css" />
+    <link rel="stylesheet" href="/static/css/orders.css" />
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -155,9 +155,27 @@
                                                                     <%= orderDate.toLocaleTimeString([], {
                                                                         hour: '2-digit' , minute: '2-digit' }) %>
                                                 </td>
-                                                <td><%if(data.status !== 'Cancelled') { %>
+                                                <td>
+                                                    <%if(data.status !== 'Cancelled') { %>
                                                     <% const currentStatus=data.status || 'Order Placed' ; %>
-                                                        <select class="form-select" id="statusSelect<%= data._id %>"
+                                                        <select <%if(currentStatus==='Delivered'||currentStatus==='Rejected'){%>disabled<%}%>
+                                                         class="form-select  
+                                                         <%if(currentStatus==='Order Placed'){%>bg-info text-white<%}%>
+                                                         <%if(currentStatus==='Shipped'){%>bg-primary text-white<%}%>
+                                                         <%if(currentStatus==='Shipped'){%>bg-primary text-white<%}%>
+                                                         <%if(currentStatus==='Delivered'){%>bg-success text-white<%}%>
+                                                         <%if(currentStatus==='Rejected'){%>bg-danger text-white<%}%>
+                                                         " 
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         id="statusSelect"
                                                             onchange="updateOrderStatus('<%= data._id %>', this.value)">
                                                             <option value="Order Placed"
                                                                 <%=currentStatus==='Order Placed' ? 'selected' : '' %>
@@ -175,14 +193,32 @@
                                                             <% } %>
 
                                                 </td>
-                                                <td>
-                                                    <%= data.payMethod %>
+                                                <td >
+                                                    <div class="table-data1 ">
+                                                        <%if(data.payMethod=="cod"){%>
+                                                            <span class="bg-info  text-white p-2 rounded-2 "><%= data.payMethod.toUpperCase() %></span>
+                                                            <%}else{%>
+                                                                <span class="bg-primary  text-white p-2 rounded-2 "><%= data.payMethod.toUpperCase() %></span>
+                                                                <%}%>
+                                                      </div>
+                                                    
+                                                </td>
+
+                                                <td >
+                                                    <div class="table-data1 ">
+                                                        <%if(data.paymentStatus=="Paid"){%>
+                                                            <span class="bg-success text-white p-2 rounded-2 ">                                                  
+                                                                <%= data.paymentStatus.toUpperCase() %>
+                                                            </span>
+                                                            <%}else{%>
+                                                                <span class="bg-warning   text-white p-2 rounded-2 ">
+                                                                    <%= data.paymentStatus.toUpperCase() %>
+                                                                </span>
+                                                                <%}%>
+                                                      </div>
                                                 </td>
                                                 <td>
-                                                    <%= data.paymentStatus %>
-                                                </td>
-                                                <td>
-                                                    <%= data.totalPrice %>
+                                                    ₹<%= data.totalPrice.toLocaleString() %>/-
                                                 </td>
                                                 
 
@@ -230,6 +266,7 @@
             .then((data) => {
               if (data.success) {
                 alert('Order status updated successfully!');
+                window.location.reload()
               } else {
                 alert('Failed to update order status.');
               }
@@ -239,6 +276,7 @@
             });
         }
         
+
         </script>
         <style>
             a {

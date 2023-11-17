@@ -47,7 +47,7 @@ const { updateQuantity } = require("../../helper/updateQuantity");
 
 const getOrderSuccess = (req, res) => {
     const user = req.session.name;
-    res.render("./User/OrderSuccess", { user });
+    res.render("./User/OrderSuccess", { user,cartCount:req.session.cartCount });
 }
 //place order
 const placeOrder = async (req, res) => {
@@ -181,7 +181,7 @@ const placeOrder = async (req, res) => {
                             <h2>Order Details</h2>
                             <p><strong>Order ID:</strong> ${order._id}</p>
                             <p><strong>Order Date:</strong> ${order.orderDate}</p>
-                            <p><strong>Total Amount:</strong> ${order.totalPrice}</p>
+                            <p><strong>Total Amount:</strong> ${order.totalPrice.toLocaleString()}</p>
                         </div>
                 
                         <div class="footer">
@@ -199,7 +199,7 @@ const placeOrder = async (req, res) => {
             await sendEmail(mailOptions);
             console.log("order email sended");
             updateQuantity(req.session.items, req.session.cartId)
-            res.json({ success: true });
+            res.json({ success: true,cartCount:0 });
         }
         else {
             const order = {
@@ -211,7 +211,7 @@ const placeOrder = async (req, res) => {
                 .createRazorpayOrder(order)
                 .then((createdOrder) => {
                     console.log("payment response", createdOrder);
-                    res.json({ createdOrder, order });
+                    res.json({ createdOrder, order,cartCount:0 });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -238,7 +238,8 @@ const orderHistory = async (req, res) => {
         } else {
             res.render('./User/orderHistory', {
                 user,
-                orders: orders
+                orders: orders,
+                cartCount:req.session.cartCount
             });
         }
     } catch (error) {
@@ -308,6 +309,7 @@ const verifypayment = async (req, res) => {
             });
             // console.log("hmac success");
             updateQuantity(req.session.items, req.session.cartId)
+            req.session.checkout=false;
             res.json({ success: true });
         } else {
             // console.log("hmac failed");

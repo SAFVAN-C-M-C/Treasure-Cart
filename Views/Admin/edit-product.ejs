@@ -47,13 +47,20 @@
                   <span id="priceError" class="error"></span>
 
                   <div class="textfield mt-5 ">
+                    
                     <select name="brand" id="brand" onchange="validateBrand()">
-                      <option value="">Select Brand</option>
+                      
                       <%if(brand){%>
                         <%brand.forEach((bran)=>{%>
-                          <option value="<%=bran.name%>">
+                          <%if(product.brand.name===bran.name){%>
+                            <option value="<%=bran._id%>" selected >
+                              <%=bran.name%>
+                            </option>
+                            <%}else{%>
+                          <option value="<%=bran._id%>">
                             <%=bran.name%>
                           </option>
+                          <%}%>
                           <%})%>
                             <%}%>
                     </select>
@@ -65,9 +72,15 @@
                       <option value="">Select Category</option>
                       <%if(category){%>
                         <%category.forEach((cat)=>{%>
-                          <option value="<%=cat.name%>">
+                          <%if(product.category.name===cat.name){%>
+                            <option value="<%=cat._id%>" selected >
+                              <%=cat.name%>
+                            </option>
+                            <%}else{%>
+                          <option value="<%=cat._id%>">
                             <%=cat.name%>
                           </option>
+                          <%}%>
                           <%})%>
                             <%}%>
                     </select>
@@ -169,8 +182,9 @@
           reader.readAsDataURL(input.files[0]);
         } else {
           // If no file was selected or the browser doesn't support FileReader, clear the image
-          img.src = "";
+          
         }
+        document.getElementById("signupButton").disabled = false;
       }
     </script>
     <%-include("../layout/footer")-%>

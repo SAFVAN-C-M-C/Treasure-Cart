@@ -5,28 +5,26 @@ const { ObjectId } = require("mongodb");
 
 
 const brand_list=async(req,res)=>{
-    // if (req.session.admin) {
       const pageNum = req.query.page?req.query.page:1;
       console.log(pageNum);
       const perPage = 10;
-      const data=await Brands.find().skip((pageNum - 1) * perPage)
-      .limit(perPage);
+      const totalorder=await Brands.countDocuments()
+
+      const data = await Brands.aggregate([
+        {
+          $skip: (pageNum - 1) * perPage,
+        },
+        {
+          $limit: perPage,
+        },
+      ]);
+
       let x = Number((pageNum - 1) * perPage);
-      console.log(x);
-      console.log(data.length);
-      var count=Math.floor(data.length/10)+1;
-      console.log("Brands:",data)
+      var count=Math.floor(totalorder/10)+1;
       res.render("./Admin/Brand",{brand:data,count:count,x});
-    // } else {
-    //   res.redirect("/admin");
-    // }
   }
   const brand_add_get = (req, res) => {
-    // if (req.session.admin) {
       res.render("./Admin/add-brand");
-    // } else {
-    //   res.redirect("/admin");
-    // }
   };
   
   const brand_add=async(req,res)=>{

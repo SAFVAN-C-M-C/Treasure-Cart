@@ -17,10 +17,12 @@ $.ajax({
   },
   success: function (response) {
     // alert("product added to the cart")
-    // window.location.reload();
+    
     console.log(response);
 
     toastElement.show()
+    $("#cartCount").text('('+parseFloat(response.cartCount)+')');
+    
   },
   error: function (error) {
     console.error('Error while product added to the cart:', error);

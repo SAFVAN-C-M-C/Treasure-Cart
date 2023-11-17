@@ -5,18 +5,23 @@ const Users = require("../../Models/user");
 // ===========================================================================================================================================
 
 const customers_list = async (req, res) => {
-    // if (req.session.admin) {
+
     try {
         const pageNum = req.query.page ? req.query.page : 1;
-        console.log(pageNum);
+
         const perPage = 10;
-        const user = await Users.find().skip((pageNum - 1) * perPage)
-            .limit(perPage);
+        const totalorder=await Users.countDocuments()
+        const user = await Users.aggregate([
+            {
+              $skip: (pageNum - 1) * perPage,
+            },
+            {
+              $limit: perPage,
+            },
+          ]);
+          console.log("user",user);
         let x = Number((pageNum - 1) * perPage);
-        console.log(x);
-        console.log(user.length);
-        var count = Math.floor(user.length / 10) + 1;
-        console.log("userss:", user)
+        var count = Math.floor(totalorder / 10) + 1;
         res.render("./Admin/customers", { user: user, count: count, x });
     } catch (err) {
         throw err

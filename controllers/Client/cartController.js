@@ -38,29 +38,33 @@ const get_cart = async (req, res) => {
             // console.log(data[0].productId, "============================");
             // console.log(data[0].productId.images[0].mainimage, "============================");
             console.log(data);
-            req.session.totalAmount=total
-            let today=moment(new Date()).format("lll")
+            req.session.totalAmount = Math.round(total)
+            let today = moment(new Date()).format("lll")
             res.render("./User/SampleCart", {
                 user: user,
                 data: data,
                 cart: cart,
-                subtotal: subtotal,
+                subtotal: Math.round(subtotal),
                 gstAmount: gstAmount.toFixed(2),
                 totalQuantity: totalQuantity,
                 coupon: coupon,
-                total: total,
-                expectedDeliveryDate:moment().add(7, "days").format("ddd, MMM D, YYYY"),
+                total: Math.round(total),
+                cartCount: req.session.cartCount,
+                expectedDeliveryDate: moment().add(7, "days").format("ddd, MMM D, YYYY"),
             });
         } else {
             data = null
             console.log(user)
-            res.render("./User/SampleCart", { user, data,cart: [],
+            res.render("./User/SampleCart", {
+                user, data, cart: [],
                 subtotal: 0,
                 gstAmount: 0,
                 totalQuantity: 0,
                 coupon: '',
                 total: 0,
-                expectedDeliveryDate:null });
+                cartCount: 0,
+                expectedDeliveryDate: null
+            });
         }
     } catch (err) {
         console.log("Error found in User cart " + err);
@@ -108,94 +112,96 @@ const addTocart = async (req, res) => {
             res.redirect("/products");
         }
     } catch (err) {
-        console.log("error while add product to cart",err);
+        console.log("error while add product to cart", err);
         req.flash("errmsg", "sorry at this momment we can't reach");
         res.redirect("/products")
     }
 }
-const updateQuantity=async(req,res)=>{
+const updateQuantity = async (req, res) => {
     console.log("*");
     console.count()
-    const { productId, quantity,cartId } = req.body;
+    const { productId, quantity, cartId } = req.body;
     console.log(productId);
     console.log(quantity);
     console.log(cartId);
-    try{
+    try {
 
-      const cart = await CART.findOne({ _id: cartId }).populate("products.productId" )
+        const cart = await CART.findOne({ _id: cartId }).populate("products.productId")
 
-      if (!cart) {
-        return res.status(404).json({ success: false, error: "Cart not found" });
-      }
-      const productInCart = cart.products.find(item => item.productId.equals(productId));
-  
-      if (!productInCart) {
-        return res.status(404).json({ success: false, error: "Product not found in the cart" });
-      }
-      productInCart.quantity = quantity;
-  
-      await cart.save();
-  
-      let subtotal = 0;
-      let totalQuantity = 0;
-      cart.products.forEach((item) => {
-        console.log(item,"isinde for each");
-      subtotal += item.quantity * item.productId.descountedPrice;
-      totalQuantity += item.quantity;
-    });
-    console.log(subtotal);
-    console.count()
+        if (!cart) {
+            return res.status(404).json({ success: false, error: "Cart not found" });
+        }
+        const productInCart = cart.products.find(item => item.productId.equals(productId));
 
-    const gstRate = 0.12;
-    const gstAmount = (subtotal * gstRate)/100;
-    const coupon = ''; 
-    let total = subtotal + gstAmount;
+        if (!productInCart) {
+            return res.status(404).json({ success: false, error: "Product not found in the cart" });
+        }
+        productInCart.quantity = quantity;
 
-    if (coupon) {
-      const couponValue = 50; 
-      total -= couponValue;
+        await cart.save();
+
+        let subtotal = 0;
+        let totalQuantity = 0;
+        cart.products.forEach((item) => {
+            console.log(item, "isinde for each");
+            subtotal += item.quantity * item.productId.descountedPrice;
+            totalQuantity += item.quantity;
+        });
+        console.log(subtotal);
+        console.count()
+
+        const gstRate = 0.12;
+        const gstAmount = (subtotal * gstRate) / 100;
+        const coupon = '';
+        let total = subtotal + gstAmount;
+
+        if (coupon) {
+            const couponValue = 50;
+            total -= couponValue;
+        }
+        req.session.totalAmount = Math.round(total)
+
+        res.json({
+            success: true,
+            subtotal: Math.round(subtotal),
+            gstAmount: gstAmount.toFixed(2),
+            totalQuantity: totalQuantity,
+            coupon: coupon,
+            total: Math.round(total),
+            
+        });
+
+    } catch (error) {
+        console.error('Error while updating stock quantity:', error);
+        res.status(500).json({ success: false, error: "Failed to  update stock quantity" });
     }
-    req.session.totalAmount=total
+}
+//remove cart
+const removeFromCart = async (req, res) => {
+    try {
+        const { productId, cartId } = req.body;
+        const cart = await CART.findById(cartId);
+        if (!cart) {
+            return res.status(404).json({ success: false, error: "Cart not found" });
+        }
+        cart.products = cart.products.filter((item) => !item.productId.equals(productId));
+        await cart.save();
+        res.json({ success: true });
 
-    res.json({
-      success: true,
-      subtotal: subtotal,
-      gstAmount: gstAmount,
-      totalQuantity: totalQuantity,
-      coupon: coupon,
-      total: total,
-    });
-
-    }catch (error) {
-      console.error('Error while updating stock quantity:', error);
-      res.status(500).json({ success: false, error: "Failed to  update stock quantity" });
+    } catch (error) {
+        console.error('Error removing product from the cart:', error);
+        res.status(500).json({ success: false, error: "Failed to remove product from the cart" });
     }
-  }
-  //remove cart
-const removeFromCart=async(req,res)=>{
-    try{
-      const { productId, cartId } = req.body;
-      const cart = await CART.findById(cartId);
-      if (!cart) {
-        return res.status(404).json({ success: false, error: "Cart not found" });
-      }
-      cart.products = cart.products.filter((item) => !item.productId.equals(productId));
-      await cart.save();
-      res.json({ success: true });
-    
-    }catch(error){
-      console.error('Error removing product from the cart:', error);
-      res.status(500).json({ success: false, error: "Failed to remove product from the cart" });
-    }
-    }
-    const addtoCart=async(req,res)=>{
-        try{
-        const {productId} = req.body;
+}
+const addtoCart = async (req, res) => {
+    try {
+        const { productId } = req.body;
         const userId = req.session.userid;
         console.log(userId);
         console.log(productId);
-        const product=Products.findOne({_id:productId})
+        const product = await Products.findOne({ _id: new ObjectId(productId) })
         const check = await CART.findOne({ userId: new ObjectId(userId) });
+        
         console.log(check);
 
         if (check !== null) {
@@ -203,10 +209,17 @@ const removeFromCart=async(req,res)=>{
             const existingCart = check.products.find((item) =>
                 item.productId.equals(productId)
             );
+            console.log(existingCart);
             if (existingCart) {
-                if(product.stock>existingCart.quantity){
-                existingCart.quantity += 1;
-                req.session.productId_qnty=existingCart.quantity
+                // console.log(product);
+                // console.log(product.stock);
+                // console.log(existingCart.quantity);
+                // console.log(product.stock>existingCart.quantity);
+
+                if (product.stock > existingCart.quantity) {
+                    // console.log("gfgfgfgfgfgf");
+                    existingCart.quantity += 1;
+                    req.session.productId_qnty = existingCart.quantity
                 }
             } else {
                 check.products.push({ productId: productId, quantity: 1 });
@@ -230,12 +243,13 @@ const removeFromCart=async(req,res)=>{
                 ]
             )
         }
-        res.json({ success: true });
-          }catch(error){
-            console.error('Error removing product from the cart:', error);
-            res.status(500).json({ success: false, error: "Failed to remove product from the cart" });
-          }
+        req.session.cartCount=check.products.length;
+        res.json({ success: true,cartCount: req.session.cartCount });
+    } catch (error) {
+        console.error('Error removing product from the cart:', error);
+        res.status(500).json({ success: false, error: "Failed to remove product from the cart" });
     }
+}
 module.exports = {
     get_cart,
     addTocart,

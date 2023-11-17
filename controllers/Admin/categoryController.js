@@ -5,30 +5,28 @@ const { ObjectId } = require("mongodb");
 
 //category page
 const category_list = async (req, res) => {
-    // if (req.session.admin) {
+
     try {
         const pageNum = req.query.page ? req.query.page : 1;
-        console.log(pageNum);
         const perPage = 10;
-        const data = await Categories.find().skip((pageNum - 1) * perPage)
-            .limit(perPage);
+        const totalorder=await Categories.countDocuments()
+        const data = await Categories.aggregate([
+            {
+              $skip: (pageNum - 1) * perPage,
+            },
+            {
+              $limit: perPage,
+            },
+          ]);
         let x = Number((pageNum - 1) * perPage);
-        console.log(x);
-        console.log(data.length);
-        var count = Math.floor(data.length / 10) + 1;
-        console.log("categories:", data)
-        // if(!data){
-        //   data={}
-        // }
+        var count = Math.floor(totalorder / 10) + 1;
         res.render("./Admin/categories", { category: data, count: count, x });
     } catch (err) {
         console.log(err);
         res.render.err = true
         res.redirect("/admin/404");
     }
-    // } else {
-    //     res.redirect("/admin/logout");
-    // }
+
 };
 // ===========================================================================================================================================
 

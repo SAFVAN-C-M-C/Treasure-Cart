@@ -47,7 +47,13 @@ function passrest(req,res,next){
   }else{
     res.redirect("/logout")
   }
-
 }
-module.exports = { verifyUser,existingUser,otpverify,passrest,isBlocked };
+function verifyCheckout(req,res,next){
+  if(req.session.checkout){
+    next()
+  }else{
+    res.redirect("/cart")
+  }
+}
+module.exports = { verifyUser,existingUser,otpverify,passrest,isBlocked,verifyCheckout };
   

@@ -19,7 +19,7 @@ const ProductsSchema = new Schema({
   stock: { type: Number },
   basePrice: { type: Number},
   descountedPrice: { type: Number},
-  // variation: { type: String },
+  status: { type: String },
   timeStamp: { type: Date },
   brandId: { type: Schema.Types.ObjectId, ref: 'brands'  },
   categoryId: { type: Schema.Types.ObjectId,ref: 'categories' },

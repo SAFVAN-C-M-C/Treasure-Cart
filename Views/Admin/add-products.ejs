@@ -54,7 +54,7 @@
                       <option value="default">Select Brand</option>
                       <%if(brand){%>
                         <%brand.forEach((data)=>{%>
-                          <option value="<%=data.name%>">
+                          <option value="<%=data._id%>">
                             <%=data.name%>
                           </option>
                           <%})%>
@@ -68,7 +68,7 @@
                       <option value="default">Select Category</option>
                       <%if(category){%>
                         <%category.forEach((data)=>{%>
-                          <option value="<%=data.name%>">
+                          <option value="<%=data._id%>">
                             <%=data.name%>
                           </option>
                           <%})%>

@@ -23,7 +23,7 @@ const get_product_details = async (req, res) => {
         const user = req.session.name ? req.session.name : null
         const userWishlist = await Wishlist.findOne({ userId: userId });
         const wishlist = userWishlist ? userWishlist.products : [];
-        res.render("./User/product-detail", { data, user, brand, category, wishlist });
+        res.render("./User/product-detail", { data, user, brand, category, wishlist,cartCount:req.session.cartCount });
     } catch (err) {
         console.log(err)
         req.session.err = true
@@ -45,17 +45,17 @@ const get_product = async (req, res) => {
             console.log(searchKey);
             const key = req.query.key
             console.log(req.query.key);
-            let products = await Products.find({name: { $regex:   searchKey, $options: "i" }});
+            let products = await Products.find({status:"Active"},{name: { $regex:   searchKey, $options: "i" }});
             // console.log(products);
             if (key == 'low') {
-                products = await Products.find({name: { $regex: "^" + searchKey, $options: "i" }}).sort({ descountedPrice: 1 })
+                products = await Products.find({status:"Active"},{name: { $regex: "^" + searchKey, $options: "i" }}).sort({ descountedPrice: 1 })
             } else if (key == 'high') {
-                products = await Products.find({name: { $regex: "^" + searchKey, $options: "i" }}).sort({ descountedPrice: -1 })
+                products = await Products.find({status:"Active"},{name: { $regex: "^" + searchKey, $options: "i" }}).sort({ descountedPrice: -1 })
             } else if (key == 'abc') {
-                products = await Products.find({name: { $regex: "^" + searchKey, $options: "i" }}).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
+                products = await Products.find({status:"Active"},{name: { $regex: "^" + searchKey, $options: "i" }}).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
                 console.log(products);
             } else if (key == 'cba') {
-                products = await Products.find({name: { $regex: "^" + searchKey, $options: "i" }}).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
+                products = await Products.find({status:"Active"},{name: { $regex: "^" + searchKey, $options: "i" }}).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
                 console.log(products);
             }
 
@@ -65,21 +65,21 @@ const get_product = async (req, res) => {
             const wishlist = userWishlist ? userWishlist.products : [];
             const category = await Categories.find();
             const brand = await Brands.find();
-            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand })
+            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand ,cartCount:req.session.cartCount})
         } else {
             const key = req.query.key
             console.log(req.query.key);
-            let products = await Products.find();
+            let products = await Products.find({status:"Active"});
             // console.log(products);
             if (key == 'low') {
-                products = await Products.find().sort({ descountedPrice: 1 })
+                products = await Products.find({status:"Active"}).sort({ descountedPrice: 1 })
             } else if (key == 'high') {
-                products = await Products.find().sort({ descountedPrice: -1 })
+                products = await Products.find({status:"Active"}).sort({ descountedPrice: -1 })
             } else if (key == 'abc') {
-                products = await Products.find().collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
+                products = await Products.find({status:"Active"}).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
                 console.log(products);
             } else if (key == 'cba') {
-                products = await Products.find().collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
+                products = await Products.find({status:"Active"}).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
                 console.log(products);
             }
 
@@ -89,7 +89,7 @@ const get_product = async (req, res) => {
             const wishlist = userWishlist ? userWishlist.products : [];
             const category = await Categories.find();
             const brand = await Brands.find();
-            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand })
+            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand ,cartCount:req.session.cartCount})
         }
     } catch (err) {
         req.session.err = true
@@ -127,7 +127,7 @@ const filter = async (req, res) => {
         const category = await Categories.find();
         const brand = await Brands.find();
         if (products.length > 0) {
-            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand })
+            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand,cartCount:req.session.cartCount })
         }
         else {
             req.session.err = true

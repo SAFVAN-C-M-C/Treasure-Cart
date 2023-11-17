@@ -6,30 +6,43 @@ const { ObjectId } = require("mongodb");
 
 // ===========================================================================================================================================
 const product_list = async (req, res) => {
-  // if (req.session.admin) {
   try {
     const pageNum = req.query.page ? req.query.page : 1;
     console.log(pageNum);
     const perPage = 10;
-    const products = await Products.find().skip((pageNum - 1) * perPage)
-      .limit(perPage);
+    const totalorder = await Products.countDocuments()
+
+    const products = await Products.aggregate([
+      {
+        $skip: (pageNum - 1) * perPage,
+      },
+      {
+        $limit: perPage,
+      },
+    ]);
     let x = Number((pageNum - 1) * perPage);
-    console.log(x);
-    console.log(products.length);
-    var count = Math.floor(products.length / 10) + 1;
-    res.render("./Admin/admin-product", { products: products, count: count, x, msg: req.flash("msg"), errmsg: req.flash("errmg") });
+    var count = Math.floor(totalorder / 10) + 1;
+
+    
+    res.render("./Admin/admin-product",
+      {
+        products: products,
+        count: count,
+        x, 
+        msg: req.flash("msg"), 
+        errmsg: req.flash("errmg")
+      });
   } catch (err) {
     res.render.err = true
     res.redirect("/admin/404");
   }
-  // } else {
-  //   res.redirect("/admin/logout");
-  // }
+
+  
 };
 // ===========================================================================================================================================
 
 const add_product_get = async (req, res) => {
-  // if (req.session.admin) {
+ 
   try {
     const category = await Categories.find();
     console.log(category);
@@ -40,9 +53,7 @@ const add_product_get = async (req, res) => {
     res.render.err = true
     res.redirect("/admin/404");
   }
-  // } else {
-  //   res.redirect("/admin/logout");
-  // }
+ 
 };
 // ===========================================================================================================================================
 const add_product = async (req, res) => {
@@ -66,10 +77,10 @@ const add_product = async (req, res) => {
     } = req.body;
 
     console.log("name is " + Product_Name);
-    let categoryId = await Categories.findOne({ name: category });
-    let brandId = await Brands.findOne({ name: brand });
-    console.log(brandId);
-    console.log(categoryId);
+    // let categoryId = await Categories.findOne({ name: category });
+    // let brandId = await Brands.findOne({ name: brand });
+    // console.log(brandId);
+    // console.log(categoryId);
     const data = {
       name: Product_Name,
       images: {
@@ -82,8 +93,9 @@ const add_product = async (req, res) => {
       basePrice: basePrice,
       descountedPrice: descountedPrice,
       timeStamp: Date.now(),
-      brandId: new ObjectId(brandId._id),
-      categoryId: new ObjectId(categoryId._id),
+      status:"Active",
+      brandId: new ObjectId(brand),
+      categoryId: new ObjectId(category),
     };
     const insert = await Products.insertMany([data]);
     req.flash("msg", "Product added successfully");
@@ -98,7 +110,37 @@ const edit_product = async (req, res) => {
   // if (req.session.admin) {
   try {
     const id = req.params.id;
-    const products = await Products.findOne({ _id: new ObjectId(id) });
+    let products = await Products.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(id),
+        },
+      },
+      {
+        $lookup: {
+          from: 'brands', // Assuming the collection name for brands is 'brands'
+          localField: 'brandId',
+          foreignField: '_id',
+          as: 'brand',
+        },
+      },
+      {
+        $lookup: {
+          from: 'categories', // Assuming the collection name for categories is 'categories'
+          localField: 'categoryId',
+          foreignField: '_id',
+          as: 'category',
+        },
+      },
+      {
+        $unwind: '$brand',
+      },
+      {
+        $unwind: '$category',
+      },
+      // You can add more stages to your aggregation pipeline if needed
+    ]);
+    products=products[0];
     console.log(products);
     const category = await Categories.find();
     console.log(category);
@@ -110,12 +152,11 @@ const edit_product = async (req, res) => {
       category: category,
     });
   } catch (err) {
+    console.log(err);
     res.render.err = true
     res.redirect("/admin/404");
   }
-  // } else {
-  //   res.redirect("/admin/logout");
-  // }
+
 };
 // ===========================================================================================================================================
 const edit = async (req, res) => {
@@ -143,10 +184,10 @@ const edit = async (req, res) => {
         } = req.body;
 
         console.log("name is " + Product_Name);
-        let categoryId = await Categories.findOne({ name: category });
-        let brandId = await Brands.findOne({ name: brand });
-        console.log(brandId._id);
-        console.log(categoryId);
+        // let categoryId = await Categories.findOne({ name: category });
+        // let brandId = await Brands.findOne({ name: brand });
+        // console.log(brandId._id);
+        // console.log(categoryId);
         const data = {
           name: Product_Name,
           images: {
@@ -159,8 +200,8 @@ const edit = async (req, res) => {
           basePrice: basePrice,
           descountedPrice: descountedPrice,
           timeStamp: Date.now(),
-          brandId: new ObjectId(brandId._id),
-          categoryId: new ObjectId(categoryId._id),
+          brandId: new ObjectId(brand),
+          categoryId: new ObjectId(category),
         };
         const id = req.params.id;
         await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
@@ -298,10 +339,10 @@ const edit = async (req, res) => {
       } = req.body;
 
       console.log("name is " + Product_Name);
-      let categoryId = await Categories.findOne({ name: category });
-      let brandId = await Brands.findOne({ name: brand });
-      console.log(brandId._id);
-      console.log(categoryId);
+      // let categoryId = await Categories.findOne({ name: category });
+      // let brandId = await Brands.findOne({ name: brand });
+      // console.log(brandId._id);
+      // console.log(categoryId);
       const data = {
         name: Product_Name,
         images: {
@@ -314,8 +355,8 @@ const edit = async (req, res) => {
         basePrice: basePrice,
         descountedPrice: descountedPrice,
         timeStamp: Date.now(),
-        brandId: new ObjectId(brandId._id),
-        categoryId: new ObjectId(categoryId._id),
+        brandId: new ObjectId(brand),
+        categoryId: new ObjectId(category),
       };
       const id = req.params.id;
       await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
@@ -345,10 +386,10 @@ const edit = async (req, res) => {
       } = req.body;
 
       console.log("name is " + Product_Name);
-      let categoryId = await Categories.findOne({ name: category });
-      let brandId = await Brands.findOne({ name: brand });
-      console.log(brandId._id);
-      console.log(categoryId);
+      // let categoryId = await Categories.findOne({ name: category });
+      // let brandId = await Brands.findOne({ name: brand });
+      // console.log(brandId._id);
+      // console.log(categoryId);
       const data = {
         name: Product_Name,
         images: {
@@ -361,8 +402,8 @@ const edit = async (req, res) => {
         basePrice: basePrice,
         descountedPrice: descountedPrice,
         timeStamp: Date.now(),
-        brandId: new ObjectId(brandId._id),
-        categoryId: new ObjectId(categoryId._id),
+        brandId: new ObjectId(brand),
+        categoryId: new ObjectId(category),
       };
       const id = req.params.id;
       await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
@@ -391,10 +432,10 @@ const edit = async (req, res) => {
       } = req.body;
 
       console.log("name is " + Product_Name);
-      let categoryId = await Categories.findOne({ name: category });
-      let brandId = await Brands.findOne({ name: brand });
-      console.log(brandId._id);
-      console.log(categoryId);
+      // let categoryId = await Categories.findOne({ name: category });
+      // let brandId = await Brands.findOne({ name: brand });
+      // console.log(brandId._id);
+      // console.log(categoryId);
       const data = {
         name: Product_Name,
         images: {
@@ -407,8 +448,8 @@ const edit = async (req, res) => {
         basePrice: basePrice,
         descountedPrice: descountedPrice,
         timeStamp: Date.now(),
-        brandId: new ObjectId(brandId._id),
-        categoryId: new ObjectId(categoryId._id),
+        brandId: new ObjectId(brand),
+        categoryId: new ObjectId(category),
       };
       const id = req.params.id;
       await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
@@ -437,10 +478,10 @@ const edit = async (req, res) => {
       } = req.body;
 
       console.log("name is " + Product_Name);
-      let categoryId = await Categories.findOne({ name: category });
-      let brandId = await Brands.findOne({ name: brand });
-      console.log(brandId._id);
-      console.log(categoryId);
+      // let categoryId = await Categories.findOne({ name: category });
+      // let brandId = await Brands.findOne({ name: brand });
+      // console.log(brandId._id);
+      // console.log(categoryId);
       const data = {
         name: Product_Name,
         images: {
@@ -453,8 +494,8 @@ const edit = async (req, res) => {
         basePrice: basePrice,
         descountedPrice: descountedPrice,
         timeStamp: Date.now(),
-        brandId: new ObjectId(brandId._id),
-        categoryId: new ObjectId(categoryId._id),
+        brandId: new ObjectId(brand),
+        categoryId: new ObjectId(category),
       };
       const id = req.params.id;
       await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
@@ -483,10 +524,10 @@ const edit = async (req, res) => {
       } = req.body;
 
       console.log("name is " + Product_Name);
-      let categoryId = await Categories.findOne({ name: category });
-      let brandId = await Brands.findOne({ name: brand });
-      console.log(brandId._id);
-      console.log(categoryId);
+      // let categoryId = await Categories.findOne({ name: category });
+      // let brandId = await Brands.findOne({ name: brand });
+      // console.log(brandId._id);
+      // console.log(categoryId);
       const data = {
         name: Product_Name,
         images: {
@@ -499,8 +540,8 @@ const edit = async (req, res) => {
         basePrice: basePrice,
         descountedPrice: descountedPrice,
         timeStamp: Date.now(),
-        brandId: new ObjectId(brandId._id),
-        categoryId: new ObjectId(categoryId._id),
+        brandId: new ObjectId(brand),
+        categoryId: new ObjectId(category),
       };
       const id = req.params.id;
       await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
@@ -529,10 +570,10 @@ const edit = async (req, res) => {
       } = req.body;
 
       console.log("name is " + Product_Name);
-      let categoryId = await Categories.findOne({ name: category });
-      let brandId = await Brands.findOne({ name: brand });
-      console.log(brandId._id);
-      console.log(categoryId);
+      // let categoryId = await Categories.findOne({ name: category });
+      // let brandId = await Brands.findOne({ name: brand });
+      // console.log(brandId._id);
+      // console.log(categoryId);
       const data = {
         name: Product_Name,
         images: {
@@ -545,8 +586,8 @@ const edit = async (req, res) => {
         basePrice: basePrice,
         descountedPrice: descountedPrice,
         timeStamp: Date.now(),
-        brandId: new ObjectId(brandId._id),
-        categoryId: new ObjectId(categoryId._id),
+        brandId: new ObjectId(brand),
+        categoryId: new ObjectId(category),
       };
       const id = req.params.id;
       await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
@@ -567,10 +608,10 @@ const edit = async (req, res) => {
         } = req.body;
 
         console.log("name is " + Product_Name);
-        let categoryId = await Categories.findOne({ name: category });
-        let brandId = await Brands.findOne({ name: brand });
-        console.log(brandId._id);
-        console.log(categoryId);
+        // let categoryId = await Categories.findOne({ name: category });
+        // let brandId = await Brands.findOne({ name: brand });
+        // console.log(brandId._id);
+        // console.log(categoryId);
         const data = {
           name: Product_Name,
           // images: {
@@ -583,8 +624,8 @@ const edit = async (req, res) => {
           basePrice: basePrice,
           descountedPrice: descountedPrice,
           timeStamp: Date.now(),
-          brandId: new ObjectId(brandId._id),
-          categoryId: new ObjectId(categoryId._id),
+          brandId: new ObjectId(brand),
+          categoryId: new ObjectId(category),
         };
         const id = req.params.id;
         await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
@@ -602,10 +643,10 @@ const edit = async (req, res) => {
         } = req.body;
 
         console.log("name is " + Product_Name);
-        let categoryId = await Categories.findOne({ name: category });
+        // let categoryId = await Categories.findOne({ name: category });
         // let brandId = await Brands.findOne({ name: brand });
         // console.log(brandId._id);
-        console.log(categoryId);
+        // console.log(categoryId);
         const data = {
           name: Product_Name,
           // images: {
@@ -619,7 +660,7 @@ const edit = async (req, res) => {
           descountedPrice: descountedPrice,
           timeStamp: Date.now(),
           // brandId: new ObjectId(brandId._id),
-          categoryId: new ObjectId(categoryId._id),
+          categoryId: new ObjectId(category)
         };
         const id = req.params.id;
         await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
@@ -638,8 +679,8 @@ const edit = async (req, res) => {
 
         console.log("name is " + Product_Name);
         // let categoryId = await Categories.findOne({ name: category });
-        let brandId = await Brands.findOne({ name: brand });
-        console.log(brandId._id);
+        // let brandId = await Brands.findOne({ name: brand });
+        // console.log(brandId._id);
         // console.log(categoryId);
         const data = {
           name: Product_Name,
@@ -653,7 +694,7 @@ const edit = async (req, res) => {
           basePrice: basePrice,
           descountedPrice: descountedPrice,
           timeStamp: Date.now(),
-          brandId: new ObjectId(brandId._id),
+          brandId: new ObjectId(brand)
           // categoryId: new ObjectId(categoryId._id),
         };
         const id = req.params.id;
@@ -710,8 +751,18 @@ const edit = async (req, res) => {
 const product_delete = async (req, res) => {
   try {
     const id = req.params.id;
-    let deleted = await Products.deleteOne({ _id: new ObjectId(id) });
+    await Products.updateOne({ _id: new ObjectId(id) },{$set:{status:"Blocked"}});
     console.log("deleted");
+    res.redirect("/admin/products");
+  } catch (err) {
+    throw err;
+  }
+};
+const product_reupload = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await Products.updateOne({ _id: new ObjectId(id) },{$set:{status:"Active"}});
+    console.log("Active");
     res.redirect("/admin/products");
   } catch (err) {
     throw err;
@@ -756,5 +807,6 @@ module.exports = {
   edit_product,
   edit,
   add_product,
-  add_product_get
+  add_product_get,
+  product_reupload
 }

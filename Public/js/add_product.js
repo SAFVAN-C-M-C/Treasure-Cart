@@ -1,6 +1,6 @@
 
 function validateName() {
-    var Pattern = /^[a-zA-Z0-9_.\s]{3,16}$/;
+    var Pattern = /^[a-zA-Z0-9_.,\s]{3,}$/;
     var name = document.getElementById("Product_Name").value;
     var msg = document.getElementById("productError");
     var signupButton = document.getElementById("signupButton");

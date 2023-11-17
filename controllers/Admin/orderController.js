@@ -8,6 +8,8 @@ const getOrders = async (req, res) => {
         //     "items.productId"
         // ).skip((pageNum - 1) * perPage)
         //     .limit(perPage);
+        const totalorder=await Orders.countDocuments()
+        console.log("totalorder",totalorder);
         const orders = await Orders.aggregate([
             {
                 $lookup: {
@@ -69,7 +71,7 @@ const getOrders = async (req, res) => {
             }
         ]);
         let x = Number((pageNum - 1) * perPage);
-        var count = Math.floor(orders.length / 10) + 1;
+        var count = Math.floor(totalorder/ 10) + 1;
         res.render("./Admin/orders", { orders: orders, count: count, x });
     } catch (error) {
         console.log(error);
@@ -80,7 +82,9 @@ const updateOrderStatus = async (req, res) => {
         const orderId = req.params.orderId;
 
         const newStatus = req.body.status;
-
+        if(newStatus==="Delivered"){
+            await Orders.findByIdAndUpdate(orderId, { status: newStatus,paymentStatus:"Paid" });
+        }
         await Orders.findByIdAndUpdate(orderId, { status: newStatus });
         res.json({ success: true });
     } catch (error) {

@@ -106,8 +106,8 @@
                                   <%= product.name %>
                                 </h5>
                                 <div class="d-flex justify-content-center align-items-center ">
-                                  <span class="me-1 text-danger"><s>₹<%=product.basePrice%></s></span>
-                                  <h4 class="mb-1 me-1 text-success ">₹<%=product.descountedPrice%>
+                                  <span class="me-1 text-danger"><s>₹<%=product.basePrice.toLocaleString()%></s></span>
+                                  <h4 class="mb-1 me-1 text-success ">₹<%=product.descountedPrice.toLocaleString()%>/-
                                   </h4>
                                 </div>
                               </div>

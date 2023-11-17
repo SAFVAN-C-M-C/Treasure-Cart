@@ -92,7 +92,7 @@
                     <tr>
                         <th class="text-center">Name</th>
                         <th class="text-center">Email</th>
-                        <th class="text-center">Order</th>
+                        
                         <th class="text-center">Status</th>
                         <th class="text-center">Join Date</th>
                         <th class="text-center">Action</th>
@@ -102,9 +102,18 @@
                 <tbody>
                     
                         <tr>
-                          <td><div class="table-data1"><img src="/static/images/img-bg.jpg" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.userName%></span></div> </td>
+                          <td>
+                            <div class="table-data1">
+                              <%if(data.profile.length>0){%>
+                                <img src="<%=data.profile[0].mainimage?'/static/product-images/'+data.profile[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.userName%></span>
+                              <%}else{%>
+                                <img src="/static/images/img-bg.jpg" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.userName%></span>
+                                
+                              <%}%>
+                            </div> 
+                          </td>
                           <td> <div class="table-data"><%=data.email%></div> </td>
-                          <td> <div class="table-data">order</div> </td>
+                          
                           <td>
                             <%if(data.status==="Active"){%>
                             <div class="table-data text-white "><span class="bg-success p-1" style="border-radius: 8px;"><%=data.status%></span></div>
