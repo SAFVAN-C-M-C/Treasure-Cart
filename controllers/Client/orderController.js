@@ -226,15 +226,50 @@ const orderHistory = async (req, res) => {
     try {
         const userId = req.session.userid
         const user = req.session.name
-        const orders = await Orders.find({ userId: userId })
-            .sort({ orderDate: -1 })
-            .populate(
-                'items.productId'
-            );
+        const orders=await Orders.aggregate([
+            {
+              $match: {
+                userId: new ObjectId(userId),
+              },
+            },
+            {
+              $sort: {
+                orderDate: -1, // Sort in descending order to get the newest order first
+              },
+            },
+            {
+              $lookup: {
+                from: 'products', // Assuming your products collection is named 'products'
+                localField: 'items.productId',
+                foreignField: '_id',
+                as: 'itemsData',
+              },
+            },
+            {
+              $unwind: '$itemsData',
+            },
+            {
+              $project: {
+                _id: 1,
+                userId: 1,
+                status: 1,
+                items: {
+                  productId: '$itemsData._id',
+                  quantity: '$items.quantity',
+                },
+                payMethod: 1,
+                orderDate: 1,
+                totalPrice: 1,
+                expectedDeliveryDate: 1,
+                paymentStatus: 1,
+                address: 1,
+              },
+            },
+          ]);
         // console.log("hellllllllllllllllllllllllllll",orders.items)
-        // console.log('Orders:', orders);
+        console.log('Orders:', orders);
         if (orders.length === 0) {
-            return res.render('./User/orderHistory', { user, orders: [] });
+            return res.render('./User/orderHistory', { user, orders: [] ,cartCount:req.session.cartCount});
         } else {
             res.render('./User/orderHistory', {
                 user,
@@ -243,8 +278,8 @@ const orderHistory = async (req, res) => {
             });
         }
     } catch (error) {
-        console.log("error in track order");
-        res.render('error/404')
+        console.log("error in track order",error);
+        // res.render('error/404')
     }
 }
 //cancel order
@@ -281,7 +316,7 @@ const cancelorder = async (req, res) => {
 };
 
 
-//verufy paymment
+//verify paymment
 const verifypayment = async (req, res) => {
     try {
 

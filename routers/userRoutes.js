@@ -53,6 +53,10 @@ user.get("/product/details/:id", isBlocked,calculateCartCount, productController
 user.get("/products", isBlocked,calculateCartCount, productController.get_product)
 user.post("/filter", isBlocked,calculateCartCount, productController.filter)
 
+user.get("/products/category/:id", isBlocked,calculateCartCount, productController.get_product_catgorybaise)
+user.get("/products/brand/:id", isBlocked,calculateCartCount, productController.get_product_brand)
+
+
 
 //contact us==================================================================================
 
@@ -74,7 +78,8 @@ user.post('/wishlistdelete/', verifyUser, isBlocked,calculateCartCount, wishlist
 
 user.get("/manage-address", verifyUser, isBlocked,calculateCartCount, userControl.get_manageAddress)
 user.post("/addAddress", verifyUser, isBlocked,calculateCartCount, userControl.addAddress)
-
+user.post("/edit-Address", verifyUser, isBlocked,calculateCartCount, userControl.editAddress)
+user.post("/delete-address",verifyUser,isBlocked,calculateCartCount, userControl.deleteAddress)
 //order==================================================================================
 
 
@@ -98,7 +103,6 @@ user.get("/checkout-req",verifyUser,isBlocked,userControl.setCheckout)
 user.get("/checkout", verifyCheckout,verifyUser, isBlocked,calculateCartCount, userControl.getcheckout);
 user.post("/checkout", verifyCheckout,verifyUser, isBlocked,calculateCartCount, orderController.placeOrder)
 user.post("/verifyPayment",verifyCheckout, verifyUser, isBlocked,calculateCartCount, orderController.verifypayment)
-
 user.post("/addAddress-Checkout", verifyUser, isBlocked,calculateCartCount, userControl.addAddressCheckout)
 
 //reset password==================================================================================

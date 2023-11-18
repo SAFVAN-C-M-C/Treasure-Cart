@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <%-include('../layout/header_links')-%>
+    
 </head>
 <body>
     <%-include('../partials/header')-%>
@@ -17,7 +18,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/addAddress" method="post">
+                    <form id="add-address-form">
                         <div class="mb-3">
                             <label for="fullName" class="form-label">Full Name</label>
                             <input type="text" class="form-control" name="name" id="fullName" placeholder="Enter your full name" required />
@@ -42,17 +43,33 @@
                             <label for="mobileNumber" class="form-label">Mobile Number</label>
                             <input type="tel" class="form-control" id="mobileNumber" name="mobile" placeholder="Enter your mobile number" required />
                         </div>
-                        <button type="submit" class="btn btn-dark" style="background-color: black;">Submit</button>
+                        <button type="submit" class="btn btn-primary ">Submit</button>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 <!-- edit address -->
 <% address.forEach(function(address) { %>
+
+        <div class="modal fade" id="deleteConfirmation<%=address._id%>" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationLabel<%=address._id%>" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  
+              </div>
+              <div class="modal-body">
+                Do you want to delete the Address?
+              </div>
+              <div class="modal-footer">
+                <button onclick="deleteAdrress('<%=address._id%>')" class="btn btn-danger">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
     <div class="modal fade" id="editAddressModal<%=address._id%>" tabindex="-1" aria-labelledby="editAddressModalLabel<%=address._id%>" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -61,8 +78,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form action="/editAddress/<%=address._id%>" method="post">
+            <form class="edit-address-form" data-address-id="<%=address._id%>">
                 <div class="mb-3">
+                    <input type="text" name="address_id" value="<%=address._id%>" style="display: none;">
                     <label for="fullName" class="form-label">Full Name</label>
                     <input type="text" class="form-control"  name="name" id="fullName" placeholder="Enter your full name" value="<%=address.name%>" required />
                 </div>
@@ -86,11 +104,8 @@
                     <label for="mobileNumber" class="form-label">Mobile Number</label>
                     <input type="tel" class="form-control" id="mobileNumber" name="mobile" placeholder="Enter your mobile number" value="<%=address.mobile%>" required />
                 </div>
-                <button type="submit" class="btn btn-primary " >Submit</button>
+                <button type="submit" class="btn btn-primary" >Submit</button>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -101,7 +116,7 @@
         <nav class="nav nav-borders">
             <a class="nav-link  ms-0" href="/profile" >Profile</a>
             <a class="nav-link active" href="/manage-address" >Addresses</a>
-            <a class="nav-link" href="#">Reset Password</a>
+
             <!-- <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Wish List</a> -->
             <a class="nav-link " href="/order-history" >My Orders</a>
       
@@ -114,7 +129,7 @@
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
                         <!-- Profile picture image-->
-                                <img id="mn" class="img-account-profile rounded-circle mb-2" src="<%=UserData.profile[0].mainimage?'/static/product-images/'+UserData.profile[0].mainimage:'http://bootdey.com/img/Content/avatar/avatar1.png'%>" alt="">
+                                <img id="mn" class="img-account-profile rounded-circle mb-2" src="<%=UserData.profile[0].mainimage?'/static/profile-images/'+UserData.profile[0].mainimage:'http://bootdey.com/img/Content/avatar/avatar1.png'%>" alt="..." style="height:229px;width: 229px;border-radius: 15px;  margin-right: 10px;">
                         
                         <!-- Profile picture help block-->
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
@@ -140,7 +155,7 @@
                                         <%=data.mobile%> <br>
                                         <div class="action">
                                             <a href="" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#editAddressModal<%=data._id%>"> edit</a>
-                                            <a href="" class="btn btn-danger  "> delete</a>
+                                            <a href="" class="btn btn-danger  " data-bs-toggle="modal" data-bs-target="#deleteConfirmation<%=data._id%>"> delete</a>
         
                                         </div>
                                     </div>
@@ -247,6 +262,7 @@ input::-webkit-inner-spin-button {
     margin-right: 1rem;
 }
     </style>
+    <script src="/static/js/address.js"></script>
     <!-- <script>
         function previewImage(inputId, imgId) {
         const input = document.getElementById(inputId);

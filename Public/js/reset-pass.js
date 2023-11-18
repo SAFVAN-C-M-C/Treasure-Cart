@@ -5,7 +5,7 @@
         var isValid = passwordPattern.test(password);
         var signupButton = document.getElementById("signupButton");
 
-        if (isValid && password.trim().length >8) {
+        if (isValid && password.trim().length >=8) {
             msg.innerHTML = "";
             signupButton.disabled = false; // Enable the button
         } else {

@@ -8,7 +8,7 @@ const calculateCartCount = async (req, res, next) => {
       const userId=req.session.userid;
         if(userId){
             const userCart = await CART.findOne({ userId:userId });
-            console.log("asdfghjkkkkkkkkkkkkkkk",userCart);
+            console.log("cart count",userCart);
             if (userCart) {
      
                 let cartCount = userCart.products.length;
@@ -24,7 +24,7 @@ const calculateCartCount = async (req, res, next) => {
             req.session.cartCount = 0; 
         }
 
-    console.log("ddddddddddddddddddddddddddddddddddd",req.session.cartCount);
+    // console.log("ddddddddddddddddddddddddddddddddddd",req.session.cartCount);
     next();
 
 }catch (error) {

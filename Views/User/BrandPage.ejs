@@ -13,62 +13,17 @@
     <%-include('../Alerts/addToCart')-%>
       <%-include('../Alerts/outOfStock')-%>
         <%-include('../Alerts/LoginAlert')-%>
-        <div
-        class="modal fade"
-        id="filterModal"
-        tabindex="-1"
-        aria-labelledby="filterModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="filterModalLabel">Filter</h5>
-              <button
-              type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form action="/filter" method="post" >
-                <h3 class="form-label ">Category</h3>
-                <%category.forEach((data)=>{%>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="<%=data._id%>" id="<%=data._id%>" name="Category"  />
-                    <label class="form-check-label" for="<%=data._id%>"><%=data.name%></label>
-                  </div>
-                <%})%>
-                <h3 class="form-label ">Brand</h3>
-                <%brand.forEach((data)=>{%>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="<%=data._id%>" id="<%=data._id%>" name="Brand"  />
-                  <label class="form-check-label" for="<%=data._id%>"><%=data.name%></label>
-                </div>
-             <% })%>
 
-                 
-                  <button type="submit" class="btn btn-info" >Submit</button>
-              </form>
-          </div>
-          <div class="modal-footer">
-              <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-          </div>
-        </div>
-      </div>
           <br><br>
           <section>
             <div class="container-fluid ">
               <div class="row p-3 ">
                 <div class="row">
                   <div class="col-md-9 ms-3 ">
-                    <h3 class="mb-4">Our Shop</h3>
+                    <h3 class="mb-4"><%=brand?brand:'Our Shop'%></h3>
                   </div>
                   <div class="col-md-2 d-flex justify-content-around ">
-                    <div class="filtter"><button data-bs-toggle="modal"
-                      data-bs-target="#filterModal" class="btn btn-primary d-flex justify-content-around align-items-center "><iconify-icon icon="mdi:filter" style="color: #fff;" width="25" height="25"></iconify-icon>filter</button></div>
+                    
                     <div class="sort">
                       <div class="btn-group">
                         <button type="button" class="btn btn-info ">Sort by</button>
@@ -76,10 +31,10 @@
                           <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="/products?key=low">Low to high</a></li>
-                          <li><a class="dropdown-item" href="/products?key=high">High to Low</a></li>
-                          <li><a class="dropdown-item" href="/products?key=abc">Alphabetical (a-z)</a></li>
-                          <li><a class="dropdown-item" href="/products?key=cba">Alphabetical (z-a)</a></li>
+                          <li><a class="dropdown-item" href="/products/brand/<%=brandId%>?key=low">Low to high</a></li>
+                          <li><a class="dropdown-item" href="/products/brand/<%=brandId%>?key=high">High to Low</a></li>
+                          <li><a class="dropdown-item" href="/products/brand/<%=brandId%>?key=abc">Alphabetical (a-z)</a></li>
+                          <li><a class="dropdown-item" href="/products/brand/<%=brandId%>?key=cba">Alphabetical (z-a)</a></li>
                         </ul>
                       </div>
                     </div>
@@ -99,7 +54,7 @@
                             <a href="/product/details/<%= product._id%>" style="text-decoration: none;">
                               <div class="d-flex justify-content-center mt-2 " >
                                 <img width="200px" height="200px"
-                                    src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                                    src="<%=product.images.length>0?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
                                     alt="">
                               </div>
                               <div class="product-card-body">
@@ -158,28 +113,7 @@
           </section>
 
           <script src="/static/js/productManupulation.js"></script>
-          <script>
-            $("#filterform").submit((e) => {
-    e.preventDefault()
-    console.log("clicked");
-    $.ajax({
-      url:'/filter',
-      method: 'post',
-      data: $('#filterform').serialize(),
-      success: (response) => {
-        if (response.success) {
-          console.log('response got')
-          window.location.reload()
-         
-        } else {
-          console.log(response)
-          // window.location.reload()
-          
-        }
-      }
-    })
-  })
-          </script>
+
 
           <%-include('../partials/footer')-%>
             <%-include('../layout/footer')-%>

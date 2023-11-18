@@ -47,143 +47,148 @@ const home_logged = async (req, res) => {
     if (req.session.logged) {
         try {
             console.log(req.session.logged);
-            const userId=req.session.userid
+            const userId = req.session.userid
             const find = await USER.findOne({ email: req.session.email })
             // console.log(find);
             const data = find.userName
             req.session.name = data
             console.log(data);
             // const product=await Products.find({status})
-            const product=await Products.aggregate([
+            const product = await Products.aggregate([
                 {
                     $match: {
                         status: "Active",
                     },
-                    
-                },{
-                    $limit:8,
+
+                }, {
+                    $limit: 8,
                 }
             ])
             const wishlists = await Wishlist.findOne({ userId: userId });
-            
-            let wishlist=wishlists?wishlists.products:[];
-            
+
+            let wishlist = wishlists ? wishlists.products : [];
+
             const best = await Orders.aggregate([
                 {
-                  $unwind: "$items",
+                    $unwind: "$items",
                 },
                 {
-                  $group: {
-                    _id: "$items.productId",
-                    totalCount: { $sum: "$items.quantity" },
-                  },
+                    $group: {
+                        _id: "$items.productId",
+                        totalCount: { $sum: "$items.quantity" },
+                    },
                 },
                 {
-                  $sort: {
-                    totalCount: -1,
-                  },
+                    $sort: {
+                        totalCount: -1,
+                    },
                 },
                 {
-                  $limit: 3,
+                    $limit: 3,
                 },
                 {
-                  $lookup: {
-                    from: "products",
-                    localField: "_id",
-                    foreignField: "_id",
-                    as: "productDetails",
-                  },
+                    $lookup: {
+                        from: "products",
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "productDetails",
+                    },
                 },
                 {
-                  $unwind: "$productDetails",
+                    $unwind: "$productDetails",
                 },
                 {
-                  $match: {
-                    "productDetails.status": "Active",
-                  },
+                    $match: {
+                        "productDetails.status": "Active",
+                    },
                 },
-              ]);
-              
-              const banner = await Banner.aggregate([
+            ]);
+
+            const banner = await Banner.aggregate([
                 {
-                  $match: {
-                    status: "Active",
-                  },
+                    $match: {
+                        status: "Active",
+                    },
                 },
-              ]);
-            res.render("./User/home", { title: "Home", user: data,product,wishlist,best,banner,cartCount:req.session.cartCount })
+            ]);
+            const category=await Categories.find();
+            const brand=await Brands.find();
+            res.render("./User/home", { title: "Home", user: data, product, wishlist, best, banner, cartCount: req.session.cartCount,category,brand })
         } catch (error) {
             console.log(error);
             req.session.err = true
             res.redirect("/404")
         }
-      } else {
+    } else {
         try {
             console.log(req.session.logged);
             const data = null
             req.session.name = data
             console.log(data);
-            const product=await Products.aggregate([
+            const product = await Products.aggregate([
                 {
                     $match: {
                         status: "Active",
                     },
-                    
-                },{
-                    $limit:8,
+
+                }, {
+                    $limit: 8,
                 }
             ])
-            const wishlist=[]
+            const wishlist = []
             const best = await Orders.aggregate([
                 {
-                  $unwind: "$items",
+                    $unwind: "$items",
                 },
                 {
-                  $group: {
-                    _id: "$items.productId",
-                    totalCount: { $sum: "$items.quantity" },
-                  },
+                    $group: {
+                        _id: "$items.productId",
+                        totalCount: { $sum: "$items.quantity" },
+                    },
                 },
                 {
-                  $sort: {
-                    totalCount: -1,
-                  },
+                    $sort: {
+                        totalCount: -1,
+                    },
                 },
                 {
-                  $limit: 3,
+                    $limit: 3,
                 },
                 {
-                  $lookup: {
-                    from: "products",
-                    localField: "_id",
-                    foreignField: "_id",
-                    as: "productDetails",
-                  },
+                    $lookup: {
+                        from: "products",
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "productDetails",
+                    },
                 },
                 {
-                  $unwind: "$productDetails",
+                    $unwind: "$productDetails",
                 },
                 {
-                  $match: {
-                    "productDetails.status": "Active",
-                  },
+                    $match: {
+                        "productDetails.status": "Active",
+                    },
                 },
-              ]);
-              const banner = await Banner.aggregate([
+            ]);
+            const banner = await Banner.aggregate([
                 {
-                  $match: {
-                    status: "Active",
-                  },
+                    $match: {
+                        status: "Active",
+                    },
                 },
-              ]);
-            res.render("./User/home", { title: "Home", user: data,product,wishlist,best ,banner})
+            ]);
+            const category=await Categories.find();
+            const brand=await Brands.find();
+            // console.log();
+            res.render("./User/home", { title: "Home", user: data, product, wishlist, best, banner,brand,category })
         } catch (error) {
             console.log(error);
             req.session.err = true
             res.redirect("/404")
         }
-      }
     }
+}
 
 //=================================================================================================================
 
@@ -201,7 +206,7 @@ const get_Explore = (req, res) => {
 
 const get_contactUs = (req, res) => {
     try {
-        res.render("./User/contact-us",{cartCount:req.session.cartCount})
+        res.render("./User/contact-us", { cartCount: req.session.cartCount })
     } catch (err) {
         req.session.err = true
         res.redirect("/404")
@@ -215,7 +220,7 @@ const get_profile = async (req, res) => {
         const UserId = req.session.userid;
         const UserData = await USER.findOne({ _id: UserId })
         console.log(UserData.dob);
-        res.render("./User/profile", { user, UserData ,cartCount:req.session.cartCount})
+        res.render("./User/profile", { user, UserData, cartCount: req.session.cartCount })
     } catch (err) {
         req.session.err = true
         res.redirect("/404")
@@ -230,8 +235,8 @@ const get_manageAddress = async (req, res) => {
         const UserId = req.session.userid;
         const UserData = await USER.findOne({ _id: UserId })
         const address = UserData.address;
-        console.log(address);
-        res.render("./User/address-manage", { user, UserData, address,cartCount:req.session.cartCount })
+        // console.log(address);
+        res.render("./User/address-manage", { user, UserData, address, cartCount: req.session.cartCount })
     } catch (err) {
         req.session.err = true
         res.redirect("/404")
@@ -243,34 +248,95 @@ const get_manageAddress = async (req, res) => {
 const addAddress = async (req, res) => {
     try {
         const userId = req.session.userid
-        const data={
-            name:req.body.name,
-            address:req.body.address,
-            city:req.body.city,
-            pincode:req.body.pincode,
-            state:req.body.state,
-            mobile:req.body.mobile,
+        const data = {
+            name: req.body.name,
+            address: req.body.address,
+            city: req.body.city,
+            pincode: req.body.pincode,
+            state: req.body.state,
+            mobile: req.body.mobile,
         }
         console.log(req.body);
-        const insert = await USER.updateOne({ _id: userId }, { $push: { address: data } })
-        res.redirect('/manage-address')
+        await USER.updateOne({ _id: userId }, { $push: { address: data } })
+        res.json({ success: true })
     } catch (err) {
         console.log(err);
-        res.redirect('/manage-address')
+        res.json({ success: false })
+    }
+}
+const editAddress = async (req, res) => {
+    try {
+        console.log("here", req.body);
 
+        const userId = req.session.userid
+        const address_id = req.body.address_id
+        const data = {
+            name: req.body.name,
+            address: req.body.address,
+            city: req.body.city,
+            pincode: req.body.pincode,
+            state: req.body.state,
+            mobile: req.body.mobile,
+        }
+        console.log(req.body);
+        await USER.findOneAndUpdate(
+            { _id: userId, 'address._id': address_id },
+            { $set: { 'address.$': data } },
+            { new: true }).exec()
+            .then(user => {
+                console.log('User with updated address:', user);
+                res.json({ success: true })
+            })
+            .catch(err => {
+                console.error('Error deleting address:', err);
+                res.json({ success: false })
+
+            });
+
+
+    } catch (err) {
+        console.log(err);
+        res.json({ success: false })
+    }
+}
+const deleteAddress = async (req, res) => {
+    try {
+        const userId = req.session.userid
+        const addressId = req.body.addressId
+
+        await USER.findOneAndUpdate(
+            { _id: userId },
+            { $pull: { address: { _id: addressId } } },
+            { new: true }
+        )
+            .exec()
+            .then(user => {
+                console.log('User with deleted address:', user);
+                res.json({ success: true })
+
+            })
+            .catch(err => {
+                console.error('Error deleting address:', err);
+                res.json({ success: false })
+
+            });
+
+    } catch (err) {
+        console.log(err);
+        res.json({ success: false })
     }
 }
 // ============================================================================
 const addAddressCheckout = async (req, res) => {
     try {
         const userId = req.session.userid
-        const data={
-            name:req.body.name,
-            address:req.body.address,
-            city:req.body.city,
-            pincode:req.body.pincode,
-            state:req.body.state,
-            mobile:req.body.mobile,
+        const data = {
+            name: req.body.name,
+            address: req.body.address,
+            city: req.body.city,
+            pincode: req.body.pincode,
+            state: req.body.state,
+            mobile: req.body.mobile,
         }
         console.log(req.body);
         const insert = await USER.updateOne({ _id: userId }, { $push: { address: data } })
@@ -419,21 +485,21 @@ const userLogin = async (req, res) => {
                     console.log("Login success");
                     res.redirect("/");
                 } else {
-                    res.json({ faild: true,msg:"user blocked" });
+                    res.json({ faild: true, msg: "user blocked" });
                     console.log("user blocked");
                 }
             }
             else {
-                res.json({ faild: true,msg:"invalid password" });
+                res.json({ faild: true, msg: "invalid password" });
                 console.log("invalid password");
             }
         } else {
-            res.json({ faild: true,msg:"User not found" });
+            res.json({ faild: true, msg: "User not found" });
             console.log("User not found");
 
         }
     } catch {
-        res.json({ faild: true,msg:"uinvalid user name or password" });
+        res.json({ faild: true, msg: "uinvalid user name or password" });
         console.log("user not found");
     }
 }
@@ -535,7 +601,9 @@ const password_reset = async (req, res) => {
         const pass = await bcrypt.hash(req.body.password, 10);
         const email = req.session.email
         console.log(email);
-        const update = await USER.updateOne({ email: email }, { $set: { password: pass } })
+        await USER.updateOne({ email: email }, { $set: { password: pass } })
+        const user = await USER.findOne({email:email});
+        req.session.userid=user._id
         req.session.logged = true;
         req.session.pass_reset = false
         res.redirect("/")
@@ -555,8 +623,8 @@ const error_get = (req, res) => {
 //=================================================================================================================
 
 //set checkout
-const setCheckout= (req,res)=>{
-    req.session.checkout=true;
+const setCheckout = (req, res) => {
+    req.session.checkout = true;
     res.redirect("/checkout");
 }
 //get check out
@@ -567,7 +635,7 @@ const getcheckout = async (req, res) => {
         const data = await USER.findOne({ _id: userId })
         const Address = data.address;
         console.log(Address);
-        res.render("./User/checkout", { user, Address,cartCount:req.session.cartCount });
+        res.render("./User/checkout", { user, Address, cartCount: req.session.cartCount });
     } catch (err) {
         console.log(err);
     }
@@ -629,7 +697,7 @@ module.exports = {
     // get_product,
     get_contactUs,
     get_profile,
-    
+
     get_manageAddress,
     get_order,
     get_history,
@@ -641,5 +709,7 @@ module.exports = {
     edit_profile,
     addAddress,
     setCheckout,
-    addAddressCheckout
+    addAddressCheckout,
+    deleteAddress,
+    editAddress
 }
