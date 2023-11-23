@@ -1,0 +1,294 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%-include('../layout/header_links')-%>
+  <link rel="stylesheet" type="text/css" href="/static/css/cart.css">
+</head>
+<%-include('../partials/header')-%>
+<div
+class="modal fade"
+id="addAddressModal"
+tabindex="-1"
+aria-labelledby="addAddressModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addAddressModalLabel">Add Address</h5>
+      <button
+      type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form action="/addAddress-Checkout" method="post">
+          <div class="mb-3">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" name="name" id="fullName" placeholder="Enter your full name" required />
+          </div>
+          <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input type="text" class="form-control" name="address" id="address" placeholder="Enter your address" required />
+          </div>
+          <div class="mb-3">
+              <label for="city" class="form-label">City</label>
+              <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city" required />
+          </div>
+          <div class="mb-3">
+              <label for="pincode" class="form-label">Pincode</label>
+              <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter your pincode" required />
+          </div>
+          <div class="mb-3">
+              <label for="state" class="form-label">State</label>
+              <input type="text" class="form-control" id="state" name="state" placeholder="Enter your state" required />
+          </div>
+          <div class="mb-3">
+              <label for="mobileNumber" class="form-label">Mobile Number</label>
+              <input type="tel" class="form-control" id="mobileNumber" name="mobile" placeholder="Enter your mobile number" required />
+          </div>
+          <button type="submit" class="btn btn-primary ">Add</button>
+      </form>
+  </div>
+
+  </div>
+</div>
+</div>
+
+
+
+  <body class="bg-light">
+    <form id="form-checkout">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-10 col-11 mx-auto">
+            <div class="row mt-5 gx-3">
+              <!-- left side div -->
+              <div class="col-md-12 col-lg-8 col-11 mx-auto main_cart mb-lg-5 mb-5 shadow">
+                <!--  productlist  for each place -->
+                <%if(Array.isArray(Address)){%>
+
+                  <div class="card p-4 ">
+                    <h2 class="py-4 font-weight-bold">Select Address</h2>
+                    <%Address.forEach((Address)=>{%>
+                      <div class="card shadow mt-2   container p-3">
+                        <div class="row">
+                          <div class="col-1">
+                            <input
+                              type="radio"
+                              name="Address"
+                              value="<%=Address._id%>"
+                              id="address1"
+                              checked
+                            />
+                          </div>
+                          
+                          <div class="col-11">
+                            <div class="address-value" style="font-size: 1.2rem;font-weight: 800;"><%=Address.name%></div>
+                            <div class="address-value"><%=Address.address%></div>
+                            <div class="address-value"><%=Address.city%></div>
+                            <div class="address-value"><%=Address.pincode%></div>
+                            <div class="address-value"><%=Address.state%></div>
+                            <div class="address-value"><%=Address.mobile%></div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <%})%>
+                      
+                  </div>
+
+                  <a
+                  class="btn btn-primary ms-3  text-white "
+                  data-bs-toggle="modal"
+                  data-bs-target="#addAddressModal"
+                >
+                <i class="fas fa-plus-circle"></i> Add Address
+              </a>
+                  <%}else{%>
+                    <h2>Please add Address</h2>
+                    <%}%>
+
+              </div>
+              <!-- right side div -->
+              <div class="col-md-12 col-lg-4 col-11 mx-auto mt-lg-2 mt-md-5">
+                <div class="right_side p-3 shadow bg-white">
+                  <h2 class="product_name mb-5">The Total</h2>
+                  <div class="price_indiv d-flex justify-content-between">
+                    <p>Total Product</p>
+                    <p><span id="totalQuantityValue">
+                        <%=totalQuantity%>
+                      </span></p>
+                  </div>
+                  <div class="price_indiv d-flex justify-content-between">
+                    <p>Sub Total</p>
+                    <p>₹<span id="subtotalAmount">
+                        <%=parseFloat(subtotal).toLocaleString()%>
+                      </span></p>
+                  </div>
+                  <div class="price_indiv d-flex justify-content-between">
+                    <p>Tax</p>
+                    <p>₹<span id="gstAmount">
+                        <%=parseFloat(gstAmount).toLocaleString()%>
+                      </span></p>
+                  </div>
+                  <hr />
+                  <div class="total-amt d-flex justify-content-between font-weight-bold">
+                    <p>The total amount (including GST)</p>
+                    <p>₹<span id="totalPrice" class="text-success " style="font-size: 1.2rem;font-weight: 800;">
+                        <%=parseFloat(total).toLocaleString()%>/-
+                      </span></p>
+                  </div>
+                  <div class="form-check ms-1  mb-2">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="cod"
+                      value="cod"
+                      checked
+                    />
+                    <label class="form-check-label" for="cod">
+                      Cash on Delivery (COD)
+                    </label>
+                  </div>
+                  <div class="form-check ms-1  mb-2">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="online"
+                      value="online"
+                    />
+                    <label class="form-check-label" for="online">
+                      Online Payment
+                    </label>
+                  </div>
+                  <button type="submit" id="pay-button" class="btn btn-primary text-uppercase">Place Order</button>
+                  <a href="" class="btn btn-secondary">Back to shop</a>
+                </div>
+                <!-- discount code part -->
+                <div class="discount_code mt-3 shadow">
+                  <div class="card">
+                    <div class="card-body">
+                      <a class="d-flex justify-content-between" data-toggle="collapse" href="#collapseExample"
+                        aria-expanded="false" aria-controls="collapseExample">
+                        Add a discount code (optional)
+                        <span><i class="fas fa-chevron-down pt-1"></i></span>
+                      </a>
+                      <div class="collapse" id="collapseExample">
+                        <div class="mt-3">
+                          <input type="text" name="" id="discount_code" class="form-control font-weight-bold"
+                            placeholder="Enter the discount code">
+                        </div>
+                        <button class="btn btn-primary btn-sm mt-3" onclick="discount_code()">Apply</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- discount code ends -->
+                <%if(expectedDeliveryDate!==null){%>
+                  <div class="mt-3 shadow p-3 mb-lg-5 bg-white">
+                    <div class="pt-4">
+                      <h5 class="mb-4">Expected delivery date</h5>
+                      <p>
+                        <%=expectedDeliveryDate%>
+                      </p>
+                    </div>
+                  </div>
+                  <%}%>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+    <!-- Optional JavaScript -->
+    <!-- Popper.js first, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+      integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+      crossorigin="anonymous"></script>
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+      <script>
+        $("#form-checkout").submit((e) => {
+          e.preventDefault()
+          console.log("clicked");
+          $.ajax({
+            url:'/checkout',
+            method: 'post',
+            data: $('#form-checkout').serialize(),
+            success: (response) => {
+              if (response.success) {
+                console.log('response got')
+                window.location="/order-sucesss";
+                $("#cartCount").text('('+parseFloat(response.cartCount)+')');
+              } else {
+                console.log('going to initial')
+                $("#cartCount").text('('+parseFloat(response.cartCount)+')');
+                console.log(response.createdOrder)
+                console.log(response.order)
+                handlePayNow(response)
+              }
+            }
+          })
+        })
+        function handlePayNow (order) {
+          console.log('Order',order)
+          var options = {
+          "key": "rzp_test_CIKAnQDq14gGoE",
+          "amount": order.createdOrder.amount, 
+          "currency": "INR",
+          "name": "Treassure Cart",
+          "description": "Test Transaction",
+          "image": "http://localhost:7000/static/images/logo.png",
+          "order_id": order.createdOrder.id, 
+          "handler": function (response){
+            console.log(response)
+              verifyPayment(response, order)
+          },
+          "prefill": {
+              "user": order.order.userId,
+          },
+          "notes": {
+              "address": "Razorpay Corporate Office"
+          },
+          "theme": {
+              "color": "#020d2a"
+          }
+        };
+        var payGateWay = new Razorpay(options);
+        payGateWay.open();
+        }
+      
+        function verifyPayment (payment, order) {
+          console.log('now in verifyPayment')
+          $.ajax({
+            url: '/verifyPayment',
+            data: {
+              payment,
+              order
+            },
+            method: 'post',
+            success: (response) => {
+              if (response.success) {
+                console.log('response got')
+                location.href = '/order-sucesss'
+              }else{
+                console.log('response not get');
+                location.href = '*'
+              }
+            }
+          })
+        }
+      </script>
+    <%-include('../partials/footer')-%>
+      <%-include('../layout/footer')-%>

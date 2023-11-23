@@ -33,6 +33,7 @@ const get_product_details = async (req, res) => {
 }
 const get_product = async (req, res) => {
     try {
+        req.session.checkout = false;
         let searchKey = null
         // console.log(Object.keys(req.query).length !== 0);
         if (Object.keys(req.query).length !== 0) {

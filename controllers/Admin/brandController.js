@@ -6,7 +6,7 @@ const { ObjectId } = require("mongodb");
 
 const brand_list=async(req,res)=>{
       const pageNum = req.query.page?req.query.page:1;
-      console.log(pageNum);
+      // console.log(pageNum);
       const perPage = 10;
       const totalorder=await Brands.countDocuments()
 
@@ -31,13 +31,13 @@ const brand_list=async(req,res)=>{
     try {
       const main = req.files["main"][0];
   
-      console.log("Uploaded files:");
-      console.log(main);
+      // console.log("Uploaded files:");
+      // console.log(main);
       const {
         Brand_name
       } = req.body;
       const check=await Brands.findOne({name:Brand_name})
-      console.log("name is " + Brand_name);
+      // console.log("name is " + Brand_name);
       if(!check){
         const data = {
           name: Brand_name,
@@ -57,7 +57,7 @@ const brand_list=async(req,res)=>{
     try {
       const id = req.params.id;
       const brand = await Brands.findOne({ _id: new ObjectId(id) });
-      console.log(brand);
+      // console.log(brand);
       res.render("./Admin/edit-brand", {
         brand: brand,
       });
@@ -69,18 +69,18 @@ const brand_list=async(req,res)=>{
     try {
       if(req.files["main"]){
         const id = req.params.id;
-      console.log("hello it here on the edit post");
+      // console.log("hello it here on the edit post");
       const main = req.files["main"][0];
   
       // Do whatever you want with these files.
-      console.log("Uploaded files:");
-      console.log(main);
+      // console.log("Uploaded files:");
+      // console.log(main);
   
       const {
         Brand_name,
       } = req.body;
   
-      console.log("name is " + Brand_name);
+      // console.log("name is " + Brand_name);
       const check=Brands.findOne({name:Brand_name});
     if(!check){
       const data = {
@@ -95,11 +95,11 @@ const brand_list=async(req,res)=>{
       res.redirect("/admin/brand");
       }else{
         const id = req.params.id;
-        console.log("hello it here on the edit post");
+        // console.log("hello it here on the edit post");
         // const main = req.files["main"][0];
     
         // Do whatever you want with these files.
-        console.log("Uploaded files:");
+        // console.log("Uploaded files:");
         // console.log(main);
     
         const {
@@ -116,7 +116,7 @@ const brand_list=async(req,res)=>{
       };
       await Brands.updateOne({ _id: new ObjectId(id) }, { $set: data });
     }
-        console.log("name is " + Brand_name);
+        // console.log("name is " + Brand_name);
         
         res.redirect("/admin/brand");
       }
@@ -127,18 +127,18 @@ const brand_list=async(req,res)=>{
   const brand_search=async (req,res)=>{
     try {
       const pageNum = req.query.page?req.query.page:1;
-      console.log(pageNum);
+      // console.log(pageNum);
       const perPage = 10;
       const form_data = req.body;
-      console.log(form_data);
+      // console.log(form_data);
       let brand = await Brands.find({
         name: { $regex: "^" + form_data.search, $options: "i" },
       }).skip((pageNum - 1) * perPage)
       .limit(perPage);
-      console.log(`Search Data ${brand}`);
+      // console.log(`Search Data ${brand}`);
       let x = Number((pageNum - 1) * perPage);
-      console.log(x);
-      console.log(brand.length);
+      // console.log(x);
+      // console.log(brand.length);
       var count=Math.floor(brand.length/10)+1;
       res.render("./Admin/Brand", { brand: brand,count:count,x  });
     } catch (err) {
@@ -149,7 +149,7 @@ const brand_list=async(req,res)=>{
     try {
       const id = req.params.id;
       let deleted = await Brands.deleteOne({ _id: new ObjectId(id) });
-      console.log("deleted");
+      // console.log("deleted");
       res.redirect("/admin/Brand");
     } catch (err) {
       throw err;

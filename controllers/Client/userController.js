@@ -12,6 +12,7 @@ const Categories = require("../../Models/category")
 const Wishlist = require("../../Models/wishlist")
 const Orders = require("../../Models/order")
 const Banner = require("../../Models/banner")
+const moment = require("moment");
 
 
 
@@ -111,9 +112,9 @@ const home_logged = async (req, res) => {
                     },
                 },
             ]);
-            const category=await Categories.find();
-            const brand=await Brands.find();
-            res.render("./User/home", { title: "Home", user: data, product, wishlist, best, banner, cartCount: req.session.cartCount,category,brand })
+            const category = await Categories.find();
+            const brand = await Brands.find();
+            res.render("./User/home", { title: "Home", user: data, product, wishlist, best, banner, cartCount: req.session.cartCount, category, brand })
         } catch (error) {
             console.log(error);
             req.session.err = true
@@ -178,10 +179,10 @@ const home_logged = async (req, res) => {
                     },
                 },
             ]);
-            const category=await Categories.find();
-            const brand=await Brands.find();
+            const category = await Categories.find();
+            const brand = await Brands.find();
             // console.log();
-            res.render("./User/home", { title: "Home", user: data, product, wishlist, best, banner,brand,category })
+            res.render("./User/home", { title: "Home", user: data, product, wishlist, best, banner, brand, category })
         } catch (error) {
             console.log(error);
             req.session.err = true
@@ -602,8 +603,8 @@ const password_reset = async (req, res) => {
         const email = req.session.email
         console.log(email);
         await USER.updateOne({ email: email }, { $set: { password: pass } })
-        const user = await USER.findOne({email:email});
-        req.session.userid=user._id
+        const user = await USER.findOne({ email: email });
+        req.session.userid = user._id
         req.session.logged = true;
         req.session.pass_reset = false
         res.redirect("/")
@@ -634,10 +635,14 @@ const getcheckout = async (req, res) => {
         const user = req.session.name
         const data = await USER.findOne({ _id: userId })
         const Address = data.address;
-        console.log(Address);
-        res.render("./User/checkout", { user, Address, cartCount: req.session.cartCount });
+        const gstAmount = req.session.gstAmount
+        const subtotal = req.session.subTotal
+        const totalAmount = req.session.totalAmount
+        const totalQuantity = req.session.totalQuantity;
+        console.log(totalQuantity);
+        res.render("./User/newCheckout", { user, Address, cartCount: req.session.cartCount, gstAmount, subtotal, total:totalAmount, expectedDeliveryDate: moment().add(7, "days").format("ddd, MMM D, YYYY") ,totalQuantity});
     } catch (err) {
-        console.log(err);
+        console.log("erroor in checkout:::",err);
     }
 }
 
@@ -681,6 +686,10 @@ const edit_profile = async (req, res) => {
 
     }
 }
+const about=(req,res)=>{
+    const user=req.session.name
+    res.render("./User/About",{user,cartCount:req.session.cartCount})
+}
 module.exports = {
     home_get,
     userLogin,
@@ -711,5 +720,6 @@ module.exports = {
     setCheckout,
     addAddressCheckout,
     deleteAddress,
-    editAddress
+    editAddress,
+    about
 }

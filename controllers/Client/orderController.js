@@ -9,7 +9,8 @@ const { ObjectId } = require('mongodb')
 const razorpay = require("../../util/RazorPay");
 const crypto = require('crypto');
 const { updateQuantity } = require("../../helper/updateQuantity");
-
+const { table } = require("console");
+const { log } = require("console");
 
 
 
@@ -47,6 +48,7 @@ const { updateQuantity } = require("../../helper/updateQuantity");
 
 const getOrderSuccess = (req, res) => {
     const user = req.session.name;
+    req.session.checkout=false;
     res.render("./User/OrderSuccess", { user,cartCount:req.session.cartCount });
 }
 //place order
@@ -226,52 +228,72 @@ const orderHistory = async (req, res) => {
     try {
         const userId = req.session.userid
         const user = req.session.name
-        const orders=await Orders.aggregate([
+        const orders = await Orders.aggregate([
             {
-              $match: {
-                userId: new ObjectId(userId),
-              },
+                $match: {
+                    userId: new ObjectId(userId)
+                }
             },
             {
-              $sort: {
-                orderDate: -1, // Sort in descending order to get the newest order first
-              },
+                $lookup: {
+                    from: "products",
+                    localField: "items.productId",
+                    foreignField: "_id",
+                    as: "itemsDetails"
+                }
             },
             {
-              $lookup: {
-                from: 'products', // Assuming your products collection is named 'products'
-                localField: 'items.productId',
-                foreignField: '_id',
-                as: 'itemsData',
-              },
+                $unwind: "$itemsDetails"
             },
             {
-              $unwind: '$itemsData',
+                $addFields: {
+                    "itemsDetails.quantity": {
+                        $arrayElemAt: [
+                            {
+                                $map: {
+                                    input: "$items",
+                                    as: "item",
+                                    in: {
+                                        $cond: {
+                                            if: { $eq: ["$$item.productId", "$itemsDetails._id"] },
+                                            then: "$$item.quantity",
+                                            else: 0
+                                        }
+                                    }
+                                }
+                            },
+                            0
+                        ]
+                    }
+                }
             },
             {
-              $project: {
-                _id: 1,
-                userId: 1,
-                status: 1,
-                items: {
-                  productId: '$itemsData._id',
-                  quantity: '$items.quantity',
+                $group: {
+                    _id: "$_id",
+                    userId: { $first: "$userId" },
+                    status: { $first: "$status" },
+                    itemsDetails: { $push: "$itemsDetails" },
+                    payMethod: { $first: "$payMethod" },
+                    orderDate: { $first: "$orderDate" },
+                    totalPrice: { $first: "$totalPrice" },
+                    expectedDeliveryDate: { $first: "$expectedDeliveryDate" },
+                    paymentStatus: { $first: "$paymentStatus" },
+                    address: { $first: "$address" }
+                }
+            },
+            {
+                $sort: {
+                    _id: -1,
                 },
-                payMethod: 1,
-                orderDate: 1,
-                totalPrice: 1,
-                expectedDeliveryDate: 1,
-                paymentStatus: 1,
-                address: 1,
-              },
             },
-          ]);
+            
+        ]);
         // console.log("hellllllllllllllllllllllllllll",orders.items)
-        console.log('Orders:', orders);
+        log('Orders:', orders);
         if (orders.length === 0) {
             return res.render('./User/orderHistory', { user, orders: [] ,cartCount:req.session.cartCount});
         } else {
-            res.render('./User/orderHistory', {
+            res.render('./User/orderSample', {
                 user,
                 orders: orders,
                 cartCount:req.session.cartCount
@@ -282,6 +304,91 @@ const orderHistory = async (req, res) => {
         // res.render('error/404')
     }
 }
+
+//order detail page😀
+
+const getOrderDetails =async (req,res)=>{
+    try {
+        const user=req.session.name
+        const orderId=req.params.orderId;
+        const userId=req.session.userid;
+        const orders = await Orders.aggregate([
+            {
+                $match: {
+                    userId:new ObjectId(userId),
+                    _id:new  ObjectId(orderId) 
+                }
+            },
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "items.productId",
+                    foreignField: "_id",
+                    as: "itemsDetails"
+                }
+            },
+            {
+                $unwind: "$itemsDetails"
+            },
+            {
+                $addFields: {
+                    "itemsDetails.quantity": {
+                        $arrayElemAt: [
+                            {
+                                $map: {
+                                    input: "$items",
+                                    as: "item",
+                                    in: {
+                                        $cond: {
+                                            if: { $eq: ["$$item.productId", "$itemsDetails._id"] },
+                                            then: "$$item.quantity",
+                                            else: 0
+                                        }
+                                    }
+                                }
+                            },
+                            0
+                        ]
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    userId: { $first: "$userId" },
+                    status: { $first: "$status" },
+                    itemsDetails: { $push: "$itemsDetails" },
+                    payMethod: { $first: "$payMethod" },
+                    orderDate: { $first: "$orderDate" },
+                    totalPrice: { $first: "$totalPrice" },
+                    expectedDeliveryDate: { $first: "$expectedDeliveryDate" },
+                    paymentStatus: { $first: "$paymentStatus" },
+                    address: { $first: "$address" }
+                }
+            },
+        
+        ]);
+        log("Orders",orders[0])
+        orders[0].itemsDetails.forEach((item) => { 
+            log("helloo")
+        })
+        table(orders)
+        if (orders.length === 0) {
+             throw err("no details avilabnle at the momment")
+        } else {
+            res.render('./User/orderDetials', {
+                user,
+                order: orders[0],
+                cartCount:req.session.cartCount
+            });
+        }
+    } catch (err) {
+        console.log(err)
+        req.session.err=true;
+        res.redirect("/404");
+    }
+}
+
 //cancel order
 const cancelorder = async (req, res) => {
     try {
@@ -344,7 +451,7 @@ const verifypayment = async (req, res) => {
             });
             // console.log("hmac success");
             updateQuantity(req.session.items, req.session.cartId)
-            req.session.checkout=false;
+            
             res.json({ success: true });
         } else {
             // console.log("hmac failed");
@@ -361,5 +468,6 @@ module.exports = {
     getOrderSuccess,
     placeOrder,
     cancelorder,
-    verifypayment
+    verifypayment,
+    getOrderDetails
 }

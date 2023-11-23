@@ -7,7 +7,15 @@
   <%-include('../layout/header_links')-%>
   <script src="/static/js/home.js"></script>
 </head>
-
+<style>
+    .product-card {
+    transition: transform 0.3s ease-in-out;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+    
+  }
+</style>
 <body id="body">
   <%-include('../partials/header')-%>
     <%-include('../partials/slider')-%>
@@ -104,7 +112,7 @@
                           <% } %>
                             <a href="/product/details/<%= product._id%>" style="text-decoration: none;">
                               <div class="product-card-img d-flex justify-content-center  " style="padding: 30px;">
-                                <td><img style="width: 70%;max-height: 270px;"
+                                <td><img style="width: 70%;max-height: 150px;"
                                     src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
                                     alt=""></td>
                               </div>

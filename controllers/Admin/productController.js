@@ -118,7 +118,7 @@ const edit_product = async (req, res) => {
       },
       {
         $lookup: {
-          from: 'brands', // Assuming the collection name for brands is 'brands'
+          from: 'brands', 
           localField: 'brandId',
           foreignField: '_id',
           as: 'brand',
@@ -126,7 +126,7 @@ const edit_product = async (req, res) => {
       },
       {
         $lookup: {
-          from: 'categories', // Assuming the collection name for categories is 'categories'
+          from: 'categories', 
           localField: 'categoryId',
           foreignField: '_id',
           as: 'category',
@@ -156,7 +156,6 @@ const edit_product = async (req, res) => {
     res.render.err = true
     res.redirect("/admin/404");
   }
-
 };
 // ===========================================================================================================================================
 const edit = async (req, res) => {
@@ -212,7 +211,6 @@ const edit = async (req, res) => {
           Product_Name,
           basePrice,
           descountedPrice,
-
           category,
           Description,
           stock,
@@ -530,6 +528,8 @@ const edit = async (req, res) => {
       // console.log(categoryId);
       const data = {
         name: Product_Name,
+
+        
         images: {
           mainimage: main.filename,
           // image1: img2.filename,
@@ -636,7 +636,6 @@ const edit = async (req, res) => {
           Product_Name,
           basePrice,
           descountedPrice,
-
           category,
           Description,
           stock,
@@ -782,10 +781,7 @@ const product_search = async (req, res) => {
     }).skip((pageNum - 1) * perPage)
       .limit(perPage);;
     console.log(`Search Data ${product}`);
-
     console.log(pageNum);
-
-
     console.log(x);
     console.log(product.length);
     var count = Math.floor(product.length / 10) + 1;

@@ -38,7 +38,11 @@ const get_cart = async (req, res) => {
             // console.log(data[0].productId, "============================");
             // console.log(data[0].productId.images[0].mainimage, "============================");
             console.log(data);
+            //storing everything in session for the checkout
             req.session.totalAmount = Math.round(total)
+            req.session.subTotal=Math.round(subtotal);
+            req.session.gstAmount=gstAmount.toFixed(2);
+            req.session.totalQuantity=totalQuantity;
             let today = moment(new Date()).format("lll")
             res.render("./User/SampleCart", {
                 user: user,
@@ -160,7 +164,9 @@ const updateQuantity = async (req, res) => {
             total -= couponValue;
         }
         req.session.totalAmount = Math.round(total)
-
+        req.session.gstAmount=gstAmount.toFixed(2)
+        req.session.subTotal=Math.round(subtotal)
+        req.session.totalQuantity=totalQuantity;
         res.json({
             success: true,
             subtotal: Math.round(subtotal),

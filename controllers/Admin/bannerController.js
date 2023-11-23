@@ -12,7 +12,7 @@ const getBanner = async (req, res) => {
         ]);
         var count = Math.floor(banner.length / 10) + 1;
         if (banner) {
-            console.log(banner);
+            // console.log(banner);
             res.render("./Admin/Banner", { banner, x, count })
         } else {
             banner = []
@@ -27,13 +27,13 @@ const banner_add = async (req, res) => {
     try {
         const main = req.files["main"][0];
 
-        console.log("Uploaded files:");
-        console.log(main);
+        // console.log("Uploaded files:");
+        // console.log(main);
         const {
             title
         } = req.body;
         const check = await Banner.findOne({ title: title })
-        console.log("name is " + title);
+        // console.log("name is " + title);
         if (!check) {
             const data = {
                 title: title,
@@ -64,7 +64,7 @@ const deleteBanner=async(req,res)=>{
 }
 const banneractive=async (req,res)=>{
     try {
-        console.log("hello update");
+        // console.log("hello update");
         const id=req.body.id;
         const check=await Banner.findOne({_id:id})
         if(check.status==="Active"){

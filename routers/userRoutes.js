@@ -85,6 +85,7 @@ user.post("/delete-address",verifyUser,isBlocked,calculateCartCount, userControl
 
 user.get("/order-sucesss",verifyCheckout, verifyUser, isBlocked,calculateCartCount, orderController.getOrderSuccess)
 user.get("/order-history", verifyUser, isBlocked,calculateCartCount, orderController.orderHistory)
+user.get("/order/order-details/:orderId",verifyUser, isBlocked,calculateCartCount, orderController.getOrderDetails)
 user.get("/cancelorder/:orderId", verifyUser, isBlocked,calculateCartCount, orderController.cancelorder)
 //explore==================================================================================
 
@@ -114,8 +115,8 @@ user.post("/password/reset", userControl.password_reset)
 
 user.get("/404", err, userControl.error_get)
 
-//==================================================================================
-
+//about==================================================================================
+user.get("/about-us",userControl.about)
 
 
 

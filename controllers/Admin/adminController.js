@@ -17,14 +17,14 @@ const admin_login_get = (req, res) => {
 const adminLogin = async (req, res) => {
   try {
     const check = await ADMIN.findOne({ email: req.body.email });
-    console.log(check);
-    console.log(check.password);
-    console.log(check.email);
-    console.log(req.body);
+    // console.log(check);
+    // console.log(check.password);
+    // console.log(check.email);
+    // console.log(req.body);
     const hashed = check.password;
     const pass = req.body.password;
-    console.log("hashed", hashed);
-    console.log("pass", pass);
+    // console.log("hashed", hashed);
+    // console.log("pass", pass);
     let isMatch = await bcrypt.compare(pass, hashed, (err, result) => {
       if (err) {
         console.log(err);
@@ -32,7 +32,7 @@ const adminLogin = async (req, res) => {
         // req.session.name = check.name;
         req.session.Adminlogged = true;
         req.session.Name = check.userName;
-        console.log("Login success");
+        // console.log("Login success");
         req.session.admin = true;
         res.redirect("/admin/Dashbord");
       } else {
@@ -87,7 +87,7 @@ const admin_dash = async(req, res) => {
         $unwind: "$productDetails",
       },
     ]);
-    console.log(bestSeller);
+    // console.log(bestSeller);
     res.render("./Admin/Admin-dash",{order,bestSeller});
   } catch (err) {
     res.render.err = true

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Treasure Cart</title>
+    <%-include('../layout/header_links')-%>
+    <link rel="stylesheet" href="/static/css/order-history.css">
+</head>
+<body id="body">
+<%-include('../partials/header')-%>
+<div class="container-xl px-2 mt-4">
+    <nav class="nav nav-borders">
+        <a class="nav-link  ms-0" href="/profile" >Profile</a>
+        <a class="nav-link  " href="/manage-address" >Addresses</a>
+        <a class="nav-link active" href="/order-history" >My Orders</a>
+  
+    </nav>
+    <hr class="mt-0 mb-4">
+    <div class="order-container">
+        <%if(order){%>
+            <div class="col-md-12 mt-3 mb-5">
+                <div class="card border-rounded shadow">
+                    <div class="card-body">
+                        <h4 class="mt-4">Products Bought:</h4>
+                        
+                            <% order.itemsDetails.forEach((item) => { %>
+                                <div class="col-md-4 mt-3 mb-3 ms-1 ">
+                                    <a href="/product/details/<%=item._id%>" style="text-decoration: none;">
+                                        <div class="card border-0 order-card shadow-lg p-3 bg-body rounded-3">
+                                            <div class="product-card-img d-flex  justify-content-center align-items-center " style="padding: 30px; min-height: 287px;">
+                                                <img style="width: 70%;max-height: 270px; height: auto;" src="<%=item.images[0].mainimage?'/static/product-images/'+item.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="">
+                                            </div>
+                                            <div class="card-body ">
+                                                <h5 class="card-title"><%=item.name%></h5>
+                                                <p class="card-text">Quantity: <%=item.quantity%></p>
+                                                
+                                            </div>                        
+                                        </div>
+                                    </a>
+                                </div>
+                            <% }); %>
+                        
+                      
+                     
+                        <h4 class="card-text text-success ">Order ID :  <%= order._id %> </h4>
+                        <p class="card-text">Ordered Date: <%= order.orderDate %></p>
+                        <p class="card-text">Expected Delivery Date: <%= order.expectedDeliveryDate %></p>
+                        <p class="card-text">Total Price : <span class="blue-text"><b><%= order.totalPrice.toLocaleString() %> </b></span>Rs only</p>
+                        <p class="card-text">Order Status:<b> <%= order.status %></b></p>
+                        <p class="card-text">Payment Method: <%= order.payMethod %></p>
+                        
+                        
+                              
+                        <br>
+                        <p class="lead fw-bold mb-4 pb-2" style="color: #020d2a;">Tracking Order</p>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="horizontal-timeline">
+                                    <ul class="list-inline items d-flex justify-content-between">
+                                        <%if(order.status==="Order Placed"){%>
+                                          <li class="list-inline-item items-list">
+                                            <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                        </li>
+                                        
+                                          <li class="list-inline-item items-list">
+                                            <p class="py-1 px-2 rounded text-white" style="background-color: #f0f0f0;">Shipped</p
+                                              class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
+                                          </li>
+    
+                                          <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                                            <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
+                                            <p class="py-1 px-2 rounded text-white" style="background-color: #f0f0f0;">Delivered</p>
+                                          </li>
+                                        <%} else if (order.status === "Cancelled") { %>
+                                          <li class="list-inline-item items-list">
+                                            <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                        </li>
+                                            <li class="list-inline-item items-list">
+                                                <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Order Cancelled</p
+                                                  class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
+                                            </li>
+                                              <% } else if (order.status === "Shipped") { %>
+                                                <li class="list-inline-item items-list">
+                                                  <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                              </li>
+                                              
+                                                <li class="list-inline-item items-list">
+                                                  <p class="py-1 px-2 rounded text-white bg-primary" >Shipped</p
+                                                    class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
+                                                </li>
+                                                <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                                                  <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
+                                                  <p class="py-1 px-2 rounded text-white" style="background-color: #f0f0f0;">Delivered</p>
+                                                </li>
+    
+                                                  <% } else if (order.status === "Delivered") { %>
+                                                   
+                                                    <li class="list-inline-item items-list">
+                                                      <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                                  </li>
+                                                  
+                                                    <li class="list-inline-item items-list">
+                                                      <p class="py-1 px-2 rounded text-white bg-primary" >Shipped</p
+                                                        class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
+                                                    </li>
+                                                    <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                                                      <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
+                                                      <p class="py-1 px-2 rounded text-white bg-primary " ">Delivered</p>
+                                                    </li>
+                                                  
+                                                
+                                                  
+                                                 
+                                                  <% } else if(order.status === "Rejected" ) { %> 
+                                                    <li class="list-inline-item items-list">
+                                                      <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                                  </li>
+                                                    <li class="list-inline-item items-list text-end " style="margin-right: 8px;">
+                                                      <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Rejected By Seller</p>                                                </li>
+                                                    </li>
+                                                   
+                                                <% } %>
+                                       
+                                       
+                                    </ul>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-12 d-flex">
+                        <div class="col-md-8">
+                            <p class="mt-4 ms-3 ">Want any help? <a href="#" style="text-decoration: none;">Please contact us</a></p>
+                        </div>
+                        <div class="col-md-4 mt-3 d-flex justify-content-end">
+                                 
+                          <% if (order.status === "Delivered") { %>
+                            <button type="button" class="btn btn-dark m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
+                              Download Invoice
+                            </button>
+                          
+                        <% } else if (order.status ==="Order Placed" ) { %>
+                            <button type="button" class="btn btn-warning  m-2">
+                                <a data-bs-toggle="modal" data-bs-target="#cancelconfirmation<%=order._id%>" style="text-decoration: none; color: rgb(255, 255, 255);" class="bg-warning ">Cancel Order</a>
+                            </button>
+                        <% } %>
+                        
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        <%}else{%>
+            <div class="col-12 d-flex justify-content-center">
+                <img  src="/static/images/error.jpg" alt="404 Image" style="height: 300px;">
+            </div>
+        <%}%>
+    </div>
+    
+</div>
+
+
+<%-include('../partials/footer')-%>
+<%-include('../layout/footer')-%>

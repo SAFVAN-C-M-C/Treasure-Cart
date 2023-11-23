@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 require("../config/connection")
-
 const { Schema, ObjectId } = mongoose;
 
-const couponSchema = new mongoose.Schema({
+
+
+const couponSchema = new Schema({
     couponName: String,
     couponCode: {
         type: String,
@@ -14,7 +15,8 @@ const couponSchema = new mongoose.Schema({
         {
           userId: Schema.Types.ObjectId,
           couponCode: Schema.Types.ObjectId,
-          status: {type: String, default: 'Attempted'}
+          status: {type: String, default: 'Attempted'},
+          usedAt:{type: Date},
         }
       ],
       discountType: {

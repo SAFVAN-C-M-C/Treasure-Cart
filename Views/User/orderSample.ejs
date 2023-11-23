@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Treasure Cart</title>
+    <%-include('../layout/header_links')-%>
+    <link rel="stylesheet" href="/static/css/order-history.css">
+</head>
+<body id="body">
+<%-include('../partials/header')-%>
+<div class="container-xl px-2 mt-4">
+    <nav class="nav nav-borders">
+        <a class="nav-link  ms-0" href="/profile" >Profile</a>
+        <a class="nav-link  " href="/manage-address" >Addresses</a>
+        <a class="nav-link active" href="/order-history" >My Orders</a>
+  
+    </nav>
+    <hr class="mt-0 mb-4">
+    <div class="order-container">
+        <%if(orders.length>0){%>
+            <% orders.forEach(data=> { %>
+                <div class="col-md-4 mt-3 mb-3 ms-1 ">
+                    <a href="/order/order-details/<%=data._id%>" style="text-decoration: none;">
+                        <div class="card border-0 order-card shadow-lg p-3 bg-body rounded-3">
+                            <div class="product-card-img d-flex  justify-content-center align-items-center " style="padding: 30px; min-height: 287px;">
+                                <img style="width: 70%;max-height: 270px; height: auto;" src="<%=data.itemsDetails[0].images[0].mainimage?'/static/product-images/'+data.itemsDetails[0].images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="">
+                            </div>
+                            <div class="card-body ">
+                                <h5 class="card-title">Order #<%=data._id%></h5>
+                                <p class="card-text">Date: <%=data.orderDate%></p>
+                                <p class="card-text">Total Amount: ₹<%=data.totalPrice.toLocaleString()%></p>
+                                <p class="card-text">Status: 
+
+                                    <%if(data.status==='Order Placed'){%>
+                                        <span class="bg-info text-white  p-2 rounded-2 "><%=data.status%></span>
+                                    <%}else if(data.status==='Cancelled'){%>
+                                        <span class="bg-warning text-white p-2 rounded-2 "><%=data.status%></span>
+                                    <%}else if(data.status==='Shipped'){%>
+                                        <span class="bg-primary  text-white p-2 rounded-2 "><%=data.status%></span>
+                                    <%}else if(data.status==='Delivered'){%>
+                                        <span class="bg-success  text-white p-2 rounded-2 "><%=data.status%></span>
+                                    <%}else if(data.status==='Rejected'){%>
+                                        <span class="bg-danger  text-white p-2 rounded-2 "><%=data.status%></span>
+                                    <%}else{%>
+                                        <span class="bg-secondary  p-2 rounded-2 ">Unknown</span>
+                                    <%}%>
+                                </p>
+                            </div>                        
+                        </div>
+                    </a>
+                </div>
+            <% }); %>
+        <%}else{%>
+            <div class="col-12 d-flex justify-content-center">
+                <img  src="/static/images/error.jpg" alt="404 Image" style="height: 300px;">
+            </div>
+        <%}%>
+    </div>
+    
+</div>
+
+
+<%-include('../partials/footer')-%>
+<%-include('../layout/footer')-%>
