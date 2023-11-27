@@ -1,6 +1,6 @@
 #files extentions
 *.env
 .env
-/profile-images
-/SALE-PDF
-/SALE-EXCEL
+profile-images/
+SALE-PDF/
+SALE-EXCEL/
