@@ -143,6 +143,10 @@ aria-hidden="true"
                         <%=parseFloat(total).toLocaleString()%>/-
                       </span></p>
                   </div>
+                  <div class=" mt-2 mb-5">
+                    <a onclick="usewallet('<%=parseFloat(total)%>')" class="btn btn-primary ">Use Wallet</a>
+                  </div>
+                  <%if(total>0){%>
                   <div class="form-check ms-1  mb-2">
                     <input
                       class="form-check-input"
@@ -168,6 +172,46 @@ aria-hidden="true"
                       Online Payment
                     </label>
                   </div>
+                  <%}else{%>
+                    <div class="form-check ms-1 d-none mb-2">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="paymentMethod"
+                        id="cod"
+                        value="cod"
+                        
+                      />
+                      <label class="form-check-label" for="cod">
+                        Cash on Delivery (COD)
+                      </label>
+                    </div>
+                    <div class="form-check ms-1 d-none mb-2">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="paymentMethod"
+                        id="online"
+                        value="online"
+                      />
+                      <label class="form-check-label" for="online">
+                        Online Payment
+                      </label>
+                    </div>
+                    <div class="form-check ms-1 d-none mb-2">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="paymentMethod"
+                        id="wallet"
+                        value="wallet"
+                        checked
+                      />
+                      <label class="form-check-label" for="wallet">
+                        Wallet Payment
+                      </label>
+                    </div>
+                    <%}%>
                   <button type="submit" id="pay-button" class="btn btn-primary text-uppercase">Place Order</button>
                   <a href="" class="btn btn-secondary">Back to shop</a>
                 </div>
@@ -182,10 +226,11 @@ aria-hidden="true"
                       </a>
                       <div class="collapse" id="collapseExample">
                         <div class="mt-3">
-                          <input type="text" name="" id="discount_code" class="form-control font-weight-bold"
-                            placeholder="Enter the discount code">
+                          <input type="text" name="" id="couponCode" class="form-control font-weight-bold"
+                            placeholder="Enter the coupon code">
+                            <span id="couponInfo"></span>
                         </div>
-                        <button class="btn btn-primary btn-sm mt-3" onclick="discount_code()">Apply</button>
+                        <a class="btn btn-primary btn-sm mt-3" onclick="applyCoupon('<%=parseFloat(total)%>')">Apply</a>
                       </div>
                     </div>
                   </div>
@@ -219,6 +264,71 @@ aria-hidden="true"
       crossorigin="anonymous"></script>
       <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <script>
+// document.addEventListener('DOMContentLoaded', function () {
+//     if ($('#walletCheck').is(':checked')) {
+        
+//     } else if ($('.fixedRadio').is(':checked')) {
+        
+//     }
+//     generateCoupon();
+// });
+function usewallet(total) {
+
+    $.ajax({
+      url: '/use-wallet', 
+      method: 'POST',
+      data: { total: total },
+      success: function (response) {
+        console.log(response);
+        if (response.success) {
+        
+          
+        
+          document.getElementById('totalPrice').innerText = `${response.totalPrice}`;
+          window.location.reload()
+        } else {
+          alert(response.error);
+        }
+      },
+      error: function (error) {
+        alert(response.error)
+        console.error('Error applying coupon:', error);
+      }
+    });
+
+  }
+  function applyCoupon(total) {
+    const couponCode = document.getElementById('couponCode').value;
+    // const total = parseFloat(document.getElementById('totalPrice').innerText.replace('₹', ''));
+   
+    $.ajax({
+      url: '/apply-coupon', 
+      method: 'POST',
+      data: { couponCode: couponCode, total: total },
+      success: function (response) {
+        console.log(response);
+        if (response.success) {
+        
+          const couponInfoElement = document.getElementById('couponInfo');
+        if (response.discount) {
+          couponInfoElement.innerHTML = `Coupon: ${response.discount}`;
+        } else {
+          couponInfoElement.innerHTML = `<b>No Coupon</b>`;
+        }
+          document.getElementById('totalPrice').innerText = `₹${response.grandTotal}`;
+          window.location.reload()
+        } else {
+          alert(response.error);
+        }
+      },
+      error: function (error) {
+        alert(response.error)
+        console.error('Error applying coupon:', error);
+      }
+    });
+
+  }
+
         $("#form-checkout").submit((e) => {
           e.preventDefault()
           console.log("clicked");

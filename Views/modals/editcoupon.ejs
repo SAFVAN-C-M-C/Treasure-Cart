@@ -1,0 +1,222 @@
+<%coupon.forEach((coupon)=>{%>
+    <div class="modal fade" id="editCouponModal<%=coupon._id%>" tabindex="-1" aria-labelledby="editCouponModal<%=coupon._id%>Label" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                  <h3 class="modal-title" id="addCouponModalLabel">Edit Coupon</h3>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <!-- Modal Body -->
+              <div class="modal-body">
+                  <form method="post" action="/admin/edit-coupon/<%=coupon._id%>" >
+                      <div
+                        id="flashMessage"
+                        class="alert alert-danger"
+                        style="display: none"
+                      ></div>
+                      <div class="form-group">
+                        <!-- <label for="couponName">Name of Coupon</label> -->
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="couponName"
+                          name="couponName"
+                          value="<%=coupon.couponName%>"
+                          placeholder="Enter the name of coupon"
+                          required
+                        />
+                      </div>
+                      <br />
+                      <div class="form-group" style="display: flex;align-items: center;">
+                        <!-- <label for="couponCode">Coupon Code</label><br> -->
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="couponCodex"
+                          name="couponCode"
+                          placeholder="Enter coupon code"
+                          required
+                          value="<%=coupon.couponCode%>"
+                          disabled
+                        />
+                        <a style="visibility: hidden;" ><iconify-icon icon="ic:outline-refresh" style="color: black;" width="25" height="25"></iconify-icon></a>
+                      </div>
+                      <br />
+                      <div class="form-group">
+                        <label>Discount Type:</label><br><br>
+                        <%if(coupon.discountType==="percentage"){%>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input percentageRadio"
+                              type="radio"
+                              name="discountTypeedit"
+                              value="percentage"
+                              id="percentageRadio<%=coupon._id%>"
+                              checked
+                            />
+                            <label class="form-check-label" for="percentageRadio<%=coupon._id%>"
+                              >Percentage</label
+                            ><br>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input fixedRadio"
+                              type="radio"
+                              name="discountTypeedit"
+                              value="fixed"
+                              id="fixedRadio<%=coupon._id%>"
+                            />
+                            <label class="form-check-label" for="fixedRadio<%=coupon._id%>">Fixed</label>
+                          </div>
+                        <%}else{%>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input percentageRadio"
+                              type="radio"
+                              name="discountTypeedit"
+                              value="percentage"
+                              id="percentageRadio<%=coupon._id%>"
+                            />
+                            <label class="form-check-label" for="percentageRadio<%=coupon._id%>"
+                              >Percentage</label
+                            ><br>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input fixedRadio"
+                              type="radio"
+                              name="discountTypeedit"
+                              value="fixed"
+                              id="fixedRadio<%=coupon._id%>"
+                              checked
+                            />
+                            <label class="form-check-label" for="fixedRadio<%=coupon._id%>">Fixed</label>
+                          </div>
+                        <%}%>
+                        
+                      </div>
+                      <div class="form-group percentageFields" id="percentageFields<%=coupon._id%>" style="display: none">
+                        <br />
+                        <label for="percentage">Discount Percentage</label><br>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="percentage"
+                          name="amount"
+                          min="0"
+                          max="100"
+                          value="<%=coupon.amount%>"
+                          placeholder="Enter the Discount Percentage"
+                        />
+                        <br />
+                        <label for="minAmount">Minimum Amount</label><br>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="minAmount"
+                          name="minAmount"
+                          value="<%=coupon.minAmount%>"
+                          placeholder="Enter the Minimum Amount to Apply Coupon"
+                        />
+                        <br />
+                        <label for="maxAmount">Maximum Amount</label><br>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="maxAmount"
+                          name="maxAmount"
+                          value="<%=coupon.maxAmount%>"
+                          placeholder="Enter the Maximum Amount that can be deducted"
+                        />
+                      </div>
+                      <div class="form-group fixedFields" id="fixedFields<%=coupon._id%>" style="display: none">
+                        <br />
+                        <label for="amount">Amount</label><br>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="amount"
+                          name="amount"
+                          value="<%=coupon.amount%>"
+                          placeholder="Enter the amount that will be deducted"
+                      
+                        />
+                        <br />
+                        <label for="minAmountFixed">Minimum Amount</label><br>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="minAmount"
+                          name="minAmountFixed"
+                          value="<%=coupon.minAmountFixed%>"
+                          placeholder="Enter the Minimum Amount to Apply Coupon"
+                          
+                        />
+                      </div>
+                      <br />
+                      <div class="form-group">
+                        <label for="amount">Usage Limit</label><br>
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="limit"
+                          name="limit"
+                          value="<%=coupon.limit%>"
+                          placeholder="Enter the Limit for the number of uses for each customer"
+                        
+                        />
+                      </div>
+                      <br />
+                      <div class="form-group">
+                        <label for="couponType">Coupon Type</label><br>
+                        <select class="form-control" id="couponType" name="couponType">
+                         <%if(coupon.couponType==="public"){%>
+                          <option value="public" selected>Public</option>
+                          <option value="private">Private</option>
+                         <%}else{%>
+                          <option value="public" >Public</option>
+                          <option value="private" selected>Private</option>
+                          <%}%>
+                        </select>
+                      </div>
+                      <br />
+                      <div class="form-group">
+                        <label for="startDate">Start Date</label><br>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="startDate"
+                          name="startDate"
+                          value="<%=coupon.startDate.toISOString().split('T')[0]%>"
+                          placeholder="Select the date to validate the Coupon"
+                          required
+                        />
+                      </div>
+                      <br />
+                      <div class="form-group">
+                        <label for="endDate">End Date</label><br>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="endDate"
+                          name="endDate"
+                          value="<%=coupon.endDate.toISOString().split('T')[0]%>"
+                          placeholder="Select the date for Expiration of coupon"
+                          required
+                        />
+                      </div>
+                      <br />
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Edit Coupon</button>
+                      </div>
+                    </form>
+              </div>
+  
+              
+  
+          </div>
+      </div>
+  </div>
+    <%})%> 
+  

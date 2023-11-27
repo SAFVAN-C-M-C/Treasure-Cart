@@ -1,4 +1,7 @@
 const Orders = require("../../Models/order");
+const report=require("../../util/SalesReport")
+const {log}=require ("console")
+const moment = require("moment");
 
 const getOrders = async (req, res) => {
     try {
@@ -93,7 +96,51 @@ const updateOrderStatus = async (req, res) => {
         res.json({ success: false });
     }
 }
+//generate sales report in pdf
+const genereatesalesReport = async (req, res) => {
+    try {
+     log("body",req.body);
+     const startDate = new Date(req.body.startDate);
+     startDate.setHours(0, 0, 0, 0);
+     const format = req.body.downloadFormat;
+     const endDate = new Date(req.body.endDate);
+     endDate.setHours(23, 59, 59, 999);
+     
+ log("starting",startDate);
+ log("ending",endDate)
+     const orders = await Orders.find({
+       paymentStatus: "Paid",
+       orderDate: {
+         $gte:new Date(startDate),
+         $lte: new Date(endDate),
+       },
+     }).populate("items.productId")
+     
+      console.log(orders);
+      let totalSales = 0;
+  
+      orders.forEach((order) => {
+        totalSales += order.totalPrice || 0;
+      });
+      
+  
+      report.downloadReport(
+        req,
+        res,
+        orders,
+        startDate,
+        endDate,
+        Math.round(totalSales),
+        format
+      );
+      
+    } catch (error) {
+      console.log("Error while generating sales report pdf:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  };
 module.exports = {
     getOrders,
-    updateOrderStatus
+    updateOrderStatus,
+    genereatesalesReport
 }

@@ -54,6 +54,7 @@ admin.get("/", existingadmin, adminController.admin_login_get)
 admin.post("/login", adminController.adminLogin)
 admin.get("/logout", adminController.logout)
 admin.get("/404", err, adminController.error_get)
+admin.post('/download-sales-report',verifyadmin, orderController.genereatesalesReport)
 
 // Dash===========================================================================================================================================
 admin.get("/Dashbord", verifyadmin, adminController.admin_dash)
@@ -72,10 +73,13 @@ admin.get("/product/edit/:id", verifyadmin, productController.edit_product)
 admin.post("/product/edit/:id", upload_productImage.fields(product), productController.edit)
 admin.get("/product/delete/:id", verifyadmin, productController.product_delete);
 admin.get("/product/active/:id", verifyadmin, productController.product_reupload);
-
 admin.post("/product/search", verifyadmin, productController.product_search)
 
+
+
 //category ===========================================================================================================================================
+
+
 
 admin.get('/categories', verifyadmin, categoryController.category_list)
 admin.get("/add-category", verifyadmin, categoryController.category_add_get)
@@ -116,6 +120,9 @@ admin.put("/banner-active", verifyadmin, bannerController.banneractive)
 //Coupon ===========================================================================================================================================
 
 admin.get("/coupon", verifyadmin, couponcontroller.getCoupon)
+admin.post("/addCoupon",verifyadmin,couponcontroller.addCoupon)
+admin.delete('/deleteCoupon/:couponId',verifyadmin, couponcontroller.deleteCoupon)
+admin.post("/edit-coupon/:couponId",verifyadmin,couponcontroller.editCoupon)
 
 
 

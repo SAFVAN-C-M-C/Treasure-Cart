@@ -25,11 +25,12 @@
             <h5 class="modal-title" id="staticBackdropLabel">Select Date Range</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+          <form id="salesReport" method="post" action="/admin/download-sales-report">
           <div class="modal-body">
             <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate">
+            <input name="startDate" type="date" id="startDate">
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate">
+            <input type="date" name="endDate" id="endDate">
 
             <div class="row mt-5">
               <div class="col-sm-6">
@@ -51,9 +52,10 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="generateReportBtn">Generate Report</button>
+            
+            <button type="submit" class="btn btn-primary" id="generateReportBtn">Generate Report</button>
           </div>
+        </form>
         </div>
       </div>
     </div>

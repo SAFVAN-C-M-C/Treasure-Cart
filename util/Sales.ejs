@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasure Cart Sales Report</title>
+    <!-- Add Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Add any additional styles or scripts here -->
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4 mb-4">Treasure Cart Sales Report</h1>
+        
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>User ID</th>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Payment Method</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(order => { %>
+                    <tr>
+                        <td><%= order.userId %></td>
+                        <td><%= order._id %></td>
+                        <td><%= order.orderDate.toDateString() %></td>
+                        <td><%= order.totalPrice.toLocaleString() %></td>
+                        <td><%= order.payMethod %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <p class="lead">Total Sales Amount:<% if (totalAmount) { %>
+            ₹ <%=  totalAmount.toLocaleString()  %>/-
+        <% } else { %>
+            No sales data
+        <% } %></p>
+    </div>
+
+    <!-- Add Bootstrap JS and any additional content or scripts here -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -58,7 +58,10 @@
                                     Popover on bottom
                                   </button> -->
                                   
-                                <a class="nav-link"data-bs-container="body" data-bs-title="Wallet" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Available Balance: 0 " >
+                                <!-- <a class="nav-link"data-bs-container="body" data-bs-title="Wallet" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Available Balance: 0 " >
+                                    <iconify-icon icon="solar:wallet-bold" style="color: white;" width="25" height="25"></iconify-icon>
+                                </a> -->
+                                <a class="nav-link" href="/mywallet">
                                     <iconify-icon icon="solar:wallet-bold" style="color: white;" width="25" height="25"></iconify-icon>
                                 </a>
                                 <%}else{%>
@@ -103,7 +106,8 @@
                                 <li><a class="dropdown-item" href="/profile"><i class="fa fa-user"></i> My Account</a>
                                 </li>
                                 <li><a class="dropdown-item" href="/order-history"><i
-                                            class="fa-solid fa-truck-fast"></i> MyOrders</a></li>
+                                            class="fa-solid fa-truck-fast"></i> My Orders</a></li>
+                                <li><a class="dropdown-item d-flex " href="/myCoupons"><iconify-icon class="me-1 " icon="mdi:coupon-outline" style="color: #2874f0;" width="25" height="25"></iconify-icon> My Coupons</a></li>
                                 <li><a class="dropdown-item" href="/logout"><i class="fa fa-sign-out"></i> Logout</a>
                                 </li>
 <%}else{%>

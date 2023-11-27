@@ -11,6 +11,7 @@ const crypto = require('crypto');
 const { updateQuantity } = require("../../helper/updateQuantity");
 const { table } = require("console");
 const { log } = require("console");
+const Coupon = require("../../Models/coupon");
 
 
 
@@ -46,8 +47,24 @@ const { log } = require("console");
 
 
 
-const getOrderSuccess = (req, res) => {
+const getOrderSuccess =async (req, res) => {
     const user = req.session.name;
+
+    const User=await Users.findOne({_id:req.session.userid});
+    if(req.session.walletbalance>=0){
+        User.wallet=req.session.walletbalance
+    }
+    User.save();
+    const couponId=req.session.couponid
+    const couponmatch=await Coupon.findOne({_id:couponId});
+    console.log(couponmatch);
+    if(couponmatch){
+        couponmatch.usedBy.push({
+            userId: req.session.userid,
+            usedAt: new Date(),
+        });
+        await couponmatch.save();
+    }
     req.session.checkout=false;
     res.render("./User/OrderSuccess", { user,cartCount:req.session.cartCount });
 }
@@ -83,12 +100,19 @@ const placeOrder = async (req, res) => {
             state: address.address[0].state,
             mobile: address.address[0].mobile,
         }
-
+        const currentDate = new Date().toLocaleString("en-US", {
+            timeZone: "Asia/Kolkata",
+          });
         const newOrders = new Orders({
             userId: userId,
             items: cart.products,
-            orderDate: moment(new Date()).format("llll"),
-            expectedDeliveryDate: moment().add(7, "days").format("llll"),
+            // orderDate: moment(new Date()).format("llll"),
+            orderDate: currentDate,
+
+            // expectedDeliveryDate: moment().add(7, "days").format("llll"),
+            expectedDeliveryDate: new Date(
+                Date.now() + 7 * 24 * 60 * 60 * 1000
+              ).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
             totalPrice: amount.toFixed(2),
             address: Address_distruct,
             payMethod: paymentMethod,
@@ -104,7 +128,7 @@ const placeOrder = async (req, res) => {
         req.session.items = order.items;
         // Updating the stock quantity
 
-        if (paymentMethod === "cod") {
+        if (paymentMethod === "cod" || paymentMethod==="wallet") {
             console.log("cod section");
             //send email with details of orders
             const mailOptions = {
@@ -393,7 +417,7 @@ const getOrderDetails =async (req,res)=>{
 const cancelorder = async (req, res) => {
     try {
         const orderId = req.params.orderId;
-
+        const User=await Users.findOne({email:req.session.email})
         const order = await Orders.findById(orderId);
 
         if (!order) {
@@ -411,7 +435,12 @@ const cancelorder = async (req, res) => {
                 }
             }
             order.status = "Cancelled";
+            if(order.payMethod==="online"){
+                User.wallet+=order.totalPrice
+            }
             await order.save();
+            await User.save();
+            
             return res.redirect("/order-history");
         } else {
             console.log("Order cannot be cancelled");

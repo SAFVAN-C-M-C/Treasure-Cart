@@ -8,7 +8,7 @@
   <%-include('../layout/header_links')-%>
     <link rel="stylesheet" type="text/css" href="/static/css/cart.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Treasure Cart</title>
+    <!-- <title>Treasure Cart</title> -->
 </head>
 <%-include('../partials/header')-%>
 
@@ -127,7 +127,7 @@
                 <a href="/checkout-req" class="btn btn-primary text-uppercase">Checkout</a>
               </div>
               <!-- discount code part -->
-              <div class="discount_code mt-3 shadow">
+              <!-- <div class="discount_code mt-3 shadow">
                 <div class="card">
                   <div class="card-body">
                     <a class="d-flex justify-content-between" data-toggle="collapse" href="#collapseExample"
@@ -140,11 +140,11 @@
                         <input type="text" name="" id="discount_code" class="form-control font-weight-bold"
                           placeholder="Enter the discount code">
                       </div>
-                      <button class="btn btn-primary btn-sm mt-3" onclick="discount_code()">Apply</button>
+                      <a class="btn btn-primary btn-sm mt-3" onclick="applyCoupon('<%=parseFloat(total)%>')">Apply</a>
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- discount code ends -->
               <%if(expectedDeliveryDate!==null){%>
               <div class="mt-3 shadow p-3 mb-lg-5 bg-white">
@@ -171,6 +171,36 @@
       crossorigin="anonymous"></script>
 
     <script type="text/javascript">
+       function applyCoupon(total) {
+    const couponCode = document.getElementById('couponCode').value;
+    // const total = parseFloat(document.getElementById('totalPrice').innerText.replace('₹', ''));
+   
+    $.ajax({
+      url: '/apply-coupon', 
+      method: 'POST',
+      data: { couponCode: couponCode, total: total },
+      success: function (response) {
+        console.log(response);
+        if (response.success) {
+        
+          const couponInfoElement = document.getElementById('couponInfo');
+        if (response.discount) {
+          couponInfoElement.innerHTML = `Coupon: ${response.discount}`;
+        } else {
+          couponInfoElement.innerHTML = `<b>No Coupon</b>`;
+        }
+          document.getElementById('totalPrice').innerText = `₹${response.grandTotal}`;
+        } else {
+          alert(response.error);
+        }
+      },
+      error: function (error) {
+        alert(response.error)
+        console.error('Error applying coupon:', error);
+      }
+    });
+
+  }
       function quantityChanger(productId, count, cartId, curent, avail) {
         var quantityElement = document.getElementById("count_" + productId);
         var currentQuantity = Number(quantityElement.value)

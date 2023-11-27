@@ -60,6 +60,7 @@ const get_wishlist = async(req, res) => {
       const data = req.session.name
      const userId=req.session.userid
     const wishlist = await Wishlist.findOne({ userId: userId }).populate('products.productId');
+    console.log(wishlist.products);
       res.render("./User/user-wishlist", { user: data,wishlist: wishlist.products,cartCount:req.session.cartCount })
   } catch (err) {
       req.session.err = true

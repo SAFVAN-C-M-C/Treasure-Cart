@@ -24,7 +24,7 @@ function otpverify(req,res,next){
 async function isBlocked(req,res,next){
   try{
     if(req.session.logged){
-      const user=await Users.findOne({_id:req.session.userid})
+      const user=await Users.findOne({email:req.session.email})
       if(user.status==="Active"){
         next();
       }
@@ -38,7 +38,7 @@ async function isBlocked(req,res,next){
     }
   }catch(err){
     console.log(err);
-    res.redirect("/404")
+    res.redirect("/login")
   }
 }
 function passrest(req,res,next){

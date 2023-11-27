@@ -1,0 +1,49 @@
+body::-webkit-scrollbar {
+    width: 0px;
+  }
+a {
+  text-decoration: none !important;
+  cursor: pointer;
+}
+.main {
+  width: 100%;
+  margin-top: 50px;
+  /* padding: 15px; */
+}
+.btn-custom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 50px;
+    border-radius: 50px;
+    outline: none;
+    border: none;
+    background-image: linear-gradient(to right, #444bef, #7b7ee3, #444bef);
+    background-size: 200%;
+    font-size: 0.7rem;
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    text-transform: uppercase;
+    /* margin: 1rem 0; */
+    cursor: pointer;
+    transition: ease 1s;
+  }
+  .btn-custom:hover {
+    background-position: right;
+  }
+  .table-data{
+    height: 45px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #couponCode {
+    flex: 1;
+    margin-right: 10px;
+  }
+
+  #generateButton {
+    cursor: pointer;
+  }

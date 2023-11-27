@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <%-include('../layout/header_links')-%>
+        <link rel="stylesheet" href="/static/css/usercoupons.css">
+    </head>
+    <body>
+    <%-include('../partials/header')-%>
+     
+        <div class="container-xl px-2 mt-4 mb-4">
+            <!-- Account page navigation-->
+            <nav class="nav nav-borders">
+                <a class="nav-link  ms-0" href="/myCoupons" >My Coupons</a>
+                <a class="nav-link  active" href="/mywallet" >My wallet</a>
+                
+            </nav>
+            <hr class="mt-0 mb-4">
+            <div class="row">
+
+                <div class="col-xl-4">
+                    <!-- Profile picture card-->
+                    <div class="card mb-4 mb-xl-0">
+                        
+                        <div class="card-body text-center d-flex justify-content-center">
+                            <!-- Profile picture image-->
+                            <div class="img-main shadow   " style="background-color: #e9ecef;    width: 229px;
+                            height: 229px;
+                            border-radius: 50%;
+
+                            ">
+                                <img id="mn" class="img-account-profile rounded-circle mb-2" src="<%=USER.profile.length>0?'/static/profile-images/'+USER.profile[0].mainimage:'http://bootdey.com/img/Content/avatar/avatar1.png'%>" alt="" style="height:100%;width: 100%;border-radius: 15px;  margin-right: 10px;">
+                            </div>
+
+                              
+                            
+
+                            
+                            
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                             <h5 class="card-title"><%= USER.userName %></h5>
+                            </div>
+                           <div class="d-flex justify-content-center">
+                             <b>
+                               <h4 class="card-text">Ballence : ₹ <%= parseFloat(USER.wallet).toLocaleString() %></h4>
+                              </b>  
+                           </div>
+                           </div>
+                    </div>
+                </div>
+                <div class="col-xl-8">
+                    <div class="card shadow">
+                        <div class="card-body">
+                               <% if (referred && referred.name) { %>
+                                   <h4 class="card-title">Referred By: <%= referred.name %></h4>
+                               <% } else { %>
+                                   <p>No referrer information available</p>
+                               <% } %>
+                           </div>
+                         </div>
+           
+                         <div class="card shadow mt-3">
+                           <div class="card-body">
+                               <% if (user.referredUsers && user.referredUsers.length > 0) { %>
+                                   <h5 class="card-title">Referred Users:</h5>
+                                   <ul>
+                                       <% user.referredUsers.forEach(referredUser => { %>
+                                           <li><%= referredUser.name %></li>
+                                       <% }); %>
+                                   </ul>
+                               <% } else { %>
+                                   <p>No referred users</p>
+                               <% } %>
+                           </div>
+                       </div>
+                </div>
+            </div>
+        </div>
+
+    
+<%-include('../partials/footer')-%>
+ <%-include('../layout/footer')-%>

@@ -1,0 +1,176 @@
+<div class="modal fade" id="addCouponModal" tabindex="-1" aria-labelledby="addCouponModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title" id="addCouponModalLabel">Add Coupon</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="couponForm" >
+                    <div
+                      id="flashMessage"
+                      class="alert alert-danger"
+                      style="display: none"
+                    ></div>
+                    <div class="form-group">
+                      <!-- <label for="couponName">Name of Coupon</label> -->
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="couponName"
+                        name="couponName"
+                        placeholder="Enter the name of coupon"
+                        required
+                      />
+                    </div>
+                    <br />
+                    <div class="form-group" style="display: flex;align-items: center;">
+                      <!-- <label for="couponCode">Coupon Code</label><br> -->
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="couponCode"
+                        name="couponCode"
+                        placeholder="Enter coupon code"
+                        required
+                      />
+                      <a id="generateButton" onclick="generateCoupon()"><iconify-icon icon="ic:outline-refresh" style="color: black;" width="25" height="25"></iconify-icon></a>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label>Discount Type:</label><br><br>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input percentageRadio"
+                          type="radio"
+                          name="discountType"
+                          value="percentage"
+                          id="percentageRadio"
+                        
+                        />
+                        <label class="form-check-label" for="percentageRadio"
+                          >Percentage</label
+                        ><br>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input fixedRadio"
+                          type="radio"
+                          name="discountType"
+                          value="fixed"
+                          id="fixedRadio"
+                        />
+                        <label class="form-check-label" for="fixedRadio">Fixed</label>
+                      </div>
+                    </div>
+                    <div class="form-group percentageFields" id="percentageFields" style="display: none">
+                      <br />
+                      <label for="percentage">Discount Percentage</label><br>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="percentage"
+                        name="amount"
+                        min="0"
+                        max="100"
+                        placeholder="Enter the Discount Percentage"
+                      />
+                      <br />
+                      <label for="minAmount">Minimum Amount</label><br>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="minAmount"
+                        name="minAmount"
+                        placeholder="Enter the Minimum Amount to Apply Coupon"
+                      />
+                      <br />
+                      <label for="maxAmount">Maximum Amount</label><br>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="maxAmount"
+                        name="maxAmount"
+                        placeholder="Enter the Maximum Amount that can be deducted"
+                      />
+                    </div>
+                    <div class="form-group fixedFields" id="fixedFields" style="display: none">
+                      <br />
+                      <label for="amount">Amount</label><br>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="amount"
+                        name="amount"
+                        placeholder="Enter the amount that will be deducted"
+                    
+                      />
+                      <br />
+                      <label for="minAmountFixed">Minimum Amount</label><br>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="minAmount"
+                        name="minAmountFixed"
+                        placeholder="Enter the Minimum Amount to Apply Coupon"
+                        
+                      />
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label for="amount">Usage Limit</label><br>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="limit"
+                        name="limit"
+                        placeholder="Enter the Limit for the number of uses for each customer"
+                      
+                      />
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label for="couponType">Coupon Type</label><br>
+                      <select class="form-control" id="couponType" name="couponType">
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                      </select>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label for="startDate">Start Date</label><br>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="startDate"
+                        name="startDate"
+                        placeholder="Select the date to validate the Coupon"
+                        required
+                      />
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label for="endDate">End Date</label><br>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="endDate"
+                        name="endDate"
+                        placeholder="Select the date for Expiration of coupon"
+                        required
+                      />
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Create Coupon</button>
+                    </div>
+                  </form>
+            </div>
+
+            
+
+        </div>
+    </div>
+</div>

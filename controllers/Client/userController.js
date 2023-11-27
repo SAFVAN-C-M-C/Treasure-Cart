@@ -384,8 +384,10 @@ const userSignup = async (req, res) => {
                 userName: req.body.name,
                 email: req.body.email,
                 password: pass,
+                status: "Active",
+                
             }
-            req.session.data = data;
+            const result = await USER.insertMany([data])
             req.session.email = data.email
             req.session.signotp = true;
             res.redirect("/otp-sent");
@@ -543,16 +545,9 @@ const OtpConfirmation = async (req, res) => {
     else if (req.session.signotp) {
         console.log(req.body)
         try {
-            const data = req.session.data;
-            const dataplus = {
-                userName: data.userName,
-                email: data.email,
-                password: data.password,
-                status: "Active",
-                timeStamp: Date.now()
-            }
-            console.log(req.session.data);
-            const Otp = await OTP.findOne({ email: data.email })
+            
+            
+            const Otp = await OTP.findOne({ email: req.session.email })
             console.log(Otp.expireAt);
             if (Date.now() > Otp.expiredAt) {
                 await OTP.deleteOne({ email });
@@ -560,10 +555,13 @@ const OtpConfirmation = async (req, res) => {
                 const hashed = Otp.otp
                 const match = await bcrypt.compare(req.body.code, hashed);
                 if (match) {
-                    const result = await USER.insertMany([dataplus])
+                    const user = await USER.findOne({email:req.session.email})
+                    user.veified=true;
+                    user.timeStamp= Date.now()
+                    user.save();
                     req.session.logged = true;
                     req.session.signotp = false
-                    req.session.email = dataplus.email
+                    req.session.userid=user._id;
                     res.redirect("/")
 
                 }

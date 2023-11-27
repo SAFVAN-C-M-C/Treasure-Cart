@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%-include('../layout/header_links')-%>
+    <link rel="stylesheet" href="/static/css/usercoupons.css">
+</head>
+<body>
+<%-include('../partials/header')-%>
+ 
+    <div class="container-xl px-2 mt-4">
+        <!-- Account page navigation-->
+        <nav class="nav nav-borders">
+            <a class="nav-link active ms-0" href="/myCoupons" >My Coupons</a>
+            <a class="nav-link  " href="/mywallet" >My wallet</a>
+            
+        </nav>
+        <hr class="mt-0 mb-4">
+
+    
+
+    <%if(coupon.length>0){%>
+
+       
+    
+    <div class="container-fluid">
+        <div class="row p-5">
+            
+            <% coupon.forEach((coupons) => { %>
+                <% if (coupons.couponType === 'public') { %>
+                <div class="col-md-4 p-3">
+                    <div class="card text-center border-0 shadow ">
+                        <div class="card-header border-0 ">
+                            <span style="font-size: 1.3rem;font-weight: 800;"><%= coupons.couponName %></span>
+                        </div>
+                        <div class="image-container p-3">
+                            <img src="/static/images/offerimage.svg" alt="no image" style="height: 150px;">
+                           </div>
+                        <div class="card-body">
+                            <span class="bg-secondary p-2 rounded-2 code mb-3 " ><%= coupons.couponCode %></span>
+                            <p class="card-text mt-3" id="copyText<%= coupons._id %>">Copy Coupon Code</p>
+                            <button class="btn btn-primary" onclick="copyToClipboard('<%= coupons.couponCode %>', '<%= coupons._id %>')">Copy Code</button>
+                            <!-- Button to trigger the modal -->
+                            <button class="btn btn-info " data-bs-toggle="modal" data-bs-target="#couponModal<%= coupons._id %>">Terms & Conditions</button>
+                        </div>
+                        <div class="card-footer border-0  text-muted">
+                            <% if (Date.now() < new Date(coupons.endDate).getTime()) { %>
+                                
+                                <p class="card-text">EXPIRES ON: <%= coupons.endDate.toDateString()%> </p>
+                            <% } else { %>
+                                
+                                <p class="card-text text-danger">EXPIRED ON: <%= coupons.endDate.toDateString()%> </p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Modal -->
+                <div class="modal fade" id="couponModal<%= coupons._id %>" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="couponModalLabel">Coupon Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                               
+                                <p>Coupon Name: <%= coupons.couponName %></p>
+                                <p>Coupon Code: <%= coupons.couponCode %></p>
+                                <p>Minimum purchase: ₹<%= parseFloat(coupons.minAmount).toLocaleString()%>/-</p>
+                                <p>Limit(coupon per user): <%= coupons.limit%> </p>
+                                <p>Start Date: 
+                                  
+                                  <%=coupons.startDate.toDateString()%>  
+                                </p>
+                                <p>Expires On:
+                                 
+                                  <%=coupons.endDate.toDateString()%>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            <% }); %>
+        </div>
+    </div>
+    
+    <%}else{%>
+        <div class="col-12 d-flex justify-content-center">
+            <img  src="/static/images/error.jpg" alt="404 Image" style="height: 320px;">
+          </div>
+    <%}%>
+
+</div>
+<script>
+     
+    
+    
+    function copyToClipboard(couponCode, couponId) {
+        const el = document.createElement('textarea');
+        el.value = couponCode;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        const copyText = document.getElementById('copyText' + couponId);
+        if (copyText) {
+            copyText.textContent = 'Coupon Code Copied!';
+        }
+    }
+</script>
+<%-include('../partials/footer')-%>
+<%-include('../layout/footer')-%>

@@ -5,6 +5,7 @@ const CART = require("../Models/cart");
 
 const calculateCartCount = async (req, res, next) => {
     try {
+      
       const userId=req.session.userid;
         if(userId){
             const userCart = await CART.findOne({ userId:userId });
