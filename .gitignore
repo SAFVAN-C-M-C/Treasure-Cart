@@ -2,3 +2,5 @@
 *.env
 .env
 /profile-images
+/SALE-PDF
+/SALE-EXCEL
