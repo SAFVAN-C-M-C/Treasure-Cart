@@ -27,6 +27,7 @@ const OrdersSchema = new Schema({
   orderDate: { type: Date },
   totalPrice: { type: Number },
   expectedDeliveryDate:{type: Date},
+  returnDate:{type:Date},
   paymentStatus: {type: String, default: "Pending"},
   couponId: { type: Schema.Types.ObjectId },
   address: {type:address_schema  },

@@ -1,0 +1,18 @@
+<div class="modal fade" id="returnOrderModal<%= item._id %>"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="returnOrderModalLabel">Return Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <label for="returnReason">Reason for Return:</label>
+          <textarea id="returnReason<%= item._id %>" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="submitReturn('<%= order._id %>','<%=item._id%>','<%=item.quantity%>')">Submit Return</button>
+        </div>
+      </div>
+    </div>
+  </div>

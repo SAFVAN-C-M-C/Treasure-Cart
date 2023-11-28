@@ -90,6 +90,10 @@ user.get("/order-sucesss",verifyCheckout, verifyUser, isBlocked,calculateCartCou
 user.get("/order-history", verifyUser, isBlocked,calculateCartCount,couponreset, orderController.orderHistory)
 user.get("/order/order-details/:orderId",verifyUser, isBlocked,calculateCartCount,couponreset, orderController.getOrderDetails)
 user.get("/cancelorder/:orderId", verifyUser, isBlocked,calculateCartCount,couponreset, orderController.cancelorder)
+user.get("/returnRequest",verifyUser, isBlocked,calculateCartCount,orderController.returnProduct)
+user.post("/returnOrder",verifyUser, isBlocked,calculateCartCount,orderController.returnOrder)
+user.post('/downloadinvoice',verifyUser, isBlocked,calculateCartCount,couponreset,orderController.generateInvoices)
+user.get('/downloadinvoice/:orderId',verifyUser, isBlocked,calculateCartCount,couponreset,orderController.downloadInvoice)
 //explore==================================================================================
 
 user.get("/explore", verifyUser, isBlocked,calculateCartCount, userControl.get_Explore)

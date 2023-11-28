@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Treasure Cart</title>
+    <%-include('../layout/header_links')-%>
+</head>
+<style>
+    @media (min-width: 1025px) {
+.h-custom {
+height: 100vh !important;
+}
+}
+
+.horizontal-timeline .items {
+border-top: 2px solid #ddd;
+}
+
+.horizontal-timeline .items .items-list {
+position: relative;
+margin-right: 0;
+}
+
+.horizontal-timeline .items .items-list:before {
+content: "";
+position: absolute;
+height: 8px;
+width: 8px;
+border-radius: 50%;
+background-color: #ddd;
+top: 0;
+margin-top: -5px;
+}
+
+.horizontal-timeline .items .items-list {
+padding-top: 15px;
+}
+.blue-text {
+color: green;
+}
+.btn-custom{
+
+display: flex;
+justify-content: center;
+align-items: center;
+width: 120px;
+height: 40px;
+border-radius: 15px;
+outline: none;
+border: none;
+background-image: linear-gradient(to right, #444BEF, #7b7ee3, #444BEF);
+background-size: 200%;
+font-size: 0.7rem;
+color: #fff;
+font-family: 'Poppins', sans-serif;
+text-transform: uppercase;
+/* margin: 1rem 0; */
+cursor: pointer;
+transition:ease 1s;
+}
+.btn-custom:hover{
+background-position: right;
+color: #fff;
+}
+</style>
+<body id="body">
+    <%-include('../partials/header')-%>
+    <% orders.forEach(data => { %>
+      <div class="modal fade" id="viewOrderDetails<%=data._id%>" tabindex="-1" role="dialog" aria-labelledby="viewOrderDetailsLabel<%=data._id%>" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Order Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- <span aria-hidden="true">&times;</span>
+              </button> -->
+            </div>
+            <div class="modal-body">
+              <%data.items.forEach((item)=>{%>
+              <a href="/product/details/<%-item.productId._id%>" style="text-decoration: none;">
+                <div class="card mt-2 mb-2 ">
+                  <div class="container-fluid ">
+                    <div class="row">
+                        <div class="col-4"><img src="<%=item.productId.images[0].mainimage?'/static/product-images/'+item.productId.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="img" width="100px" height="100px"></div>
+                        <div class="col-8">
+                            <span>ID: <%=item.productId._id%></span><br>
+                            <span>Name: <%=item.productId.name%></span><br>
+                            <span>Price: ₹<%=item.productId.descountedPrice%>/-</span><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </a>
+              <%})%>
+                  
+            </div>
+            <div class="modal-footer">
+              <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      
+              <!-- <a href="/admin/brand/delete/<%=data._id%>" class="btn btn-danger">Delete</a> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <%})%>
+    <% orders.forEach(data => { %>
+      <div class="modal fade" id="cancelconfirmation<%=data._id%>" tabindex="-1" role="dialog" aria-labelledby="cancelconfirmationLabel<%=data._id%>" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Order Cancel Confirmation</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                
+            </div>
+            <div class="modal-body">
+              Do you really want to cancel the order?
+            </div>
+            <div class="modal-footer">
+              <button style="background-color: black;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      
+              <a href="/cancelorder/<%=data._id %>" class="btn btn-warning ">Cancel</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%})%>
+
+  <div class="container-xl px-2 mt-4">
+    <nav class="nav nav-borders">
+      <a class="nav-link  ms-0" href="/profile" >Profile</a>
+      <a class="nav-link " href="/manage-address" >Addresses</a>
+      <a class="nav-link" href="#">Reset Password</a>
+      <!-- <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Wish List</a> -->
+      <a class="nav-link active" href="/order-history" >My Orders</a>
+
+  </nav>
+  <hr class="mt-0 mb-4">
+    <div class="row">
+      <% if (orders.length === 0) { %>
+     
+        <div class="col-md-12 mt-5" style="height:40vh;" >
+          <div class="card border-rounded shadow">
+              <div class="card-body">
+                  <h3 class="card-title">No Order History</h3>
+              </div>
+              <a href="/products" class=" mx-5 mb-3 " style="width: 10%;"><button  class="btn btn-primary ">Go to shoping</button></a>
+              
+          </div>
+        </div>
+        
+      <% } else { %>
+        <% orders.forEach(order => { %>
+        <!-- Start of order card -->
+        <div class="col-md-12 mt-3">
+            <div class="card border-rounded shadow">
+                <div class="card-body">
+                    <!-- <h4 class="mt-4">Products Bought:</h4>
+                    <ul>
+                        <% order.items.forEach((item) => { %>
+                            <li> 
+                                  <b><%= item.productId.name %> </b><br> Quantity: <%= item.quantity %> 
+                                </li>
+                                <br>
+                        <% }); %>
+                    </ul> -->
+                  
+                 
+                    <h4 class="card-text text-success ">Order ID :  <%= order._id %> </h4>
+                    <p class="card-text">Ordered Date: <%= order.orderDate %></p>
+                    <p class="card-text">Expected Delivery Date: <%= order.expectedDeliveryDate %></p>
+                    <p class="card-text">Total Price : <span class="blue-text"><b><%= order.totalPrice %> </b></span>Rs only</p>
+                    <p class="card-text">Order Status:<b> <%= order.status %></b></p>
+                    <p class="card-text">Payment Method: <%= order.payMethod %></p>
+                    
+                        <a data-bs-toggle="modal" data-bs-target="#viewOrderDetails<%=order._id%>" class="btn btn-custom">View Product</a>
+                          
+                    <br>
+                    <p class="lead fw-bold mb-4 pb-2" style="color: #020d2a;">Tracking Order</p>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="horizontal-timeline">
+                                <ul class="list-inline items d-flex justify-content-between">
+                                    <%if(order.status==="Order Placed"){%>
+                                      <li class="list-inline-item items-list">
+                                        <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                    </li>
+                                    
+                                      <li class="list-inline-item items-list">
+                                        <p class="py-1 px-2 rounded text-white" style="background-color: #f0f0f0;">Shipped</p
+                                          class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
+                                      </li>
+
+                                      <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                                        <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
+                                        <p class="py-1 px-2 rounded text-white" style="background-color: #f0f0f0;">Delivered</p>
+                                      </li>
+                                    <%} else if (order.status === "Cancelled") { %>
+                                      <li class="list-inline-item items-list">
+                                        <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                    </li>
+                                        <li class="list-inline-item items-list">
+                                            <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Order Cancelled</p
+                                              class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
+                                        </li>
+                                          <% } else if (order.status === "Shipped") { %>
+                                            <li class="list-inline-item items-list">
+                                              <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                          </li>
+                                          
+                                            <li class="list-inline-item items-list">
+                                              <p class="py-1 px-2 rounded text-white bg-primary" >Shipped</p
+                                                class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
+                                            </li>
+                                            <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                                              <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
+                                              <p class="py-1 px-2 rounded text-white" style="background-color: #f0f0f0;">Delivered</p>
+                                            </li>
+
+                                              <% } else if (order.status === "Delivered") { %>
+                                               
+                                                <li class="list-inline-item items-list">
+                                                  <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                              </li>
+                                              
+                                                <li class="list-inline-item items-list">
+                                                  <p class="py-1 px-2 rounded text-white bg-primary" >Shipped</p
+                                                    class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
+                                                </li>
+                                                <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                                                  <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
+                                                  <p class="py-1 px-2 rounded text-white bg-primary " ">Delivered</p>
+                                                </li>
+                                              
+                                            
+                                              
+                                             
+                                              <% } else if(order.status === "Rejected" ) { %> 
+                                                <li class="list-inline-item items-list">
+                                                  <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                              </li>
+                                                <li class="list-inline-item items-list text-end " style="margin-right: 8px;">
+                                                  <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Rejected By Seller</p>                                                </li>
+                                                </li>
+                                               
+                                            <% } %>
+                                   
+                                   
+                                </ul>
+                              
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-12 d-flex">
+                    <div class="col-md-8">
+                        <p class="mt-4 ms-3 ">Want any help? <a href="#" style="text-decoration: none;">Please contact us</a></p>
+                    </div>
+                    <div class="col-md-4 mt-3 d-flex justify-content-end">
+                             
+                      <% if (order.status === "Delivered") { %>
+                        <button type="button" class="btn btn-dark m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
+                          Download Invoice
+                      </button>
+                      
+                    <% } else if (order.status ==="Order Placed" ) { %>
+                        <button type="button" class="btn btn-warning  m-2">
+                            <a data-bs-toggle="modal" data-bs-target="#cancelconfirmation<%=order._id%>" style="text-decoration: none; color: rgb(255, 255, 255);" class="bg-warning ">Cancel Order</a>
+                        </button>
+                    <% } %>
+                    
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <!-- End of order card -->
+        <% }); %>
+        <% } %>
+    </div>
+            </div>
+<br>
+<br>
+<%-include('../partials/footer')-%>
+<script>
+  // async function generateAndDownloadInvoice(orderId) {
+  //     try {
+  //         const response = await fetch('/downloadinvoice', {
+  //             method: 'POST',
+  //             headers: {
+  //                 'Content-Type': 'application/json', 
+  //             },
+  //             body: JSON.stringify({ orderId }) 
+  //         });
+  //         if (response.ok) {
+  //           console.log("inside response");
+  //             window.location.href = `/downloadinvoice/${orderId}`;
+  //         }
+  //     } catch (error) {
+  //         console.error('Error in downloading the invoice:', error);
+  //     }
+  // }
+  </script>
+  
+  
+ 
+  
+
+  <%-include('../layout/footer')-%>

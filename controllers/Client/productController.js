@@ -46,17 +46,18 @@ const get_product = async (req, res) => {
             // console.log(searchKey);
             const key = req.query.key
             // console.log(req.query.key);
-            let products = await Products.find({ status: "Active" }, { name: { $regex: searchKey, $options: "i" } });
+            let products = await Products.find({ status: "Active", name: { $regex: searchKey, $options: "i" } });
+
             // console.log(products);
             if (key == 'low') {
-                products = await Products.find({ status: "Active" }, { name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: 1 })
+                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: 1 })
             } else if (key == 'high') {
-                products = await Products.find({ status: "Active" }, { name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: -1 })
+                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: -1 })
             } else if (key == 'abc') {
-                products = await Products.find({ status: "Active" }, { name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
+                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
                 // console.log(products);
             } else if (key == 'cba') {
-                products = await Products.find({ status: "Active" }, { name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
+                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
                 // console.log(products);
             }
 

@@ -12,6 +12,8 @@ const { updateQuantity } = require("../../helper/updateQuantity");
 const { table } = require("console");
 const { log } = require("console");
 const Coupon = require("../../Models/coupon");
+const { generateInvoice } = require("../../util/invoiceGenerator");
+const Return = require("../../Models/returnSchema");
 
 
 
@@ -47,33 +49,33 @@ const Coupon = require("../../Models/coupon");
 
 
 
-const getOrderSuccess =async (req, res) => {
+const getOrderSuccess = async (req, res) => {
     const user = req.session.name;
 
-    const User=await Users.findOne({_id:req.session.userid});
-    if(req.session.walletbalance>=0){
-        User.wallet=req.session.walletbalance
+    const User = await Users.findOne({ _id: req.session.userid });
+    if (req.session.walletbalance >= 0) {
+        User.wallet = req.session.walletbalance
     }
     User.save();
-    const couponId=req.session.couponid
-    const couponmatch=await Coupon.findOne({_id:couponId});
+    const couponId = req.session.couponid
+    const couponmatch = await Coupon.findOne({ _id: couponId });
     console.log(couponmatch);
-    if(couponmatch){
+    if (couponmatch) {
         couponmatch.usedBy.push({
             userId: req.session.userid,
             usedAt: new Date(),
         });
         await couponmatch.save();
     }
-    req.session.checkout=false;
-    res.render("./User/OrderSuccess", { user,cartCount:req.session.cartCount });
+    req.session.checkout = false;
+    res.render("./User/OrderSuccess", { user, cartCount: req.session.cartCount });
 }
 //place order
 const placeOrder = async (req, res) => {
     try {
         console.log("inside body", req.body);
         const userId = req.session.userid;
-        const username=req.session.name
+        const username = req.session.name
         const amount = req.session.totalAmount;
         // console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",typeof amount);
         const user = await Users.findById(userId);
@@ -102,7 +104,7 @@ const placeOrder = async (req, res) => {
         }
         const currentDate = new Date().toLocaleString("en-US", {
             timeZone: "Asia/Kolkata",
-          });
+        });
         const newOrders = new Orders({
             userId: userId,
             items: cart.products,
@@ -112,7 +114,7 @@ const placeOrder = async (req, res) => {
             // expectedDeliveryDate: moment().add(7, "days").format("llll"),
             expectedDeliveryDate: new Date(
                 Date.now() + 7 * 24 * 60 * 60 * 1000
-              ).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+            ).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
             totalPrice: amount.toFixed(2),
             address: Address_distruct,
             payMethod: paymentMethod,
@@ -128,7 +130,7 @@ const placeOrder = async (req, res) => {
         req.session.items = order.items;
         // Updating the stock quantity
 
-        if (paymentMethod === "cod" || paymentMethod==="wallet") {
+        if (paymentMethod === "cod" || paymentMethod === "wallet") {
             console.log("cod section");
             //send email with details of orders
             const mailOptions = {
@@ -225,7 +227,7 @@ const placeOrder = async (req, res) => {
             await sendEmail(mailOptions);
             console.log("order email sended");
             updateQuantity(req.session.items, req.session.cartId)
-            res.json({ success: true,cartCount:0 });
+            res.json({ success: true, cartCount: 0 });
         }
         else {
             const order = {
@@ -237,7 +239,7 @@ const placeOrder = async (req, res) => {
                 .createRazorpayOrder(order)
                 .then((createdOrder) => {
                     console.log("payment response", createdOrder);
-                    res.json({ createdOrder, order,cartCount:0 });
+                    res.json({ createdOrder, order, cartCount: 0 });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -310,37 +312,37 @@ const orderHistory = async (req, res) => {
                     _id: -1,
                 },
             },
-            
+
         ]);
         // console.log("hellllllllllllllllllllllllllll",orders.items)
         log('Orders:', orders);
         if (orders.length === 0) {
-            return res.render('./User/orderHistory', { user, orders: [] ,cartCount:req.session.cartCount});
+            return res.render('./User/orderHistory', { user, orders: [], cartCount: req.session.cartCount });
         } else {
-            res.render('./User/orderSample', {
+            res.render('./User/orderHistory', {
                 user,
                 orders: orders,
-                cartCount:req.session.cartCount
+                cartCount: req.session.cartCount
             });
         }
     } catch (error) {
-        console.log("error in track order",error);
+        console.log("error in track order", error);
         // res.render('error/404')
     }
 }
 
 //order detail page😀
 
-const getOrderDetails =async (req,res)=>{
+const getOrderDetails = async (req, res) => {
     try {
-        const user=req.session.name
-        const orderId=req.params.orderId;
-        const userId=req.session.userid;
+        const user = req.session.name
+        const orderId = req.params.orderId;
+        const userId = req.session.userid;
         const orders = await Orders.aggregate([
             {
                 $match: {
-                    userId:new ObjectId(userId),
-                    _id:new  ObjectId(orderId) 
+                    userId: new ObjectId(userId),
+                    _id: new ObjectId(orderId)
                 }
             },
             {
@@ -390,25 +392,25 @@ const getOrderDetails =async (req,res)=>{
                     address: { $first: "$address" }
                 }
             },
-        
+
         ]);
-        log("Orders",orders[0])
-        orders[0].itemsDetails.forEach((item) => { 
+        log("Orders", orders[0])
+        orders[0].itemsDetails.forEach((item) => {
             log("helloo")
         })
         table(orders)
         if (orders.length === 0) {
-             throw err("no details avilabnle at the momment")
+            throw err("no details avilabnle at the momment")
         } else {
             res.render('./User/orderDetials', {
                 user,
                 order: orders[0],
-                cartCount:req.session.cartCount
+                cartCount: req.session.cartCount
             });
         }
     } catch (err) {
         console.log(err)
-        req.session.err=true;
+        req.session.err = true;
         res.redirect("/404");
     }
 }
@@ -417,7 +419,7 @@ const getOrderDetails =async (req,res)=>{
 const cancelorder = async (req, res) => {
     try {
         const orderId = req.params.orderId;
-        const User=await Users.findOne({email:req.session.email})
+        const User = await Users.findOne({ email: req.session.email })
         const order = await Orders.findById(orderId);
 
         if (!order) {
@@ -435,12 +437,12 @@ const cancelorder = async (req, res) => {
                 }
             }
             order.status = "Cancelled";
-            if(order.payMethod==="online"){
-                User.wallet+=order.totalPrice
+            if (order.payMethod === "online") {
+                User.wallet += order.totalPrice
             }
             await order.save();
             await User.save();
-            
+
             return res.redirect("/order-history");
         } else {
             console.log("Order cannot be cancelled");
@@ -480,7 +482,7 @@ const verifypayment = async (req, res) => {
             });
             // console.log("hmac success");
             updateQuantity(req.session.items, req.session.cartId)
-            
+
             res.json({ success: true });
         } else {
             // console.log("hmac failed");
@@ -492,11 +494,121 @@ const verifypayment = async (req, res) => {
     }
 }
 
+
+//generate invoice
+const generateInvoices = async (req, res) => {
+    try {
+        const { orderId } = req.body;
+
+        const orderDetails = await Orders.findOne({ _id: orderId })
+            .populate("items.productId");
+
+        const ordersId = orderDetails._id;
+
+        console.log(ordersId);
+
+        if (orderDetails) {
+            const invoicePath = await generateInvoice(orderDetails);
+
+            res.json({
+                success: true,
+                message: "Invoice generated successfully",
+                invoicePath,
+            });
+        } else {
+            res
+                .status(500)
+                .json({ success: false, message: "Failed to generate the invoice" });
+        }
+    } catch (error) {
+        console.error("error in invoice downloading", error);
+        res
+            .status(500)
+            .json({ success: false, message: "Error in generating the invoice" });
+    }
+};
+
+//download invoice
+const downloadInvoice = async (req, res) => {
+    try {
+        const id = req.params.orderId;
+        const filePath = `public/pdf/${id}.pdf`;
+        res.download(filePath, `invoice.pdf`);
+    } catch (error) {
+        console.error("Error in downloading the invoice:", error);
+        res
+            .status(500)
+            .json({ success: false, message: "Error in downloading the invoice" });
+    }
+};
+
+const returnProduct = async (req, res) => {
+    try {
+        const { orderId, productId, quantity, reason } = req.body;
+        const product = await Products.findOne({ _id: new ObjectId(productId) });
+        const order = await Orders.findOne({ _id: new ObjectId(orderId) });
+        if (product && order) {
+            const totalPrice = product.descountedPrice * quantity;
+            const data = {
+                orderId: orderId,
+                productId: productId,
+                quantity: quantity,
+                description: reason,
+                totalPrice: totalPrice
+            }
+            await Return.insertMany([data])
+
+            res.status(200).json({
+                success: true,
+            });
+        } else {
+            res.status(500).json({ success: false, message: "Error in generating the invoice" });
+        }
+    }
+    catch (error) {
+        console.error("error in invoice downloading", error);
+        res
+            .status(500)
+            .json({ success: false, message: "Error in generating the invoice" });
+    }
+};
+const returnOrder=async(req,res)=>{
+    try {
+        const { orderId, totalPrice,reason } = req.body;
+        
+        const order = await Orders.findOne({ _id: new ObjectId(orderId) });
+        if (order) {
+            
+            const data = {
+                orderId: orderId,
+                description: reason,
+                totalPrice: totalPrice
+            }
+            await Return.insertMany([data])
+
+            res.status(200).json({
+                success: true,
+            });
+        } else {
+            res.status(500).json({ success: false, message: "Error in generating the invoice" });
+        }
+    }
+    catch (error) {
+        console.error("error in invoice downloading", error);
+        res
+            .status(500)
+            .json({ success: false, message: "Error in generating the invoice" });
+    }
+}
 module.exports = {
     orderHistory,
     getOrderSuccess,
     placeOrder,
     cancelorder,
     verifypayment,
-    getOrderDetails
+    getOrderDetails,
+    generateInvoices,
+    downloadInvoice,
+    returnProduct,
+    returnOrder
 }

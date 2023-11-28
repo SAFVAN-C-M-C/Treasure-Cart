@@ -86,7 +86,14 @@ const updateOrderStatus = async (req, res) => {
 
         const newStatus = req.body.status;
         if(newStatus==="Delivered"){
-            await Orders.findByIdAndUpdate(orderId, { status: newStatus,paymentStatus:"Paid" });
+            await Orders.findByIdAndUpdate(orderId, 
+                { 
+                    status: newStatus,
+                    paymentStatus:"Paid",
+                    expectedDeliveryDate:new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata", }),
+                    returnDate:new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }), 
+                }
+            );
         }
         await Orders.findByIdAndUpdate(orderId, { status: newStatus });
         res.json({ success: true });

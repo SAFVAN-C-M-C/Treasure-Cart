@@ -16,6 +16,24 @@
     <hr class="mt-0 mb-4">
     <div class="order-container">
         <%if(order){%>
+          <div class="modal fade" id="returnOrderModal<%= order._id %>"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
+            <div class="modal-dialog ">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="returnOrderModalLabel">Return Product</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <label for="returnReason">Reason for Return:</label>
+                  <textarea id="returnReason<%= order._id %>" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="submitReturn('<%= order._id %>','<%=order.totalPrice%>')">Submit Return</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <%-include('../modals/cancelOrder')-%>
 
             <div class="col-md-12 mt-3 mb-5">
@@ -24,27 +42,31 @@
                         <h4 class="mt-4">Products Bought:</h4>
                         
                             <% order.itemsDetails.forEach((item) => { %>
+                              
+
                                 <div class="col-md-4 mt-3 mb-3 ms-1 ">
                                     <a href="/product/details/<%=item._id%>" style="text-decoration: none;">
                                         <div class="card border-0 order-card shadow-lg p-3 bg-body rounded-3">
                                             <div class="product-card-img d-flex  justify-content-center align-items-center " style="padding: 30px; min-height: 287px;">
                                                 <img style="width: 70%;max-height: 270px; height: auto;" src="<%=item.images[0].mainimage?'/static/product-images/'+item.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="">
                                             </div>
+                                          </a>
                                             <div class="card-body ">
                                                 <h5 class="card-title"><%=item.name%></h5>
                                                 <p class="card-text">Quantity: <%=item.quantity%></p>
-                                                
+                                                <!-- <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#returnOrderModal<%= item._id %>">Retun Product</a> -->
                                             </div>                        
                                         </div>
-                                    </a>
+                                    
+                                    
                                 </div>
                             <% }); %>
                         
                       
                      
                         <h4 class="card-text text-success ">Order ID :  <%= order._id %> </h4>
-                        <p class="card-text">Ordered Date: <%= order.orderDate %></p>
-                        <p class="card-text">Expected Delivery Date: <%= order.expectedDeliveryDate %></p>
+                        <p class="card-text">Ordered Date: <%= order.orderDate.toDateString() %></p>
+                        <p class="card-text">Expected Delivery Date: <%= order.expectedDeliveryDate.toDateString() %></p>
                         <p class="card-text">Total Price : <span class="blue-text"><b><%= order.totalPrice.toLocaleString() %> </b></span>Rs only</p>
                         <p class="card-text">Order Status:<b> <%= order.status %></b></p>
                         <p class="card-text">Payment Method: <%= order.payMethod %></p>
@@ -71,6 +93,14 @@
                                             <!-- <p style="margin-right: -8px;" style="background-color: #f37a27;">Delivered</p> -->
                                             <p class="py-1 px-2 rounded text-white" style="background-color: #f0f0f0;">Delivered</p>
                                           </li>
+                                          <%} else if (order.status === "Returned") { %>
+                                            <li class="list-inline-item items-list">
+                                              <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
+                                          </li>
+                                              <li class="list-inline-item items-list">
+                                                  <p class="py-1 px-2 rounded bg-danger  text-white" ">Order returned</p
+                                                    class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
+                                              </li>
                                         <%} else if (order.status === "Cancelled") { %>
                                           <li class="list-inline-item items-list">
                                             <p class="py-1 px-2 rounded text-white bg-primary ">Ordered</p>
@@ -135,12 +165,16 @@
                         </div>
                         <div class="col-md-4 mt-3 d-flex justify-content-end">
                                  
-                          <% if (order.status === "Delivered") { %>
+                          <% if (order.status === "Delivered" ) { %>
+                            <%if(Date.now() < new Date(order.returnDate).getTime()){%>
+                            <button class="btn btn-danger m-2"  data-bs-toggle="modal" data-bs-target="#returnOrderModal<%= order._id %>">Return Order</button>
+                           <%}%>
                             <button type="button" class="btn btn-dark m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
                               Download Invoice
                             </button>
                           
                         <% } else if (order.status ==="Order Placed" ) { %>
+                          
                             <button type="button" class="btn btn-warning  m-2">
                                 <a data-bs-toggle="modal" data-bs-target="#cancelconfirmation<%=order._id%>" style="text-decoration: none; color: rgb(255, 255, 255);" class="bg-warning ">Cancel Order</a>
                             </button>
@@ -159,7 +193,71 @@
     </div>
     
 </div>
+<script>
+    async function generateAndDownloadInvoice(orderId) {
+    let timerInterval
+Swal.fire({
+  title: 'Download Started!',
+  html: 'I will close in <b></b> milliseconds.',
+  timer: 4000,
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading()
+    const b = Swal.getHtmlContainer().querySelector('b')
+    timerInterval = setInterval(() => {
+      b.textContent = Swal.getTimerLeft()
+    }, 100)
+  },
+  willClose: () => {
+    clearInterval(timerInterval)
+  }
+}).then((result) => {
+  if (result.dismiss === Swal.DismissReason.timer) {
+    console.log('I was closed by the timer')
+  }
+})
 
+      try {
+          const response = await fetch('/downloadinvoice', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json', 
+              },
+              body: JSON.stringify({ orderId }) 
+          });
+          if (response.ok) {
+            
+              window.location.href = `/downloadinvoice/${orderId}`;
+          }
+      } catch (error) {
+          console.error('Error in downloading the invoice:', error);
+      }
+  }
+  
+  function submitReturn(orderId,totalPrice){
+    const reason=document.getElementById("returnReason"+orderId).value
+  
+      console.log(orderId,totalPrice,reason);
+      $.ajax({
+      url: '/returnOrder', 
+      method: 'POST',
+      data: { orderId: orderId, totalPrice: totalPrice,reason:reason },
+      success: function (response) {
+        console.log(response);
+        if (response.success) {
+        
+          Swal.fire('Request successfuly sented');
+        } else {
+          alert(response.error);
+        }
+      },
+      error: function (error) {
+        alert(response.error)
+        console.error('Error while returning:', error);
+      }
+    });
+  }
+</script>
 
 <%-include('../partials/footer')-%>
 <%-include('../layout/footer')-%>

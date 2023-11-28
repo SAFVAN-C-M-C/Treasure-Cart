@@ -8,7 +8,7 @@ const productController = require("../controllers/Admin/productController");
 const customerController = require("../controllers/Admin/customerController");
 const orderController = require("../controllers/Admin/orderController");
 const couponcontroller = require("../controllers/Admin/couponcontroller");
-
+const returnController=require("../controllers/Admin/returnController")
 const Products = require("../Models/product");
 const {   
   upload_productImage,
@@ -109,8 +109,9 @@ admin.post("/customers/search", verifyadmin, customerController.customers_search
 // orders===========================================================================================================================================
 admin.get("/orders", verifyadmin, orderController.getOrders)
 admin.post('/updateStatus/:orderId', verifyadmin, orderController.updateOrderStatus)
-
-
+//return order//////////////////
+admin.get("/returns", verifyadmin,returnController.getReqreturn)
+admin.post("/acceptRequest",verifyadmin,returnController.acceptRequest);
 //Banner ===========================================================================================================================================
 
 admin.get("/banner", verifyadmin, bannerController.getBanner)
