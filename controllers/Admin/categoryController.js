@@ -59,6 +59,10 @@ const category_add = async (req, res) => {
             name: { $regex: `^${Category_name}$`, $options: "i" },
         });
         console.log("name is " + Category_name);
+
+
+        const images=[main.filename];
+        cropImage(images,"category-images")
         if (!check) {
             const data = {
                 name: Category_name,
@@ -112,6 +116,8 @@ const category_edit = async (req, res) => {
                 Category_name,
             } = req.body;
             const check = Categories.findOne({ name: Category_name })
+            const images=[main.filename];
+        cropImage(images,"category-images")
             if (!check) {
                 const data = {
                     name: Category_name,

@@ -625,6 +625,7 @@ const error_get = (req, res) => {
 //set checkout
 const setCheckout = (req, res) => {
     req.session.checkout = true;
+    req.session.discount_price=0
     res.redirect("/checkout");
 }
 //get check out
@@ -639,7 +640,7 @@ const getcheckout = async (req, res) => {
         const totalAmount = req.session.totalAmount
         const totalQuantity = req.session.totalQuantity;
         console.log(totalQuantity);
-        res.render("./User/newCheckout", { user, Address, cartCount: req.session.cartCount, gstAmount, subtotal, total:totalAmount, expectedDeliveryDate: moment().add(7, "days").format("ddd, MMM D, YYYY") ,totalQuantity});
+        res.render("./User/newCheckout", { user, Address, cartCount: req.session.cartCount, gstAmount, subtotal, total:totalAmount, expectedDeliveryDate: moment().add(7, "days").format("ddd, MMM D, YYYY") ,totalQuantity,discount:req.session.discount_price?Math.abs(req.session.discount_price):0});
     } catch (err) {
         console.log("erroor in checkout:::",err);
     }
@@ -659,7 +660,8 @@ const edit_profile = async (req, res) => {
         console.log(main);
         console.log(req.body);
 
-
+        const images=[main.filename];
+        cropImage(images,"profile-images")
         const {
             name,
             email,

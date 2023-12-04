@@ -62,8 +62,8 @@ const applyCoupon = async (req, res) => {
                     }
                   }
   
-                 
-                  req.session.totalAmount = total - discount;
+                  req.session.discount_price-=Math.round(discount)
+                  req.session.totalAmount = total - Math.round(discount);
   
                   
                   req.session.couponid.push(new ObjectId(couponMatch._id));

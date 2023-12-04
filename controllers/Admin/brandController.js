@@ -38,6 +38,8 @@ const brand_list=async(req,res)=>{
       } = req.body;
       const check=await Brands.findOne({name:Brand_name})
       // console.log("name is " + Brand_name);
+      const images=[main.filename];
+        cropImage(images,"brand-images")
       if(!check){
         const data = {
           name: Brand_name,
@@ -82,6 +84,8 @@ const brand_list=async(req,res)=>{
   
       // console.log("name is " + Brand_name);
       const check=Brands.findOne({name:Brand_name});
+      const images=[main.filename];
+        cropImage(images,"brand-images")
     if(!check){
       const data = {
         name: Brand_name,

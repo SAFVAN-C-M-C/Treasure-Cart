@@ -43,6 +43,7 @@ const useWallet=async(req,res)=>{
         req.session.totalAmount=0
         walletbalance=walletbalance-total
         req.session.walletbalance=walletbalance
+        req.session.discount_price-=total
         req.session.transactionsData={
           user:new ObjectId(userId),
           amount:total,
@@ -53,6 +54,7 @@ const useWallet=async(req,res)=>{
         req.session.totalAmount=total-walletbalance
         walletbalance=0;
         req.session.walletbalance=walletbalance
+        req.session.discount_price-=(total-req.session.totalAmount)
         req.session.transactionsData={
           user:new ObjectId(userId),
           amount:total-req.session.totalAmount,

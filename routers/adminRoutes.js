@@ -74,7 +74,7 @@ admin.post("/product/edit/:id", upload_productImage.fields(product), productCont
 admin.get("/product/delete/:id", verifyadmin, productController.product_delete);
 admin.get("/product/active/:id", verifyadmin, productController.product_reupload);
 admin.post("/product/search", verifyadmin, productController.product_search)
-
+admin.delete("/delete-image/:id/:index",verifyadmin,productController.deleteimage)
 
 
 //category ===========================================================================================================================================

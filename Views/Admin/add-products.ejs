@@ -23,33 +23,46 @@
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="general-main">
                   <span class="mt-2" style="font-size: 1.5rem;font-weight: 700;">General Main</span>
-                  <div class="textfield mt-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="Product_Name">Product name</label>
+                  </div>
+                  <div class="textfield">
                     <input required type="text" placeholder="Product Name" id="Product_Name" name="Product_Name" onchange="validateName()">
                   </div>
                   <span id="productError" class="error"></span>
-
-                  <div class="textfield mt-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="Description">Description</label>
+                  </div>
+                  <div class="textfield ">
                     <input required type="Text" placeholder="Description" id="Description" name="Description" onchange="validateDescription()">
                   </div>
                   <span id="descriptionError" class="error"></span>
-
-                  <div class="textfield mt-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="stock">Stock</label>
+                  </div>
+                  <div class="textfield ">
                     <input required type="number" placeholder="stock" id="stock" name="stock" onchange="validateStock()" >
                   </div>
                   <span id="stockError" class="error"></span>
-
-                  <div class="textfield mt-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="basePrice">Base Price</label>
+                  </div>
+                  <div class="textfield ">
                     <input required type="number" placeholder="base Price" id="basePrice" name="basePrice" onchange="validatbase()">
                   </div>
                   <span id="baseError" class="error"></span>
-
-                  <div class="textfield mt-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="descountedPrice">Discounted Price</label>
+                  </div>
+                  <div class="textfield ">
                     <input required type="number" placeholder="descounted Price" id="descountedPrice"
                       name="descountedPrice" onchange="validatprice()">
                   </div>
                   <span id="priceError" class="error"></span>
-
-                  <div class="textfield mt-5 ">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="brand">Brand</label>
+                  </div>
+                  <div class="textfield  ">
                     <select name="brand" id="brand" onchange="validateBrand()">
                       <option value="default">Select Brand</option>
                       <%if(brand){%>
@@ -62,8 +75,10 @@
                     </select>
                   </div>
                   <span id="brandError" class="error"></span>
-
-                  <div class="textfield mt-5 mb-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="category">Category</label>
+                  </div>
+                  <div class="textfield  mb-5">
                     <select name="category" id="category" onchange="validcategory()">
                       <option value="default">Select Category</option>
                       <%if(category){%>
@@ -80,15 +95,15 @@
                 </div>
               </div>
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                <div class="images-main container">
+                <div class="images-main container rounded-4 ">
                   <div class="row">
-                    <div class="division-header">
+                    <div class="division-header mt-3 mb-4 ">
                       <span style="font-size: 1rem;font-weight: 700; ">Media</span>
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="images">
+                  <div class="row ">
+                    <div class="images mb-5 ">
                       <input type="file" name="main" accept="image/*" id="main" required
                         onchange="previewImage('main', 'mn')">
                       <label for="main">

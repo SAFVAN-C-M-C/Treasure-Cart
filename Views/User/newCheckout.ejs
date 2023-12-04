@@ -132,8 +132,14 @@ aria-hidden="true"
                   </div>
                   <div class="price_indiv d-flex justify-content-between">
                     <p>Tax</p>
-                    <p>₹<span id="gstAmount">
+                    <p> + ₹<span id="gstAmount" class="text-danger ">
                         <%=parseFloat(gstAmount).toLocaleString()%>
+                      </span></p>
+                  </div>
+                  <div class="price_indiv d-flex justify-content-between">
+                    <p>Discount</p>
+                    <p> - ₹<span id="discount" class="text-success ">
+                        <%=parseFloat(discount).toLocaleString()%>
                       </span></p>
                   </div>
                   <hr />

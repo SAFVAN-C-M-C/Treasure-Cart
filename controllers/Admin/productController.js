@@ -2,6 +2,7 @@ const Brands = require("../../Models/brand");
 const Categories = require("../../Models/category");
 const Products = require("../../Models/product");
 const { ObjectId } = require("mongodb");
+const { cropImage } = require("../../util/cropImages");
 
 
 // ===========================================================================================================================================
@@ -77,10 +78,8 @@ const add_product = async (req, res) => {
     } = req.body;
 
     console.log("name is " + Product_Name);
-    // let categoryId = await Categories.findOne({ name: category });
-    // let brandId = await Brands.findOne({ name: brand });
-    // console.log(brandId);
-    // console.log(categoryId);
+    const images=[main.filename,img2.filename,img3.filename];
+    cropImage(images,"product-images")
     const data = {
       name: Product_Name,
       images: {
@@ -141,11 +140,11 @@ const edit_product = async (req, res) => {
       // You can add more stages to your aggregation pipeline if needed
     ]);
     products=products[0];
-    console.log(products);
+    // console.log(products);
     const category = await Categories.find();
-    console.log(category);
+    // console.log(category);
     const brand = await Brands.find();
-    console.log(brand);
+    // console.log(brand);
     res.render("./Admin/edit-product", {
       product: products,
       brand: brand,
@@ -158,593 +157,281 @@ const edit_product = async (req, res) => {
   }
 };
 // ===========================================================================================================================================
-const edit = async (req, res) => {
+const edit = async (req,res)=>{
   try {
+    const id = req.params.id;
+    const product=await Products.findOne({ _id: new ObjectId(id) });
+
     if (req.files["main"] && req.files["image1"] && req.files["image2"]) {
-      console.log("hello it here on the edit post");
+      console.log("hello it here on the edit with all images");
       const main = req.files["main"][0];
       const img2 = req.files["image1"][0];
       const img3 = req.files["image2"][0];
+      const {
+        Product_Name,
+        basePrice,
+        descountedPrice,
+        brand,
+        category,
+        Description,
+        stock,
+      } = req.body;
+      console.log("name is " + Product_Name);
+      //cropping image
+      const images=[main.filename,img2.filename,img3.filename];
+      cropImage(images,"product-images")
 
-      // Do whatever you want with these files.
-      console.log("Uploaded files:");
+
+      //setting new value
+      product.name=Product_Name;
+      product.images[0].mainimage=main.filename
+      product.images[0].image1=img2.filename
+      product.images[0].image2=img3.filename
+      product.description= Description
+      product.stock= stock
+      product.basePrice= basePrice
+      product.descountedPrice= descountedPrice
+      product.timeStamp= Date.now()
+      product.brandId= new ObjectId(brand)
+      product.categoryId= new ObjectId(category)
+      
+   
+      
+    
+    }else if(req.files["main"] && req.files["image1"] && !req.files["image2"]){
+      console.log("hello it here on the edit with main and image 1");
+      const main = req.files["main"][0];
+      const img2 = req.files["image1"][0];
+
+      const {
+        Product_Name,
+        basePrice,
+        descountedPrice,
+        brand,
+        category,
+        Description,
+        stock,
+      } = req.body;
+      console.log("name is " + Product_Name);
+      //cropping image
+      const images=[main.filename,img2.filenamee];
+      cropImage(images,"product-images")
+
+      //setting new value
+
+      product.name=Product_Name;
+      product.images[0].mainimage=main.filename
+      product.images[0].image1=img2.filename
+      product.description= Description
+      product.stock= stock
+      product.basePrice= basePrice
+      product.descountedPrice= descountedPrice
+      product.timeStamp= Date.now()
+      product.brandId= new ObjectId(brand)
+      product.categoryId= new ObjectId(category)
+      
+      
+
+    }else if(req.files["main"] && !req.files["image1"] && req.files["image2"]){
+      console.log("hello it here on the edit with main and image 2");
+      const main = req.files["main"][0];
+      const img3 = req.files["image2"][0];
+      const {
+        Product_Name,
+        basePrice,
+        descountedPrice,
+        brand,
+        category,
+        Description,
+        stock,
+      } = req.body;
+      console.log("name is " + Product_Name);
+
+      //cropping image
+      const images=[main.filename,img3.filename];
+      cropImage(images,"product-images")
+      
+      //setting new value
+
+      product.name=Product_Name;
+      product.images[0].mainimage=main.filename
+      product.images[0].image2=img3.filename
+      product.description= Description
+      product.stock= stock
+      product.basePrice= basePrice
+      product.descountedPrice= descountedPrice
+      product.timeStamp= Date.now()
+      product.brandId= new ObjectId(brand)
+      product.categoryId= new ObjectId(category)
+      
+      
+    }else if(req.files["main"] && !req.files["image1"] && !req.files["image2"]){
+      console.log("hello it here on the edit with only main");
+      const main = req.files["main"][0];
       console.log(main);
-      console.log(img2);
-      console.log(img3);
-      if (req.body.brand && req.body.category) {
-        const {
-          Product_Name,
-          basePrice,
-          descountedPrice,
-          brand,
-          category,
-          Description,
-          stock,
-        } = req.body;
 
-        console.log("name is " + Product_Name);
-        // let categoryId = await Categories.findOne({ name: category });
-        // let brandId = await Brands.findOne({ name: brand });
-        // console.log(brandId._id);
-        // console.log(categoryId);
-        const data = {
-          name: Product_Name,
-          images: {
-            mainimage: main.filename,
-            image1: img2.filename,
-            image2: img3.filename,
-          },
-          description: Description,
-          stock: stock,
-          basePrice: basePrice,
-          descountedPrice: descountedPrice,
-          timeStamp: Date.now(),
-          brandId: new ObjectId(brand),
-          categoryId: new ObjectId(category),
-        };
-        const id = req.params.id;
-        await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-        req.flash("msg", "Product edited successfully");
-        res.redirect("/admin/products");
-      } else if (!req.body.brand && req.body.category) {
-        const {
-          Product_Name,
-          basePrice,
-          descountedPrice,
-          category,
-          Description,
-          stock,
-        } = req.body;
+      const {
+        Product_Name,
+        basePrice,
+        descountedPrice,
+        brand,
+        category,
+        Description,
+        stock,
+      } = req.body;
+      console.log("name is " + Product_Name);
+      //cropping image
+      const images=[main.filename];
+      cropImage(images,"product-images")
+      
+      //setting new value
 
-        console.log("name is " + Product_Name);
-        let categoryId = await Categories.findOne({ name: category });
-        // let brandId = await Brands.findOne({ name: brand });
-        // console.log(brandId._id);
-        console.log(categoryId);
-        const data = {
-          name: Product_Name,
-          images: {
-            mainimage: main.filename,
-            image1: img2.filename,
-            image2: img3.filename,
-          },
-          description: Description,
-          stock: stock,
-          basePrice: basePrice,
-          descountedPrice: descountedPrice,
-          timeStamp: Date.now(),
-          // brandId: new ObjectId(brandId._id),
-          categoryId: new ObjectId(categoryId._id),
-        };
-        const id = req.params.id;
-        await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-        req.flash("msg", "Product edited successfully");
-        res.redirect("/admin/products");
-      } else if (req.body.brand && !req.body.category) {
-        const {
-          Product_Name,
-          basePrice,
-          descountedPrice,
-          brand,
-          // category,
-          Description,
-          stock,
-        } = req.body;
+      product.name=Product_Name;
+      product.images[0].mainimage=main.filename
+      product.description= Description
+      product.stock= stock
+      product.basePrice= basePrice
+      product.descountedPrice= descountedPrice
+      product.timeStamp= Date.now()
+      product.brandId= new ObjectId(brand)
+      product.categoryId= new ObjectId(category)
+      
+      
+    }else if(!req.files["main"] && req.files["image1"] && req.files["image2"]){
+      console.log("hello it here on the edit with only image1 and image 2");
 
-        console.log("name is " + Product_Name);
-        // let categoryId = await Categories.findOne({ name: category });
-        let brandId = await Brands.findOne({ name: brand });
-        console.log(brandId._id);
-        // console.log(categoryId);
-        const data = {
-          name: Product_Name,
-          images: {
-            mainimage: main.filename,
-            image1: img2.filename,
-            image2: img3.filename,
-          },
-          description: Description,
-          stock: stock,
-          basePrice: basePrice,
-          descountedPrice: descountedPrice,
-          timeStamp: Date.now(),
-          brandId: new ObjectId(brandId._id),
-          // categoryId: new ObjectId(categoryId._id),
-        };
-        const id = req.params.id;
-        await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-        req.flash("msg", "Product edited successfully");
-        res.redirect("/admin/products");
-      } else {
-        const {
-          Product_Name,
-          basePrice,
-          descountedPrice,
-          // brand,
-          // category,
-          Description,
-          stock,
-        } = req.body;
+      const img2 = req.files["image1"][0];
+      const img3 = req.files["image2"][0];
+      const {
+        Product_Name,
+        basePrice,
+        descountedPrice,
+        brand,
+        category,
+        Description,
+        stock,
+      } = req.body;
+      console.log("name is " + Product_Name);
 
-        console.log("name is " + Product_Name);
-        // let categoryId = await Categories.findOne({ name: category });
-        // let brandId = await Brands.findOne({ name: brand });
-        // console.log(brandId._id);
-        // console.log(categoryId);
-        const data = {
-          name: Product_Name,
-          images: {
-            mainimage: main.filename,
-            image1: img2.filename,
-            image2: img3.filename,
-          },
-          description: Description,
-          stock: stock,
-          basePrice: basePrice,
-          descountedPrice: descountedPrice,
-          timeStamp: Date.now(),
-          // brandId: new ObjectId(brandId._id),
-          // categoryId: new ObjectId(categoryId._id),
-        };
-        const id = req.params.id;
-        await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-        req.flash("msg", "Product edited successfully");
-        res.redirect("/admin/products");
-      }
+      //cropping image
+      const images=[img2.filename,img3.filename];
+      cropImage(images,"product-images")
+      
+      //setting new value
 
+      product.name=Product_Name;
 
+      product.images[0].image1=img2.filename
+      product.images[0].image2=img3.filename
+      product.description= Description
+      product.stock= stock
+      product.basePrice= basePrice
+      product.descountedPrice= descountedPrice
+      product.timeStamp= Date.now()
+      product.brandId= new ObjectId(brand)
+      product.categoryId= new ObjectId(category)
+      
+    }else if(!req.files["main"] && req.files["image1"] && !req.files["image2"]){
+      console.log("hello it here on the edit with only image1");
+
+      const img2 = req.files["image1"][0];
+
+      const {
+        Product_Name,
+        basePrice,
+        descountedPrice,
+        brand,
+        category,
+        Description,
+        stock,
+      } = req.body;
+      console.log("name is " + Product_Name);
+
+      //cropping image
+      const images=[img2.filename];
+      cropImage(images,"product-images")
+      
+      //setting new value
+
+      product.name=Product_Name;
+
+      product.images[0].image1=img2.filename
+
+      product.description= Description
+      product.stock= stock
+      product.basePrice= basePrice
+      product.descountedPrice= descountedPrice
+      product.timeStamp= Date.now()
+      product.brandId= new ObjectId(brand)
+      product.categoryId= new ObjectId(category)
+      
+    }else if(!req.files["main"] && !req.files["image1"] && req.files["image2"]){
+      console.log("hello it here on the edit with only images2");
+
+      const img3 = req.files["image2"][0];
+      const {
+        Product_Name,
+        basePrice,
+        descountedPrice,
+        brand,
+        category,
+        Description,
+        stock,
+      } = req.body;
+      console.log("name is " + Product_Name);
+
+      //cropping image
+      const images=[img3.filename];
+      cropImage(images,"product-images")
+      
+      //setting new value
+
+      product.name=Product_Name;
+
+      product.images[0].image2=img3.filename
+      product.description= Description
+      product.stock= stock
+      product.basePrice= basePrice
+      product.descountedPrice= descountedPrice
+      product.timeStamp= Date.now()
+      product.brandId= new ObjectId(brand)
+      product.categoryId= new ObjectId(category)
+      
+    }else{
+      console.log("hello it here on the edit with no images");
+
+      const {
+        Product_Name,
+        basePrice,
+        descountedPrice,
+        brand,
+        category,
+        Description,
+        stock,
+      } = req.body;
+      console.log("name is " + Product_Name);
+      
+      //setting new value
+
+      product.name=Product_Name;
+      product.description= Description
+      product.stock= stock
+      product.basePrice= basePrice
+      product.descountedPrice= descountedPrice
+      product.timeStamp= Date.now()
+      product.brandId= new ObjectId(brand)
+      product.categoryId= new ObjectId(category)
+      
     }
-    else if (req.files["main"] && !req.files["image1"] && !req.files["image2"]) {
-      console.log("hello it here on the edit post");
-      const main = req.files["main"][0];
-      // const img2 = req.files["image1"][0];
-      // const img3 = req.files["image2"][0];
-
-      // Do whatever you want with these files.
-      console.log("Uploaded files:");
-      console.log(main);
-      // console.log(img2);
-      // console.log(img3);
-
-      const {
-        Product_Name,
-        basePrice,
-        descountedPrice,
-        brand,
-        category,
-        Description,
-        stock,
-      } = req.body;
-
-      console.log("name is " + Product_Name);
-      // let categoryId = await Categories.findOne({ name: category });
-      // let brandId = await Brands.findOne({ name: brand });
-      // console.log(brandId._id);
-      // console.log(categoryId);
-      const data = {
-        name: Product_Name,
-        images: {
-          mainimage: main.filename,
-          // image1: img2.filename,
-          // image2: img3.filename,
-        },
-        description: Description,
-        stock: stock,
-        basePrice: basePrice,
-        descountedPrice: descountedPrice,
-        timeStamp: Date.now(),
-        brandId: new ObjectId(brand),
-        categoryId: new ObjectId(category),
-      };
-      const id = req.params.id;
-      await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-      req.flash("msg", "Product edited successfully");
-      res.redirect("/admin/products");
-    }
-    else if (!req.files["main"] && req.files["image1"] && !req.files["image2"]) {
-      console.log("hello it here on the edit post");
-      // const main = req.files["main"][0];
-      const img2 = req.files["image1"][0];
-      // const img3 = req.files["image2"][0];
-
-      // Do whatever you want with these files.
-      console.log("Uploaded files:");
-      // console.log(main);
-      console.log(img2);
-      // console.log(img3);
-
-      const {
-        Product_Name,
-        basePrice,
-        descountedPrice,
-        brand,
-        category,
-        Description,
-        stock,
-      } = req.body;
-
-      console.log("name is " + Product_Name);
-      // let categoryId = await Categories.findOne({ name: category });
-      // let brandId = await Brands.findOne({ name: brand });
-      // console.log(brandId._id);
-      // console.log(categoryId);
-      const data = {
-        name: Product_Name,
-        images: {
-          // mainimage: main.filename,
-          image1: img2.filename,
-          // image2: img3.filename,
-        },
-        description: Description,
-        stock: stock,
-        basePrice: basePrice,
-        descountedPrice: descountedPrice,
-        timeStamp: Date.now(),
-        brandId: new ObjectId(brand),
-        categoryId: new ObjectId(category),
-      };
-      const id = req.params.id;
-      await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-      req.flash("msg", "Product edited successfully");
-      res.redirect("/admin/products");
-    } else if (!req.files["main"] && !req.files["image1"] && req.files["image2"]) {
-      console.log("hello it here on the edit post");
-      // const main = req.files["main"][0];
-      // const img2 = req.files["image1"][0];
-      const img3 = req.files["image2"][0];
-
-      // Do whatever you want with these files.
-      console.log("Uploaded files:");
-      // console.log(main);
-      // console.log(img2);
-      console.log(img3);
-
-      const {
-        Product_Name,
-        basePrice,
-        descountedPrice,
-        brand,
-        category,
-        Description,
-        stock,
-      } = req.body;
-
-      console.log("name is " + Product_Name);
-      // let categoryId = await Categories.findOne({ name: category });
-      // let brandId = await Brands.findOne({ name: brand });
-      // console.log(brandId._id);
-      // console.log(categoryId);
-      const data = {
-        name: Product_Name,
-        images: {
-          // mainimage: main.filename,
-          // image1: img2.filename,
-          image2: img3.filename,
-        },
-        description: Description,
-        stock: stock,
-        basePrice: basePrice,
-        descountedPrice: descountedPrice,
-        timeStamp: Date.now(),
-        brandId: new ObjectId(brand),
-        categoryId: new ObjectId(category),
-      };
-      const id = req.params.id;
-      await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-      req.flash("msg", "Product edited successfully");
-      res.redirect("/admin/products");
-    } else if (req.files["main"] && req.files["image1"] && !req.files["image2"]) {
-      console.log("hello it here on the edit post");
-      const main = req.files["main"][0];
-      const img2 = req.files["image1"][0];
-      // const img3 = req.files["image2"][0];
-
-      // Do whatever you want with these files.
-      console.log("Uploaded files:");
-      console.log(main);
-      console.log(img2);
-      // console.log(img3);
-
-      const {
-        Product_Name,
-        basePrice,
-        descountedPrice,
-        brand,
-        category,
-        Description,
-        stock,
-      } = req.body;
-
-      console.log("name is " + Product_Name);
-      // let categoryId = await Categories.findOne({ name: category });
-      // let brandId = await Brands.findOne({ name: brand });
-      // console.log(brandId._id);
-      // console.log(categoryId);
-      const data = {
-        name: Product_Name,
-        images: {
-          mainimage: main.filename,
-          image1: img2.filename,
-          // image2: img3.filename,
-        },
-        description: Description,
-        stock: stock,
-        basePrice: basePrice,
-        descountedPrice: descountedPrice,
-        timeStamp: Date.now(),
-        brandId: new ObjectId(brand),
-        categoryId: new ObjectId(category),
-      };
-      const id = req.params.id;
-      await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-      req.flash("msg", "Product edited successfully");
-      res.redirect("/admin/products");
-    } else if (req.files["main"] && !req.files["image1"] && req.files["image2"]) {
-      console.log("hello it here on the edit post");
-      const main = req.files["main"][0];
-      // const img2 = req.files["image1"][0];
-      const img3 = req.files["image2"][0];
-
-      // Do whatever you want with these files.
-      console.log("Uploaded files:");
-      console.log(main);
-      // console.log(img2);
-      console.log(img3);
-
-      const {
-        Product_Name,
-        basePrice,
-        descountedPrice,
-        brand,
-        category,
-        Description,
-        stock,
-      } = req.body;
-
-      console.log("name is " + Product_Name);
-      // let categoryId = await Categories.findOne({ name: category });
-      // let brandId = await Brands.findOne({ name: brand });
-      // console.log(brandId._id);
-      // console.log(categoryId);
-      const data = {
-        name: Product_Name,
-
-        
-        images: {
-          mainimage: main.filename,
-          // image1: img2.filename,
-          image2: img3.filename,
-        },
-        description: Description,
-        stock: stock,
-        basePrice: basePrice,
-        descountedPrice: descountedPrice,
-        timeStamp: Date.now(),
-        brandId: new ObjectId(brand),
-        categoryId: new ObjectId(category),
-      };
-      const id = req.params.id;
-      await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-      req.flash("msg", "Product edited successfully");
-      res.redirect("/admin/products");
-    } else if (!req.files["main"] && req.files["image1"] && req.files["image2"]) {
-      console.log("hello it here on the edit post");
-      // const main = req.files["main"][0];
-      const img2 = req.files["image1"][0];
-      const img3 = req.files["image2"][0];
-
-      // Do whatever you want with these files.
-      console.log("Uploaded files:");
-      // console.log(main);
-      console.log(img2);
-      console.log(img3);
-
-      const {
-        Product_Name,
-        basePrice,
-        descountedPrice,
-        brand,
-        category,
-        Description,
-        stock,
-      } = req.body;
-
-      console.log("name is " + Product_Name);
-      // let categoryId = await Categories.findOne({ name: category });
-      // let brandId = await Brands.findOne({ name: brand });
-      // console.log(brandId._id);
-      // console.log(categoryId);
-      const data = {
-        name: Product_Name,
-        images: {
-          // mainimage: main.filename,
-          image1: img2.filename,
-          image2: img3.filename,
-        },
-        description: Description,
-        stock: stock,
-        basePrice: basePrice,
-        descountedPrice: descountedPrice,
-        timeStamp: Date.now(),
-        brandId: new ObjectId(brand),
-        categoryId: new ObjectId(category),
-      };
-      const id = req.params.id;
-      await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-      req.flash("msg", "Product edited successfully");
-      res.redirect("/admin/products");
-    } else {
-      console.log("hello it here on the edit post");
-
-      if (req.body.brand && req.body.category) {
-        const {
-          Product_Name,
-          basePrice,
-          descountedPrice,
-          brand,
-          category,
-          Description,
-          stock,
-        } = req.body;
-
-        console.log("name is " + Product_Name);
-        // let categoryId = await Categories.findOne({ name: category });
-        // let brandId = await Brands.findOne({ name: brand });
-        // console.log(brandId._id);
-        // console.log(categoryId);
-        const data = {
-          name: Product_Name,
-          // images: {
-          //   mainimage: main.filename,
-          //   image1: img2.filename,
-          //   image2: img3.filename,
-          // },
-          description: Description,
-          stock: stock,
-          basePrice: basePrice,
-          descountedPrice: descountedPrice,
-          timeStamp: Date.now(),
-          brandId: new ObjectId(brand),
-          categoryId: new ObjectId(category),
-        };
-        const id = req.params.id;
-        await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-        req.flash("msg", "Product edited successfully");
-        res.redirect("/admin/products");
-      } else if (!req.body.brand && req.body.category) {
-        const {
-          Product_Name,
-          basePrice,
-          descountedPrice,
-          category,
-          Description,
-          stock,
-        } = req.body;
-
-        console.log("name is " + Product_Name);
-        // let categoryId = await Categories.findOne({ name: category });
-        // let brandId = await Brands.findOne({ name: brand });
-        // console.log(brandId._id);
-        // console.log(categoryId);
-        const data = {
-          name: Product_Name,
-          // images: {
-          //   mainimage: main.filename,
-          //   image1: img2.filename,
-          //   image2: img3.filename,
-          // },
-          description: Description,
-          stock: stock,
-          basePrice: basePrice,
-          descountedPrice: descountedPrice,
-          timeStamp: Date.now(),
-          // brandId: new ObjectId(brandId._id),
-          categoryId: new ObjectId(category)
-        };
-        const id = req.params.id;
-        await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-        req.flash("msg", "Product edited successfully");
-        res.redirect("/admin/products");
-      } else if (req.body.brand && !req.body.category) {
-        const {
-          Product_Name,
-          basePrice,
-          descountedPrice,
-          brand,
-          // category,
-          Description,
-          stock,
-        } = req.body;
-
-        console.log("name is " + Product_Name);
-        // let categoryId = await Categories.findOne({ name: category });
-        // let brandId = await Brands.findOne({ name: brand });
-        // console.log(brandId._id);
-        // console.log(categoryId);
-        const data = {
-          name: Product_Name,
-          // images: {
-          //   mainimage: main.filename,
-          //   image1: img2.filename,
-          //   image2: img3.filename,
-          // },
-          description: Description,
-          stock: stock,
-          basePrice: basePrice,
-          descountedPrice: descountedPrice,
-          timeStamp: Date.now(),
-          brandId: new ObjectId(brand)
-          // categoryId: new ObjectId(categoryId._id),
-        };
-        const id = req.params.id;
-        await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-        req.flash("msg", "Product edited successfully");
-        res.redirect("/admin/products");
-      } else {
-        const {
-          Product_Name,
-          basePrice,
-          descountedPrice,
-          // brand,
-          // category,
-          Description,
-          stock,
-        } = req.body;
-
-        console.log("name is " + Product_Name);
-        // let categoryId = await Categories.findOne({ name: category });
-        // let brandId = await Brands.findOne({ name: brand });
-        // console.log(brandId._id);
-        // console.log(categoryId);
-        const data = {
-          name: Product_Name,
-          // images: {
-          //   mainimage: main.filename,
-          //   image1: img2.filename,
-          //   image2: img3.filename,
-          // },
-          description: Description,
-          stock: stock,
-          basePrice: basePrice,
-          descountedPrice: descountedPrice,
-          timeStamp: Date.now(),
-          // brandId: new ObjectId(brandId._id),
-          // categoryId: new ObjectId(categoryId._id),
-        };
-        const id = req.params.id;
-        await Products.updateOne({ _id: new ObjectId(id) }, { $set: data });
-        req.flash("msg", "Product edited successfully");
-        res.redirect("/admin/products");
-      }
-
-    }
+    product.save();
+    req.flash("msg", "Product edited successfully");
+    res.redirect("/admin/products");
   } catch (err) {
     req.flash("errmsg", "Product couldn't edit at the momment");
     res.redirect("/admin/products");
-
     throw err;
   }
-};
+}
 // ===========================================================================================================================================
 
 const product_delete = async (req, res) => {
@@ -796,6 +483,44 @@ const product_search = async (req, res) => {
   // }
 };
 // ===========================================================================================================================================
+const deleteimage=async (req,res)=>{
+  try {
+    console.log("hello");
+    const productId = req.params.id;
+    const imageIndex = req.params.index;
+    const product = await Products.findOne({_id:new ObjectId(productId)});
+
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+
+    let imageField = "";
+    let deletedImage = "";
+
+    if (imageIndex === "1") {
+      imageField = "images.0.image1";
+      deletedImage = product.images[0].image1;
+    } else if (imageIndex === "2") {
+      imageField = "images.0.image2";
+      deletedImage = product.images[0].image2;
+    } else {
+      return res.status(404).send("Image not found");
+    }
+
+    await Products.updateOne(
+      { _id: productId },
+      { $unset: { [imageField]: 1 } }
+    );
+
+    return res.status(200).send(`Image '${deletedImage}' deleted successfully`);
+  } catch (error) {
+    console.error("Error while deleting the product image:", error);
+    res.status(500).send("Internal Server Error");
+  }
+
+}
+//==============
+
 module.exports = {
   product_list,
   product_delete,
@@ -804,5 +529,6 @@ module.exports = {
   edit,
   add_product,
   add_product_get,
-  product_reupload
+  product_reupload,
+  deleteimage
 }

@@ -15,7 +15,7 @@ $("#couponForm").submit((e) => {
             alert("coupon Added successfully");
           } else {
             console.log(response.error);
-            $("#flashMessage").text(response.error).show();
+            alert(response.error+"Try changing the Coupon code")
           }
         },
         error: (xhr, status, error) => {

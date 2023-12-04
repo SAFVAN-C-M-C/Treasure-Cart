@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.min.css" />
+</head>
 </head>
 
 <body>
@@ -29,7 +31,7 @@
       </div>
     </div>
     <div class="images d-flex justify-content-start">
-      <input type="file" name="main" accept="image/*" id="main" required
+      <input type="file" class="image" name="main" accept="image/*" id="main" required
       onchange="previewImage('main', 'mn')">
       <label for="main">
 
@@ -37,6 +39,10 @@
           <img class="priview" src="/static/images/img-bg.jpg"  id="mn">
         </div>
       </label>
+      <input type="hidden" name="x" id="cropX" />
+    <input type="hidden" name="y" id="cropY" />
+    <input type="hidden" name="width" id="cropWidth" />
+    <input type="hidden" name="height" id="cropHeight" />
     </div>
     <div class="action-buttons">
       <div class="cancel-btn">
@@ -51,20 +57,33 @@
   </div>
 </section>
 <script src="/static/js/add-category.js"></script>
-
+<script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
 <script>
+    const input = document.querySelector('input[class="image"]');
+    const cropperOptions = {
+      aspectRatio: 1, // Adjust the aspect ratio as needed
+      viewMode: 2, // Allows free crop
+      crop(event) {
+        console.log(event.detail);
+        const { x, y, width, height } = event.detail;
+        document.getElementById('cropX').value = x;
+        document.getElementById('cropY').value = y;
+        document.getElementById('cropWidth').value = width;
+        document.getElementById('cropHeight').value = height;
+      },
+    };
   function previewImage(inputId, imgId) {
         const input = document.getElementById(inputId);
         const img = document.getElementById(imgId);
-        // const labeltext = document.getElementById(label)
-        // Check if a file was selected
+
         if (input.files && input.files[0]) {
           const reader = new FileReader();
 
           // Set up a function to run when the image is loaded
           reader.onload = function (e) {
             img.src = e.target.result;
-            labeltext.style.display = 'none'
+            const cropper = new Cropper(img, cropperOptions)
+            // labeltext.style.display = 'none'
           };
 
           // Read the selected file as a data URL and load it into the img tag

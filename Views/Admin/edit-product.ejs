@@ -24,29 +24,48 @@
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="general-main">
                   <span class="mt-2" style="font-size: 1.5rem;font-weight: 700;">General</span>
-                  <div class="textfield mt-5">
+                 
+                 
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="Product_Name">Product name</label>
+                  </div>
+                  <div class="textfield ">
                     <input required type="text" placeholder="Product Name" id="Product_Name" name="Product_Name" onchange="validateName()" value="<%=product.name%>">
                   </div>
                   <span id="productError" class="error"></span>
-                  <div class="textfield mt-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="Description">Description</label>
+                  </div>
+                  <div class="textfield ">
                     <input required type="Text" placeholder="Description" id="Description" name="Description" onchange="validateDescription()" value="<%=product.description%>">
                   </div>
                   <span id="descriptionError" class="error"></span>
-                  <div class="textfield mt-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="stock">Stock</label>
+                  </div>
+                  <div class="textfield ">
                     <input required type="number" placeholder="stock" id="stock" name="stock" onchange="validateStock()" value="<%=product.stock%>">
                   </div>
                   <span id="stockError" class="error"></span>
-                  <div class="textfield mt-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="basePrice">Base Price</label>
+                  </div>
+                  <div class="textfield ">
                     <input required type="number" placeholder="base Price" id="basePrice" name="basePrice" onchange="validatbase()" value="<%=product.basePrice%>">
                   </div>
                   <span id="baseError" class="error"></span>
-                  <div class="textfield mt-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="descountedPrice">Discounted Price</label>
+                  </div>
+                  <div class="textfield ">
                     <input required type="number" placeholder="descounted Price" id="descountedPrice"
                     name="descountedPrice" onchange="validatprice()" value="<%=product.descountedPrice%>">
                   </div>
                   <span id="priceError" class="error"></span>
-
-                  <div class="textfield mt-5 ">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="brand">Brand</label>
+                  </div>
+                  <div class="textfield  ">
                     
                     <select name="brand" id="brand" onchange="validateBrand()">
                       
@@ -66,8 +85,10 @@
                     </select>
                   </div>
                   <span id="brandError" class="error"></span>
-
-                  <div class="textfield mt-5 mb-5">
+                  <div class="d-flex justify-content-start mt-5" style="width: 80%;">
+                    <label for="category">Category</label>
+                  </div>
+                  <div class="textfield  mb-5">
                     <select name="category" id="category" onchange="validcategory()">
                       <option value="">Select Category</option>
                       <%if(category){%>
@@ -98,8 +119,9 @@
                   </div>
 
                   <div class="row">
-                    <div class="images">
-                      <input type="file" name="main" accept="image/*" id="main" 
+                    <div class="images container ">
+                      <div >
+                        <input type="file" name="main" accept="image/*" id="main" 
                         onchange="previewImage('main', 'mn')">
                       <label for="main">
 
@@ -107,20 +129,27 @@
                           <img class="priview" src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"  id="mn">
                         </div>
                       </label>
-                      <input type="file" name="image1" accept="image/*" id="imag1" 
+                      </div>
+                      <div style="display: flex;flex-direction: column; align-items: center;">
+                        <input type="file" name="image1" accept="image/*" id="imag1" 
                         onchange="previewImage('imag1', 'im1')">
                       <label for="imag1">
                         <div class="img1">
                           <img class="priview" src="<%=product.images[0].image1?'/static/product-images/'+product.images[0].image1:'/static/images/img-bg.jpg'%>"  id="im1">
                         </div>
                       </label>
-                      <input type="file" name="image2" accept="image/*" id="imag2" 
+                      <a class="btn btn-danger rounded-2 mb-3 mt-3 " onclick="removeImage('<%=product._id%>',1,'im1',)"  style="width: 60%;">Remove</a>
+                      </div>
+                      <div style="display: flex;flex-direction: column; align-items: center;">
+                        <input type="file" name="image2" accept="image/*" id="imag2" 
                         onchange="previewImage('imag2', 'im2')">
                       <label for="imag2">
                         <div class="img2 ">
                           <img class="priview" src="<%=product.images[0].image2?'/static/product-images/'+product.images[0].image2:'/static/images/img-bg.jpg'%>"   id="im2">
                         </div>
                       </label>
+                      <a class="btn btn-danger rounded-2 mb-3 mt-3 " onclick="removeImage('<%=product._id%>',2,'im2',)" style="width: 60%;">Remove</a>
+                      </div>
 
                     </div>
                   </div>
@@ -143,26 +172,46 @@
     <script src="/static/js/add_product.js"></script>
 
     <script>
-      let list = document.querySelectorAll(".navigation_nav li");
-
-      function activeLink() {
-        list.forEach((item) => {
-          item.classList.remove("hovered");
-        });
-        this.classList.add("hovered");
+      function removeImage(productId,index,img) {
+        fetch(`/admin/delete-image/${productId}/${index}`, {
+      method: 'DELETE',
+    })
+    .then(response => {
+      if (response.status === 200) {
+        alert('image deleted');
+        document.getElementById(img).src = '/static/images/img-bg.jpg';
+        document.getElementById("signupButton").disabled = false;
+      } else {
+        alert('Failed to delete image');
       }
+    })
+    .catch(error => {
+      console.error('Error deleting image:', error);
+    });
+       
+        
+         // Replace with your default image path
+    }
+      // let list = document.querySelectorAll(".navigation_nav li");
 
-      list.forEach((item) => item.addEventListener("mouseover", activeLink));
+      // function activeLink() {
+      //   list.forEach((item) => {
+      //     item.classList.remove("hovered");
+      //   });
+      //   this.classList.add("hovered");
+      // }
+
+      // list.forEach((item) => item.addEventListener("mouseover", activeLink));
 
       // Menu Toggle
-      let toggle = document.querySelector(".toggle");
-      let navigation = document.querySelector(".navigation_nav");
-      let main = document.querySelector(".main");
+      // let toggle = document.querySelector(".toggle");
+      // let navigation = document.querySelector(".navigation_nav");
+      // let main = document.querySelector(".main");
 
-      toggle.onclick = function () {
-        navigation.classList.toggle("active");
-        main.classList.toggle("active");
-      };
+      // toggle.onclick = function () {
+      //   navigation.classList.toggle("active");
+      //   main.classList.toggle("active");
+      // };
       //priview images
       function previewImage(inputId, imgId) {
         const input = document.getElementById(inputId);

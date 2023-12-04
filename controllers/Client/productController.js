@@ -33,6 +33,9 @@ const get_product_details = async (req, res) => {
 }
 const get_product = async (req, res) => {
     try {
+        const pageNum = req.query.page ? req.query.page : 1;
+        const perPage = 8;
+        const totalorder=await Products.countDocuments()
         req.session.checkout = false;
         let searchKey = null
         // console.log(Object.keys(req.query).length !== 0);
@@ -46,18 +49,18 @@ const get_product = async (req, res) => {
             // console.log(searchKey);
             const key = req.query.key
             // console.log(req.query.key);
-            let products = await Products.find({ status: "Active", name: { $regex: searchKey, $options: "i" } });
+            let products = await Products.find({ status: "Active", name: { $regex: searchKey, $options: "i" } }).skip((pageNum - 1) * perPage).limit(perPage);
 
             // console.log(products);
             if (key == 'low') {
-                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: 1 })
+                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
             } else if (key == 'high') {
-                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: -1 })
+                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
             } else if (key == 'abc') {
-                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
+                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
                 // console.log(products);
             } else if (key == 'cba') {
-                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
+                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
                 // console.log(products);
             }
 
@@ -67,21 +70,23 @@ const get_product = async (req, res) => {
             const wishlist = userWishlist ? userWishlist.products : [];
             const category = await Categories.find();
             const brand = await Brands.find();
-            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount })
+            let x = Number((pageNum - 1) * perPage);
+        var count = Math.floor(totalorder/ 10) + 1;
+            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount,count,x })
         } else {
             const key = req.query.key
             // console.log(req.query.key);
-            let products = await Products.find({ status: "Active" });
+            let products = await Products.find({ status: "Active" }).skip((pageNum - 1) * perPage).limit(perPage);
             // console.log(products);
             if (key == 'low') {
-                products = await Products.find({ status: "Active" }).sort({ descountedPrice: 1 })
+                products = await Products.find({ status: "Active" }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
             } else if (key == 'high') {
-                products = await Products.find({ status: "Active" }).sort({ descountedPrice: -1 })
+                products = await Products.find({ status: "Active" }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
             } else if (key == 'abc') {
-                products = await Products.find({ status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
+                products = await Products.find({ status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
                 // console.log(products);
             } else if (key == 'cba') {
-                products = await Products.find({ status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
+                products = await Products.find({ status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
                 // console.log(products);
             }
 
@@ -91,7 +96,9 @@ const get_product = async (req, res) => {
             const wishlist = userWishlist ? userWishlist.products : [];
             const category = await Categories.find();
             const brand = await Brands.find();
-            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount })
+            let x = Number((pageNum - 1) * perPage);
+            var count = Math.floor(totalorder/ 10) + 1;
+            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount ,count,x})
         }
     } catch (err) {
         console.log(err)

@@ -159,7 +159,7 @@
           <div class="col-lg-12 d-flex justify-content-end" >
             <nav aria-label="page navigation example ">
                 <ul class="pagination" style="margin-right: 40px;">
-                  <%for(let i=1;i<=10;i++){%>
+                  <%for(let i=1;i<=count;i++){%>
                     <li class="page-item"><a class="page-link" onclick="pagination('<%=i%>')"><%=i%></a></li>
                   <%}%>
           
@@ -190,12 +190,24 @@
     })
   });
   function pagination(value) {
+    console.log(value);
     const currentUrl=window.location.href
     let hasQuery = currentUrl.includes("?");
-    let newQuery = "page=value";
-
-    let finalUrl = hasQuery ? `${currentUrl}&${newQuery}` : `${url}?${newQuery}`;
-    window.location.href=finalUrl;
+    let newQuery = `page=${value}`;
+    if(!currentUrl.includes("page=")){
+      if(currentUrl.includes("?")){
+        let finalUrl = `${currentUrl}&${newQuery}`;
+        window.location.href=finalUrl;
+      }else{
+        let finalUrl = `${currentUrl}?${newQuery}`;
+        window.location.href=finalUrl;
+      }
+    }else{
+      let currentPage = currentUrl.split("page=")[1].split("&")[0];
+      let finalUrl=currentUrl.replace(`page=${currentPage}`, `page=${value}`);
+      window.location.href=finalUrl;
+    }
+    
   }
           </script>
 
