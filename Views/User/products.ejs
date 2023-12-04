@@ -156,6 +156,16 @@
               </div>
             </div>
           </section>
+          <div class="col-lg-12 d-flex justify-content-end" >
+            <nav aria-label="page navigation example ">
+                <ul class="pagination" style="margin-right: 40px;">
+                  <%for(let i=1;i<=10;i++){%>
+                    <li class="page-item"><a class="page-link" onclick="pagination('<%=i%>')"><%=i%></a></li>
+                  <%}%>
+          
+                </ul>
+            </nav>
+          </div>
 
           <script src="/static/js/productManupulation.js"></script>
           <script>
@@ -178,7 +188,15 @@
         }
       }
     })
-  })
+  });
+  function pagination(value) {
+    const currentUrl=window.location.href
+    let hasQuery = currentUrl.includes("?");
+    let newQuery = "page=value";
+
+    let finalUrl = hasQuery ? `${currentUrl}&${newQuery}` : `${url}?${newQuery}`;
+    window.location.href=finalUrl;
+  }
           </script>
 
           <%-include('../partials/footer')-%>

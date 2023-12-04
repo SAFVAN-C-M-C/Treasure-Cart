@@ -3,6 +3,7 @@ const { ObjectId } = require("mongodb");
 const Orders = require("../../Models/order");
 const Return = require("../../Models/returnSchema");
 const Users = require("../../Models/user");
+const WalletTransaction = require("../../Models/walletTransaction");
 const getReqreturn=async(req,res)=>{
     try {
         const pageNum = req.query.page?req.query.page:1;
@@ -41,6 +42,14 @@ const acceptRequest=async(req,res)=>{
     order.status="Returned";
     order.save()
     User.wallet+=total;
+
+    const transactionData={
+      user:new ObjectId(order.userId),
+      amount:total,
+      description:"Returned Order",
+      transactionType:'credit',
+  }
+  const insert=await WalletTransaction.insertMany([transactionData]);
     User.save();
     await Return.deleteOne({_id:reqId})
     res.status(200).json({success:true});

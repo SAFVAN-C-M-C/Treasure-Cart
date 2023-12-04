@@ -33,75 +33,43 @@ module.exports = {
         });
       } else if (format === 'excel') {
         const workbook = new exceljs.Workbook();
-        const worksheet = workbook.addWorksheet('Sales Report');
-        
-        // Define styles
-        const mainHeaderStyle = {
-          font: { size: 16, bold: true },
-          alignment: { horizontal: 'center' },
-          fill: {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: '87CEEB' }, // Light blue background color
-          },
-        };
-        
-        const subHeaderStyle = {
-          font: { bold: true },
-          alignment: { horizontal: 'center' },
-          fill: {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'ADD8E6' }, // Light blue background color
-          },
-        };
-        
-        const cellStyle = {
-          alignment: { horizontal: 'left' },
-        };
-        
-        // Add main heading
-        worksheet.addRow(['Treasure Cart']).eachCell((cell, colNumber) => {
-          cell.style = mainHeaderStyle;
-        });
-        worksheet.mergeCells('A1:F1');
-        
-        // Add subheadings
-        worksheet.addRow([
-          'Order ID',
-          'Product Name',
-          'User ID',
-          'Date',
-          'Total Amount',
-          'Payment Method',
-        ]).eachCell((cell, colNumber) => {
-          cell.style = subHeaderStyle;
-          worksheet.getColumn(colNumber).width = 20; // Set column width
-        });
-        
-        let totalSalesAmount = 0;
-        
-        orders.forEach((order, rowIndex) => {
-          order.items.forEach(item => {
-            const rowStyle = rowIndex % 2 === 0 ? {} : { fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F0F0F0' } } };
-            
-            worksheet.addRow({
-              orderId: order._id,
-              productName: item.productId.name,
-              userId: order.userId,
-              date: order.orderDate ? new Date(order.orderDate).toLocaleDateString() : '',
-              totalamount: order.totalPrice !== undefined ? order.totalPrice.toFixed(2) : '',
-              paymentmethod: order.payMethod,
-            }).eachCell((cell, colNumber) => {
-              cell.style = { ...cellStyle, ...rowStyle }; // Apply cell style with alternating row color
+          const worksheet = workbook.addWorksheet('Sales Report');
+  
+          worksheet.columns = [
+            { header: 'Order ID', key: 'orderId', width: 40 },
+            { header: 'Product Name', key: 'productName', width: 25 },
+            { header: 'User ID', key: 'userId', width: 40,},
+            { header: 'Date', key: 'date', width: 25 },
+            { header: 'Total Amount', key: 'totalamount', width: 25 },
+            { header: 'Payment Method', key: 'paymentmethod', width: 25 },
+          ];
+  
+          let totalSalesAmount = 0;
+  
+          orders.forEach(order => {
+          // console.log(orders);
+            order.items.forEach(item => {
+              // console.log(item);
+              worksheet.addRow({
+                orderId: order._id,
+                productName: item.productId.name,
+                userId: order.userId,
+                date: order.orderDate ? new Date(order.orderDate).toLocaleDateString() : '',
+                totalamount: order.totalPrice !== undefined ? order.totalPrice.toFixed(2) : '',
+                paymentmethod: order.payMethod,
+              });
+
+             
+              totalSalesAmount += order.totalPrice !== undefined ? order.totalPrice : 0;
+              // console.log("@@@",totalSalesAmount);
             });
           });
-        });
-        
-        worksheet.addRow({ totalamount: 'Total Sales Amount', paymentmethod: totalSalesAmount.toFixed(2), style: subHeaderStyle });
-        
-        const excelFilePath = `public/SALE-EXCEL/sales-report-${formattedStartDate}-${formattedEndDate}.xlsx`;
-        await workbook.xlsx.writeFile(excelFilePath);
+  
+          
+          worksheet.addRow({ totalamount: 'Total Sales Amount', paymentmethod: totalSalesAmount.toFixed(2) });
+  
+          const excelFilePath = `public/SALE-EXCEL/sales-report-${formattedStartDate}-${formattedEndDate}.xlsx`;
+          await workbook.xlsx.writeFile(excelFilePath);
         
         
 

@@ -1,4 +1,6 @@
 const Users = require("../../Models/user");
+const WalletTransaction = require("../../Models/walletTransaction");
+const { ObjectId } = require("mongodb");
 
 
 const getWallet = async (req, res) => {
@@ -8,19 +10,21 @@ const getWallet = async (req, res) => {
       const USER = await Users.findOne({ email: Email }).populate('referredUsers');
       console.log(USER);
       const userReferred = user.referredBy;
+      const transactions = await WalletTransaction.find({ user: USER._id }).sort({ _id:-1 });
+
   
       if (!userReferred) {
-        return res.render("./User/wallet", { user, USER,referred:'' ,cartCount:req.session.cartCount});
+        return res.render("./User/wallet", { user, USER,referred:'' ,cartCount:req.session.cartCount,transactions});
       }
   
       const referred = await Users.findById(userReferred);
   
       if (!referred) {
         console.error("Referred user not found");
-        return res.render("./User/wallet", {user, USER,referred:'',cartCount:req.session.cartCount });
+        return res.render("./User/wallet", {user, USER,referred:'',cartCount:req.session.cartCount,transactions });
       }
   
-      res.render("./User/wallet", { user, USER, referred,cartCount:req.session.cartCount });
+      res.render("./User/wallet", { user, USER, referred,cartCount:req.session.cartCount,transactions });
     } catch (error) {
       console.error("Error while rendering the wallet page:", error);
     }
@@ -39,12 +43,25 @@ const useWallet=async(req,res)=>{
         req.session.totalAmount=0
         walletbalance=walletbalance-total
         req.session.walletbalance=walletbalance
+        req.session.transactionsData={
+          user:new ObjectId(userId),
+          amount:total,
+          description:"Used On Purchase",
+          transactionType:'debit',
+        }
       }else{
         req.session.totalAmount=total-walletbalance
         walletbalance=0;
         req.session.walletbalance=walletbalance
+        req.session.transactionsData={
+          user:new ObjectId(userId),
+          amount:total-req.session.totalAmount,
+          description:"Used On Purchase",
+          transactionType:'debit',
+        }
       }
       req.session.walletClick=true
+      
     return res.status(200).json({ success: true, totalAmount: req.session.totalAmount });
   
     }else{

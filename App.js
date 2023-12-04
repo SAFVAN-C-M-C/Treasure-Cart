@@ -43,10 +43,13 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 
-//router
+
+
 app.use('/', userRouter)
 app.use("/admin", adminRouter);
-
+app.get('*', (req, res) => {
+  res.render("./Errors/404");
+});
 
 
 
@@ -57,6 +60,6 @@ const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
   console.log(`The app is working on the port ${PORT}
     http://localhost:${PORT}`);
-    console.log(`The admin is working on the port ${PORT}
+  console.log(`The admin is working on the port ${PORT}
     http://localhost:${PORT}/admin`);
 })

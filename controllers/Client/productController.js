@@ -94,33 +94,33 @@ const get_product = async (req, res) => {
             res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount })
         }
     } catch (err) {
+        console.log(err)
         req.session.err = true
         res.redirect("/404")
-        console.log(err);
     }
 }
 const filter = async (req, res) => {
     try {
-        // console.log(req.body);
+        
         const { Category, Brand } = req.body;
-        // console.log(Category);
-        // console.log(Brand);
+        
+
         let products = [];
 
         if (Brand && !Category) {
             const filter = { 'brandId': { $in: Brand } }
             products = await Products.find(filter);
-            // console.log(products);
+
         } else if (!Brand && Category) {
             const filter = { 'categoryId': { $in: Category } }
             products = await Products.find(filter);
-            // console.log(products);
+         
         } else if (Brand && Category) {
             const filter = {}
             filter.brandId = { $in: Brand }
             filter.categoryId = { $in: Category }
             products = await Products.find(filter);
-            // console.log(products);
+           
         }
         const data = req.session.name
         const userId = req.session.userid;

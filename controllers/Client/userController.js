@@ -198,7 +198,7 @@ const get_Explore = (req, res) => {
         res.render("./User/explore");
     } catch (err) {
         req.session.err = true
-        res.redirect("/404")
+        res.redirect("/404");
         console.log(err);
     }
 }
@@ -616,9 +616,10 @@ const error_get = (req, res) => {
         res.render("./Errors/404");
     }
     else {
-        res.redirect("/logout");
+        res.redirect("/");
     }
 }
+
 //=================================================================================================================
 
 //set checkout

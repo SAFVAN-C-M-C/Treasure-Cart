@@ -14,6 +14,7 @@ const { log } = require("console");
 const Coupon = require("../../Models/coupon");
 const { generateInvoice } = require("../../util/invoiceGenerator");
 const Return = require("../../Models/returnSchema");
+const WalletTransaction = require("../../Models/walletTransaction");
 
 
 
@@ -57,6 +58,9 @@ const getOrderSuccess = async (req, res) => {
         User.wallet = req.session.walletbalance
     }
     User.save();
+    if(req.session.transactionsData){
+        await WalletTransaction.insertMany([req.session.transactionsData]);
+    }
     const couponId = req.session.couponid
     const couponmatch = await Coupon.findOne({ _id: couponId });
     console.log(couponmatch);
@@ -389,7 +393,9 @@ const getOrderDetails = async (req, res) => {
                     totalPrice: { $first: "$totalPrice" },
                     expectedDeliveryDate: { $first: "$expectedDeliveryDate" },
                     paymentStatus: { $first: "$paymentStatus" },
-                    address: { $first: "$address" }
+                    address: { $first: "$address" },
+                    returnDate: { $first: "$returnDate" }
+
                 }
             },
 
@@ -440,6 +446,13 @@ const cancelorder = async (req, res) => {
             if (order.payMethod === "online") {
                 User.wallet += order.totalPrice
             }
+            const transactionData={
+                user:new ObjectId(req.session.userid),
+                amount:order.totalPrice,
+                description:"Canceled Order",
+                transactionType:'credit',
+            }
+            const insert=await WalletTransaction.insertMany([transactionData]);
             await order.save();
             await User.save();
 

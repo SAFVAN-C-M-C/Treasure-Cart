@@ -156,7 +156,7 @@
                                                                         hour: '2-digit' , minute: '2-digit' }) %>
                                                 </td>
                                                 <td>
-                                                    <%if(data.status !== 'Cancelled') { %>
+                                                    <%if(data.status !== 'Cancelled' && data.status !=='Returned') { %>
                                                     <% const currentStatus=data.status || 'Order Placed' ; %>
                                                         <select <%if(currentStatus==='Delivered'||currentStatus==='Rejected'){%>disabled<%}%>
                                                          class="form-select  
@@ -189,7 +189,9 @@
                                                         </select>
 
                                                         <% } else { %>
-                                                            Cancelled
+                                                            <div class="table-data1 ">
+                                                            <span class="bg-danger  text-white p-2 rounded-2 "><%=data.status%></span>
+                                                            </div>
                                                             <% } %>
 
                                                 </td>
