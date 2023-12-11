@@ -9,6 +9,7 @@ const customerController = require("../controllers/Admin/customerController");
 const orderController = require("../controllers/Admin/orderController");
 const couponcontroller = require("../controllers/Admin/couponcontroller");
 const returnController=require("../controllers/Admin/returnController")
+const offerController=require("../controllers/Admin/offerController")
 const Products = require("../Models/product");
 const {   
   upload_productImage,
@@ -79,8 +80,6 @@ admin.delete("/delete-image/:id/:index",verifyadmin,productController.deleteimag
 
 //category ===========================================================================================================================================
 
-
-
 admin.get('/categories', verifyadmin, categoryController.category_list)
 admin.get("/add-category", verifyadmin, categoryController.category_add_get)
 admin.post("/add-category", upload_categoryImage.fields(category), categoryController.category_add)
@@ -88,6 +87,18 @@ admin.get("/category/edit/:id", verifyadmin, categoryController.category_edit_ge
 admin.post("/category/edit/:id", upload_categoryImage.fields(category), categoryController.category_edit)
 admin.get("/category/delete/:id", verifyadmin, categoryController.category_delete);
 admin.post("/category/search", verifyadmin, categoryController.category_search)
+
+
+
+//Offers==============================================================================
+
+admin.get("/offers",verifyadmin, offerController.getOffers);
+admin.post('/addOffer',verifyadmin, offerController.addCategoryOffer)
+admin.delete('/deleteOffer/:offerId',verifyadmin, offerController.deleteOffer)
+// admin.get('/editoffer/:categoryId',verifyadmin, offerController.EditOffer)
+admin.post('/editOffer/:offerId',verifyadmin, offerController.updateOffer)
+admin.get('/checkCategoryExists/:categoryName',verifyadmin, offerController.getCategoryName)
+admin.get('/checkOfferExists/:categoryName',verifyadmin, offerController.checkOfferExists)
 
 // brand===========================================================================================================================================
 
@@ -112,6 +123,8 @@ admin.post('/updateStatus/:orderId', verifyadmin, orderController.updateOrderSta
 //return order//////////////////
 admin.get("/returns", verifyadmin,returnController.getReqreturn)
 admin.post("/acceptRequest",verifyadmin,returnController.acceptRequest);
+admin.post("/rejectRequest",verifyadmin,returnController.rejectRequest);
+
 //Banner ===========================================================================================================================================
 
 admin.get("/banner", verifyadmin, bannerController.getBanner)

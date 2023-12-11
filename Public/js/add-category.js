@@ -1,5 +1,5 @@
 function validateName() {
-    var Pattern = /^[a-zA-Z0-9_.,\s]$/;
+    var Pattern = /^[a-zA-Z0-9_.\s]{3,}$/;
     var name = document.getElementById("Category_name").value;
     var msg = document.getElementById("nameError");
     var signupButton = document.getElementById("signupButton");

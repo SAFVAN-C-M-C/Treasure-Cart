@@ -10,7 +10,9 @@ const moment = require("moment");
 
 const get_cart = async (req, res) => {
     try {
-        const userId = req.session.userid;
+        const userId = req.session.userid;    
+        req.session.filter = false;
+
         const user = req.session.name;
         const cart = await CART.findOne({ userId: userId }).populate(
             "products.productId"
@@ -74,53 +76,57 @@ const get_cart = async (req, res) => {
         console.log("Error found in User cart " + err);
     }
 }
-const addTocart = async (req, res) => {
-    try {
-        const userId = req.session.userid;
-        console.log(req.session.userid);
-        const productId = req.params.prodId;
-        console.log(productId);
-        const check = await CART.findOne({ userId: new ObjectId(userId) });
-        console.log(check);
+// const addTocart = async (req, res) => {
+//     try {
+//         const userId = req.session.userid;
+//         console.log(req.session.userid);
+//         const productId = req.params.prodId;
+//         console.log(productId);
+//         const product=await Products.findOne({_id:new ObjectId(productId)})
+//         const unitPrice=product.descountedPrice
+//         console.log("====================================",u);
+//         const check = await CART.findOne({ userId: new ObjectId(userId) });
+//         console.log(check);
 
-        if (check !== null) {
-            console.log("if");
-            const existingCart = check.products.find((item) =>
-                item.productId.equals(productId)
-            );
-            if (existingCart) {
-                existingCart.quantity += 1;
-            } else {
-                check.products.push({ productId: productId, quantity: 1 });
-            }
-            await check.save();
-            req.flash("msg", "Item added to the cart")
-            res.redirect('/products')
-        } else {
-            console.log("else");
+//         if (check !== null) {
+//             console.log("if");
+//             const existingCart = check.products.find((item) =>
+//                 item.productId.equals(productId)
+//             );
+//             if (existingCart) {
+//                 existingCart.quantity += 1;
+//             } else {
+//                 check.products.push({ productId: productId, quantity: 1,unitPrice:product.descountedPrice });
+//             }
+//             await check.save();
+//             req.flash("msg", "Item added to the cart")
+//             res.redirect('/products')
+//         } else {
+//             console.log("else");
 
-            const insert = await CART.insertMany(
-                [
-                    {
-                        userId: userId,
-                        products: [
-                            {
-                                productId: productId,
-                                quantity: 1,
-                            }
-                        ]
-                    }
-                ]
-            )
-            req.flash("msg", "Item added to the cart")
-            res.redirect("/products");
-        }
-    } catch (err) {
-        console.log("error while add product to cart", err);
-        req.flash("errmsg", "sorry at this momment we can't reach");
-        res.redirect("/products")
-    }
-}
+//             const insert = await CART.insertMany(
+//                 [
+//                     {
+//                         userId: userId,
+//                         products: [
+//                             {
+//                                 productId: productId,
+//                                 quantity: 1,
+//                                 unitPrice:product.descountedPrice
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             )
+//             req.flash("msg", "Item added to the cart")
+//             res.redirect("/products");
+//         }
+//     } catch (err) {
+//         console.log("error while add product to cart", err);
+//         req.flash("errmsg", "sorry at this momment we can't reach");
+//         res.redirect("/products")
+//     }
+// }
 const updateQuantity = async (req, res) => {
     console.log("*");
     console.count()
@@ -228,7 +234,7 @@ const addtoCart = async (req, res) => {
                     req.session.productId_qnty = existingCart.quantity
                 }
             } else {
-                check.products.push({ productId: productId, quantity: 1 });
+                check.products.push({ productId: productId, quantity: 1,unitPrice:product.descountedPrice });
             }
             await check.save();
             req.flash("msg", "Item added to the cart")
@@ -243,6 +249,7 @@ const addtoCart = async (req, res) => {
                             {
                                 productId: productId,
                                 quantity: 1,
+                                unitPrice:product.descountedPrice
                             }
                         ]
                     }
@@ -258,7 +265,7 @@ const addtoCart = async (req, res) => {
 }
 module.exports = {
     get_cart,
-    addTocart,
+    // addTocart,
     updateQuantity,
     removeFromCart,
     addtoCart

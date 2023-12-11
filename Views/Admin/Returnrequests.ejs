@@ -33,11 +33,10 @@
                     <tr>
 
                       <th class="text-center">Sl.no</th>
-
-                        <th class="text-center">Order ID</th>
-                        
-                        <th class="text-center">Reason</th>
-                        <th class="text-center">Action</th>
+                      <th class="text-center">Order ID</th>
+                      <th class="text-center">Reason</th>
+                      <th class="text-center"></th>
+                      
                     </tr>
                 </thead>
                 <%reqs.forEach((data,i)=>{%>
@@ -48,8 +47,29 @@
 
                           <td> <div class="table-data"><%=data.orderId%></div> </td>
                       
-                          <td> <div class="table-data"><%=data.description%></div> </td>
-                          <td> <div class="table-data"><a onclick="acceptreq('<%=data._id%>')" class="btn btn-primary ">Accept</a></div>  </td>
+                          <td> <div class="table-data"><%=data.description%></div> </td> 
+                          <td>
+                            <%if(data.status==="Rejected" || data.status==="Accepted"){%>
+                              <div class="table-data">
+                                <%if(data.status==="Rejected"){%>
+                                  <span class="p-2 rounded-2 text-white bg-danger  "><%=data.status%></span>
+  
+                                <%}else if(data.status==="Accepted"){%>
+                                  <span class="p-2 rounded-2 text-white bg-primary  "><%=data.status%></span>
+  
+                                <%}else{%>
+                                  <span class="p-2 rounded-2 text-white bg-info "><%=data.status%></span>
+  
+                                <%}%>
+                              </div>
+                            <%}else{%>
+                              <div class="table-data"><a onclick="acceptreq('<%=data._id%>')" class="btn btn-primary ">Accept</a>
+                                <a onclick="reject('<%=data._id%>')" class="btn ms-2  btn-danger  ">Reject</a>
+                              </div>  
+                          
+                            <%}%>
+                          </td>
+                         
                 
                         </tr>
                     
@@ -85,6 +105,18 @@
   function acceptreq(reqId){
     $.ajax({
       url:"/admin/acceptRequest",
+      data:{reqId},
+      method:'POST',
+      success:(responce)=>{
+        if(responce.success){
+          window.location.reload()
+        }
+      }
+    })
+  }
+  function reject(reqId){
+    $.ajax({
+      url:"/admin/rejectRequest",
       data:{reqId},
       method:'POST',
       success:(responce)=>{

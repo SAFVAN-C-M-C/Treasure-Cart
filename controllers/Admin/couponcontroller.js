@@ -1,5 +1,5 @@
 const Coupon = require("../../Models/coupon");
-
+const { cropImage } = require("../../util/cropImages");
 const getCoupon = async (req, res) => {
     try {
         const pageNum = req.query.page ? req.query.page : 1;

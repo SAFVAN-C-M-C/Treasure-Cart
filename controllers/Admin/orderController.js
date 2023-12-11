@@ -2,6 +2,7 @@ const Orders = require("../../Models/order");
 const report=require("../../util/SalesReport")
 const {log}=require ("console")
 const moment = require("moment");
+const { cropImage } = require("../../util/cropImages");
 
 const getOrders = async (req, res) => {
     try {
@@ -44,7 +45,25 @@ const getOrders = async (req, res) => {
                             },
                             0
                         ]
-                    }
+                    },
+                    "itemsDetails.unitPrice": {
+                        $arrayElemAt: [
+                          {
+                            $map: {
+                              input: "$items",
+                              as: "item",
+                              in: {
+                                $cond: {
+                                  if: { $eq: ["$$item.productId", "$itemsDetails._id"] },
+                                  then: "$$item.unitPrice",
+                                  else: 0, // Adjust this based on your default behavior for missing unitPrice
+                                },
+                              },
+                            },
+                          },
+                          0,
+                        ],
+                    },
                 }
             },
             {
@@ -117,6 +136,7 @@ const genereatesalesReport = async (req, res) => {
  log("ending",endDate)
      const orders = await Orders.find({
        paymentStatus: "Paid",
+       status:"Delivered",
        orderDate: {
          $gte:new Date(startDate),
          $lte: new Date(endDate),

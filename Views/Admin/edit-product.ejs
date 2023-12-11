@@ -126,7 +126,7 @@
                       <label for="main">
 
                         <div class="img-main">
-                          <img class="priview" src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"  id="mn">
+                          <img class="priview" src="<%=product.images[0].mainimage?'/static/CroppedImages/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"  id="mn">
                         </div>
                       </label>
                       </div>
@@ -135,7 +135,7 @@
                         onchange="previewImage('imag1', 'im1')">
                       <label for="imag1">
                         <div class="img1">
-                          <img class="priview" src="<%=product.images[0].image1?'/static/product-images/'+product.images[0].image1:'/static/images/img-bg.jpg'%>"  id="im1">
+                          <img class="priview" src="<%=product.images[0].image1?'/static/CroppedImages/product-images/'+product.images[0].image1:'/static/images/img-bg.jpg'%>"  id="im1">
                         </div>
                       </label>
                       <a class="btn btn-danger rounded-2 mb-3 mt-3 " onclick="removeImage('<%=product._id%>',1,'im1',)"  style="width: 60%;">Remove</a>
@@ -145,7 +145,7 @@
                         onchange="previewImage('imag2', 'im2')">
                       <label for="imag2">
                         <div class="img2 ">
-                          <img class="priview" src="<%=product.images[0].image2?'/static/product-images/'+product.images[0].image2:'/static/images/img-bg.jpg'%>"   id="im2">
+                          <img class="priview" src="<%=product.images[0].image2?'/static/CroppedImages/product-images/'+product.images[0].image2:'/static/images/img-bg.jpg'%>"   id="im2">
                         </div>
                       </label>
                       <a class="btn btn-danger rounded-2 mb-3 mt-3 " onclick="removeImage('<%=product._id%>',2,'im2',)" style="width: 60%;">Remove</a>

@@ -1,0 +1,50 @@
+<%offers.forEach((offers)=>{%>
+<div class="modal fade" id="editOfferModal<%=offers._id%>" tabindex="-1" aria-labelledby="aeditOfferModal<%=offers._id%>Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="addOfferModalLabel">Edit Offer</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addCouponForm">
+                  <div class="mb-3">
+                    <label for="categoryName" class="form-label">Category Name</label>
+                    <input type="text" class="form-control" id="categoryName<%=offers._id%>" value="<%=offers.categoryName%>" disabled>
+                </div>
+                  <div class="mb-3">
+                    <label for="offerPercentage" class="form-label"
+                      >Offer Percentage</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      min="0"
+                      max="100"
+                      id="offerPercentage<%=offers._id%>"
+                      required
+                      value="<%=offers.percentage%>"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="expiryDate" class="form-label">Expiry Date</label>
+                    <%var date=new Date(offers.expireDate).toISOString().split('T')[0]%>
+
+                    <input type="date" class="form-control" id="expiryDate<%=offers._id%>" required value="<%= date %>" />
+                  </div>
+        
+                  <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-primary " onclick="editOffer('<%=offers._id%>')">
+                      Edit Offer
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+
+
+        </div>
+    </div>
+</div>
+<%})%>

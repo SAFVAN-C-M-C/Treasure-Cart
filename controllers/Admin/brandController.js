@@ -1,6 +1,6 @@
 const Brands = require("../../Models/brand");
 const { ObjectId } = require("mongodb");
-
+const { cropImage } = require("../../util/cropImages");
 
 
 
@@ -71,12 +71,10 @@ const brand_list=async(req,res)=>{
     try {
       if(req.files["main"]){
         const id = req.params.id;
-      // console.log("hello it here on the edit post");
+      const brand=await Brands.findOne({_id:new ObjectId(id)});
       const main = req.files["main"][0];
   
-      // Do whatever you want with these files.
-      // console.log("Uploaded files:");
-      // console.log(main);
+      
   
       const {
         Brand_name,
@@ -87,15 +85,14 @@ const brand_list=async(req,res)=>{
       const images=[main.filename];
         cropImage(images,"brand-images")
     if(!check){
-      const data = {
-        name: Brand_name,
-        images: {
-          mainimage: main.filename,
-        },
-        timeStamp: Date.now(),
-      };
-      await Brands.updateOne({ _id: new ObjectId(id) }, { $set: data });
+      brand.name=Brand_name;
+      brand.images[0].mainimage=main.filename;
+      brand.timeStamp=Date.now();
+    }else{
+      brand.images[0].mainimage=main.filename;
+      brand.timeStamp=Date.now();
     }
+    brand.save()
       res.redirect("/admin/brand");
       }else{
         const id = req.params.id;

@@ -90,7 +90,7 @@ user.get("/order-sucesss",verifyCheckout, verifyUser, isBlocked,calculateCartCou
 user.get("/order-history", verifyUser, isBlocked,calculateCartCount,couponreset, orderController.orderHistory)
 user.get("/order/order-details/:orderId",verifyUser, isBlocked,calculateCartCount,couponreset, orderController.getOrderDetails)
 user.get("/cancelorder/:orderId", verifyUser, isBlocked,calculateCartCount,couponreset, orderController.cancelorder)
-user.get("/returnRequest",verifyUser, isBlocked,calculateCartCount,orderController.returnProduct)
+// user.get("/returnRequest",verifyUser, isBlocked,calculateCartCount,orderController.returnProduct)
 user.post("/returnOrder",verifyUser, isBlocked,calculateCartCount,orderController.returnOrder)
 user.post('/downloadinvoice',verifyUser, isBlocked,calculateCartCount,couponreset,orderController.generateInvoices)
 user.get('/downloadinvoice/:orderId',verifyUser, isBlocked,calculateCartCount,couponreset,orderController.downloadInvoice)
@@ -208,8 +208,11 @@ user.get("/auth/google/callback", (req, res, next) => {
       let userInformation = {
         userName: user.displayName,
         email: user.emails[0].value,
-        profile: user.photos[0].value,
+        veified:"true",
         status: "Active",
+        profile:[{
+          mainimage:"/static/images/img-bg.jpg"
+        }],
         timeStamp: Date.now(),
       };
       console.log(userInformation);
@@ -220,6 +223,7 @@ user.get("/auth/google/callback", (req, res, next) => {
         console.log("inserted");
         // Manually set a session variable with user data
         req.session.email = user.emails[0].value;
+        req.session.name=user.displayName
 
         // Redirect to the desired page (e.g., /setSession)
         req.session.logged = true

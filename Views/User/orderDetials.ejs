@@ -16,7 +16,7 @@
     <hr class="mt-0 mb-4">
     <div class="order-container">
         <%if(order){%>
-          <div class="modal fade" id="returnOrderModal<%= order._id %>"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
+          <div class="modal fade" id="returnOrderModal"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
             <div class="modal-dialog ">
               <div class="modal-content">
                 <div class="modal-header">
@@ -48,7 +48,7 @@
                                     <a href="/product/details/<%=item._id%>" style="text-decoration: none;">
                                         <div class="card border-0 order-card shadow-lg p-3 bg-body rounded-3">
                                             <div class="product-card-img d-flex  justify-content-center align-items-center " style="padding: 30px; min-height: 287px;">
-                                                <img style="width: 70%;max-height: 270px; height: auto;" src="<%=item.images[0].mainimage?'/static/product-images/'+item.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="">
+                                                <img style="width: 70%;max-height: 270px; height: auto;" src="<%=item.images[0].mainimage?'/static/CroppedImages/product-images/'+item.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="">
                                             </div>
                                           </a>
                                             <div class="card-body ">
@@ -169,7 +169,7 @@
                             
 
                             <%if(Date.now() < new Date(order.returnDate).getTime()){%>
-                            <button class="btn btn-danger m-2"  data-bs-toggle="modal" data-bs-target="#returnOrderModal<%= order._id %>">Return Order</button>
+                            <button class="btn btn-danger m-2"  data-bs-toggle="modal" data-bs-target="#returnOrderModal">Return Order</button>
                            <%}%>
                             <button type="button" class="btn btn-dark m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
                               Download Invoice
@@ -249,7 +249,14 @@ Swal.fire({
         if (response.success) {
         
           Swal.fire('Request successfuly sented');
-        } else {
+          // $("#returnOrderModal").modal("hide");
+
+        }else if(response.msg){
+          Swal.fire('Request already sented');
+          // $("#returnOrderModal").modal("hide");
+
+        }
+         else {
           alert(response.error);
         }
       },

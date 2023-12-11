@@ -8,6 +8,8 @@ const Wishlist = require("../../Models/wishlist");
 
 const get_product_details = async (req, res) => {
     try {
+    req.session.filter = false;
+
         const id = req.params.id;
         const userId = req.session.userid
         const data = await Products.findOne({ _id: new ObjectId(id) });
@@ -35,7 +37,7 @@ const get_product = async (req, res) => {
     try {
         const pageNum = req.query.page ? req.query.page : 1;
         const perPage = 8;
-        const totalorder=await Products.countDocuments()
+        const totalorder = await Products.countDocuments()
         req.session.checkout = false;
         let searchKey = null
         // console.log(Object.keys(req.query).length !== 0);
@@ -46,35 +48,166 @@ const get_product = async (req, res) => {
         }
 
         if (searchKey) {
-            // console.log(searchKey);
-            const key = req.query.key
-            // console.log(req.query.key);
-            let products = await Products.find({ status: "Active", name: { $regex: searchKey, $options: "i" } }).skip((pageNum - 1) * perPage).limit(perPage);
+            if (req.session.filter) {
+                const { Category, Brand } = req.session.filterData
+                if (Brand && !Category) {
+                    // console.log(searchKey);
+                    const key = req.query.key
+                    // console.log(req.query.key);
+                    let products = await Products.find({brandId: { $in: Brand }, status: "Active", name: { $regex: searchKey, $options: "i" } }).skip((pageNum - 1) * perPage).limit(perPage);
 
-            // console.log(products);
-            if (key == 'low') {
-                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
-            } else if (key == 'high') {
-                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
-            } else if (key == 'abc') {
-                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    // console.log(products);
+                    if (key == 'low') {
+                        products = await Products.find({brandId: { $in: Brand }, status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'high') {
+                        products = await Products.find({ brandId: { $in: Brand },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'abc') {
+                        products = await Products.find({ brandId: { $in: Brand },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    } else if (key == 'cba') {
+                        products = await Products.find({ brandId: { $in: Brand },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    }
+                } else if (Brand && Category) {
+                    // console.log(searchKey);
+                    const key = req.query.key
+                    // console.log(req.query.key);
+                    let products = await Products.find({ brandId: { $in: Brand },categoryId: { $in: Category },status: "Active", name: { $regex: searchKey, $options: "i" } }).skip((pageNum - 1) * perPage).limit(perPage);
+
+                    // console.log(products);
+                    if (key == 'low') {
+                        products = await Products.find({ brandId: { $in: Brand },categoryId: { $in: Category },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'high') {
+                        products = await Products.find({ brandId: { $in: Brand },categoryId: { $in: Category },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'abc') {
+                        products = await Products.find({ brandId: { $in: Brand },categoryId: { $in: Category },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    } else if (key == 'cba') {
+                        products = await Products.find({ brandId: { $in: Brand },categoryId: { $in: Category },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    }
+                } else if (!Brand && Category) {
+                    // console.log(searchKey);
+                    const key = req.query.key
+                    // console.log(req.query.key);
+                    let products = await Products.find({ categoryId: { $in: Category },status: "Active", name: { $regex: searchKey, $options: "i" } }).skip((pageNum - 1) * perPage).limit(perPage);
+
+                    // console.log(products);
+                    if (key == 'low') {
+                        products = await Products.find({categoryId: { $in: Category }, status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'high') {
+                        products = await Products.find({ categoryId: { $in: Category },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'abc') {
+                        products = await Products.find({ categoryId: { $in: Category },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    } else if (key == 'cba') {
+                        products = await Products.find({ categoryId: { $in: Category },status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    }
+                }
+
+
+                const data = req.session.name
+                const userId = req.session.userid;
+                const userWishlist = await Wishlist.findOne({ userId: userId });
+                const wishlist = userWishlist ? userWishlist.products : [];
+                const category = await Categories.find();
+                const brand = await Brands.find();
+                let x = Number((pageNum - 1) * perPage);
+                var count = Math.floor(totalorder / 10) + 1;
+                res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount, count, x })
+            } else {
+                // console.log(searchKey);
+                const key = req.query.key
+                // console.log(req.query.key);
+                let products = await Products.find({ status: "Active", name: { $regex: searchKey, $options: "i" } }).skip((pageNum - 1) * perPage).limit(perPage);
+
                 // console.log(products);
-            } else if (key == 'cba') {
-                products = await Products.find({ status: "Active" ,  name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
-                // console.log(products);
+                if (key == 'low') {
+                    products = await Products.find({ status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                } else if (key == 'high') {
+                    products = await Products.find({ status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                } else if (key == 'abc') {
+                    products = await Products.find({ status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    // console.log(products);
+                } else if (key == 'cba') {
+                    products = await Products.find({ status: "Active", name: { $regex: "^" + searchKey, $options: "i" } }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    // console.log(products);
+                }
+
+                const data = req.session.name
+                const userId = req.session.userid;
+                const userWishlist = await Wishlist.findOne({ userId: userId });
+                const wishlist = userWishlist ? userWishlist.products : [];
+                const category = await Categories.find();
+                const brand = await Brands.find();
+                let x = Number((pageNum - 1) * perPage);
+                var count = Math.floor(totalorder / 10) + 1;
+                res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount, count, x })
             }
 
-            const data = req.session.name
-            const userId = req.session.userid;
-            const userWishlist = await Wishlist.findOne({ userId: userId });
-            const wishlist = userWishlist ? userWishlist.products : [];
-            const category = await Categories.find();
-            const brand = await Brands.find();
-            let x = Number((pageNum - 1) * perPage);
-        var count = Math.floor(totalorder/ 10) + 1;
-            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount,count,x })
         } else {
-            const key = req.query.key
+            if (req.session.filter) {
+                const { Category, Brand } = req.session.filterData
+                let products;
+                const key = req.query.key
+                // console.log(req.query.key);
+                if (Brand && !Category) {
+                     products = await Products.find({brandId: { $in: Brand }, status: "Active" }).skip((pageNum - 1) * perPage).limit(perPage);
+                    // console.log(products);
+                    if (key == 'low') {
+                        products = await Products.find({brandId: { $in: Brand }, status: "Active" }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'high') {
+                        products = await Products.find({ brandId: { $in: Brand },status: "Active" }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'abc') {
+                        products = await Products.find({brandId: { $in: Brand }, status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    } else if (key == 'cba') {
+                        products = await Products.find({ brandId: { $in: Brand },status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    }
+                } else if (Brand && Category) {
+                     products = await Products.find({brandId: { $in: Brand },categoryId: { $in: Category }, status: "Active" }).skip((pageNum - 1) * perPage).limit(perPage);
+                    // console.log(products);
+                    if (key == 'low') {
+                        products = await Products.find({brandId: { $in: Brand },categoryId: { $in: Category }, status: "Active" }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'high') {
+                        products = await Products.find({brandId: { $in: Brand },categoryId: { $in: Category }, status: "Active" }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'abc') {
+                        products = await Products.find({brandId: { $in: Brand },categoryId: { $in: Category }, status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    } else if (key == 'cba') {
+                        products = await Products.find({brandId: { $in: Brand },categoryId: { $in: Category }, status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    }
+                } else if (!Brand && Category) {
+                     products = await Products.find({categoryId: { $in: Category }, status: "Active" }).skip((pageNum - 1) * perPage).limit(perPage);
+                    // console.log(products);
+                    if (key == 'low') {
+                        products = await Products.find({categoryId: { $in: Category }, status: "Active" }).sort({ descountedPrice: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'high') {
+                        products = await Products.find({ categoryId: { $in: Category },status: "Active" }).sort({ descountedPrice: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                    } else if (key == 'abc') {
+                        products = await Products.find({categoryId: { $in: Category }, status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    } else if (key == 'cba') {
+                        products = await Products.find({categoryId: { $in: Category }, status: "Active" }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 }).skip((pageNum - 1) * perPage).limit(perPage);
+                        // console.log(products);
+                    }
+                }
+
+    
+                const data = req.session.name
+                const userId = req.session.userid;
+                const userWishlist = await Wishlist.findOne({ userId: userId });
+                const wishlist = userWishlist ? userWishlist.products : [];
+                const category = await Categories.find();
+                const brand = await Brands.find();
+                let x = Number((pageNum - 1) * perPage);
+                var count = Math.floor(totalorder / 10) + 1;
+                res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount, count, x })
+            }else{
+                const key = req.query.key
             // console.log(req.query.key);
             let products = await Products.find({ status: "Active" }).skip((pageNum - 1) * perPage).limit(perPage);
             // console.log(products);
@@ -97,8 +230,9 @@ const get_product = async (req, res) => {
             const category = await Categories.find();
             const brand = await Brands.find();
             let x = Number((pageNum - 1) * perPage);
-            var count = Math.floor(totalorder/ 10) + 1;
-            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount ,count,x})
+            var count = Math.floor(totalorder / 10) + 1;
+            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount, count, x })
+            }
         }
     } catch (err) {
         console.log(err)
@@ -108,40 +242,48 @@ const get_product = async (req, res) => {
 }
 const filter = async (req, res) => {
     try {
-        
         const { Category, Brand } = req.body;
-        
+        req.session.filter = true;
+        req.session.filterData = { Category, Brand }
+        res.redirect("/products")
+        // const pageNum = req.query.page ? req.query.page : 1;
+        // const perPage = 8;
+        // const totalorder=await Products.countDocuments()
 
-        let products = [];
 
-        if (Brand && !Category) {
-            const filter = { 'brandId': { $in: Brand } }
-            products = await Products.find(filter);
 
-        } else if (!Brand && Category) {
-            const filter = { 'categoryId': { $in: Category } }
-            products = await Products.find(filter);
-         
-        } else if (Brand && Category) {
-            const filter = {}
-            filter.brandId = { $in: Brand }
-            filter.categoryId = { $in: Category }
-            products = await Products.find(filter);
-           
-        }
-        const data = req.session.name
-        const userId = req.session.userid;
-        const userWishlist = await Wishlist.findOne({ userId: userId });
-        const wishlist = userWishlist ? userWishlist.products : [];
-        const category = await Categories.find();
-        const brand = await Brands.find();
-        if (products.length > 0) {
-            res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount })
-        }
-        else {
-            req.session.err = true
-            res.render("./User/products", { title: "products", product: [], user: data, wishlist, category, brand, cartCount: req.session.cartCount })
-        }
+        // let products = [];
+
+        // if (Brand && !Category) {
+        //     const filter = { 'brandId': { $in: Brand } }
+        //     products = await Products.find(filter).skip((pageNum - 1) * perPage).limit(perPage);
+
+        // } else if (!Brand && Category) {
+        //     const filter = { 'categoryId': { $in: Category } }
+        //     products = await Products.find(filter).skip((pageNum - 1) * perPage).limit(perPage);
+
+        // } else if (Brand && Category) {
+        //     const filter = {}
+        //     filter.brandId = { $in: Brand }
+        //     filter.categoryId = { $in: Category }
+        //     products = await Products.find(filter).skip((pageNum - 1) * perPage).limit(perPage);
+
+        // }
+        // const data = req.session.name
+        // const userId = req.session.userid;
+        // const userWishlist = await Wishlist.findOne({ userId: userId });
+        // const wishlist = userWishlist ? userWishlist.products : [];
+        // const category = await Categories.find();
+        // const brand = await Brands.find();
+        // let x = Number((pageNum - 1) * perPage);
+        // var count = Math.floor(totalorder/ 10) + 1;
+        // if (products.length > 0) {
+        //     res.render("./User/products", { title: "products", product: products, user: data, wishlist, category, brand, cartCount: req.session.cartCount ,count,x,filtered:true})
+        // }
+        // else {
+        //     req.session.err = true
+        //     res.render("./User/products", { title: "products", product: [], user: data, wishlist, category, brand, cartCount: req.session.cartCount ,count,x,filtered:false})
+        // }
 
     } catch (err) {
         req.session.err = true
@@ -153,21 +295,23 @@ const filter = async (req, res) => {
 
 const get_product_catgorybaise = async (req, res) => {
     try {
-        const categoryId=req.params.id
-        const category=await Categories.findOne({_id:categoryId});
+    req.session.filter = false;
+
+        const categoryId = req.params.id
+        const category = await Categories.findOne({ _id: categoryId });
         const key = req.query.key
         // console.log(req.query.key);
-        let products = await Products.find({status:"Active",categoryId:categoryId});
+        let products = await Products.find({ status: "Active", categoryId: categoryId });
         // console.log(products);
         if (key == 'low') {
-            products = await Products.find({status:"Active",categoryId:categoryId}).sort({ descountedPrice: 1 })
+            products = await Products.find({ status: "Active", categoryId: categoryId }).sort({ descountedPrice: 1 })
         } else if (key == 'high') {
-            products = await Products.find({status:"Active",categoryId:categoryId}).sort({ descountedPrice: -1 })
+            products = await Products.find({ status: "Active", categoryId: categoryId }).sort({ descountedPrice: -1 })
         } else if (key == 'abc') {
-            products = await Products.find({status:"Active",categoryId:categoryId}).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
+            products = await Products.find({ status: "Active", categoryId: categoryId }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
             // console.log(products);
         } else if (key == 'cba') {
-            products = await Products.find({status:"Active",categoryId:categoryId}).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
+            products = await Products.find({ status: "Active", categoryId: categoryId }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
             // console.log(products);
         }
 
@@ -176,7 +320,7 @@ const get_product_catgorybaise = async (req, res) => {
         const userWishlist = await Wishlist.findOne({ userId: userId });
         const wishlist = userWishlist ? userWishlist.products : [];
 
-        res.render("./User/Category_page", { title: "products", product: products, user: data, wishlist,cartCount:req.session.cartCount,categoryId,category:category.name})
+        res.render("./User/Category_page", { title: "products", product: products, user: data, wishlist, cartCount: req.session.cartCount, categoryId, category: category.name })
     } catch (err) {
 
         req.session.err = true
@@ -187,21 +331,22 @@ const get_product_catgorybaise = async (req, res) => {
 }
 const get_product_brand = async (req, res) => {
     try {
-        const brandId=req.params.id
-        const brand=await Brands.findOne({_id:brandId})
+    req.session.filter = false;
+    const brandId = req.params.id
+        const brand = await Brands.findOne({ _id: brandId })
         const key = req.query.key
         // console.log(req.query.key);
-        let products = await Products.find({status:"Active",brandId:brandId});
+        let products = await Products.find({ status: "Active", brandId: brandId });
 
         if (key == 'low') {
-            products = await Products.find({status:"Active",brandId:brandId}).sort({ descountedPrice: 1 })
+            products = await Products.find({ status: "Active", brandId: brandId }).sort({ descountedPrice: 1 })
         } else if (key == 'high') {
-            products = await Products.find({status:"Active",brandId:brandId}).sort({ descountedPrice: -1 })
+            products = await Products.find({ status: "Active", brandId: brandId }).sort({ descountedPrice: -1 })
         } else if (key == 'abc') {
-            products = await Products.find({status:"Active",brandId:brandId}).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
+            products = await Products.find({ status: "Active", brandId: brandId }).collation({ locale: 'en', strength: 2 }).sort({ name: 1 })
             // console.log(products);
         } else if (key == 'cba') {
-            products = await Products.find({status:"Active",brandId:brandId}).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
+            products = await Products.find({ status: "Active", brandId: brandId }).collation({ locale: 'en', strength: 2 }).sort({ name: -1 })
             // console.log(products);
         }
 
@@ -210,7 +355,7 @@ const get_product_brand = async (req, res) => {
         const userWishlist = await Wishlist.findOne({ userId: userId });
         const wishlist = userWishlist ? userWishlist.products : [];
 
-        res.render("./User/BrandPage", { title: "products", product: products, user: data, wishlist,cartCount:req.session.cartCount,brandId,brand:brand.name})
+        res.render("./User/BrandPage", { title: "products", product: products, user: data, wishlist, cartCount: req.session.cartCount, brandId, brand: brand.name })
     } catch (err) {
 
         req.session.err = true

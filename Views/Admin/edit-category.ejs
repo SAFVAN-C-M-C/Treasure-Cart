@@ -32,7 +32,7 @@
       <label for="main">
 
         <div class="img-main">
-          <img class="priview" src="<%=category.images[0].mainimage?'/static/category-images/'+category.images[0].mainimage:'/static/images/img-bg.jpg'%>"  id="mn">
+          <img class="priview" src="<%=category.images[0].mainimage?'/static/CroppedImages/category-images/'+category.images[0].mainimage:'/static/images/img-bg.jpg'%>"  id="mn">
         </div>
       </label>
     </div>
@@ -70,6 +70,7 @@
           // If no file was selected or the browser doesn't support FileReader, clear the image
           img.src = "";
         }
+        document.getElementById("signupButton").disabled = false;
       }
 </script>
 <%-include("../layout/footer")-%>

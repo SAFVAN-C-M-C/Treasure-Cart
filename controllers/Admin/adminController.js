@@ -3,7 +3,7 @@ const Orders = require("../../Models/order");
 const ADMIN = require("../../Models/superAdmin");
 const bcrypt = require("bcrypt");
 const moment = require("moment")
-
+const { cropImage } = require("../../util/cropImages");
 
 // ===========================================================================================================================================
 
@@ -125,7 +125,7 @@ const getCountYear = async (req, res) => {
   try {
     const orders = await Orders.find({
       status: {
-        $nin: ["returned", "Cancelled", "Rejected"]
+        $in: ["Delivered"]
       }
     });
 
@@ -187,7 +187,7 @@ const getCountMonth = async (req, res) => {
   try {
     const orders = await Orders.find({
       status: {
-        $nin: ["returned", "Cancelled", "Rejected"]
+        $in: ["Delivered"]
       }
     });
     const orderCountsByMonthYear = {};
@@ -263,7 +263,7 @@ const getCountDay = async (req, res) => {
   try {
     const orders = await Orders.find({
       status: {
-        $nin: ["returned", "Cancelled", "Rejected"]
+        $in: ["Delivered"]
       }
     });
     const orderCountsByDay = {};

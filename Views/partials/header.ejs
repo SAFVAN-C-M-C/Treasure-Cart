@@ -15,6 +15,7 @@
         cursor: pointer;
     }
     .toTop{
+        opacity: 0.5;
         position: fixed;
         display: flex;
         justify-content: center;
@@ -25,7 +26,8 @@
         height: 50px;
         border-radius: 50%;
         z-index: 999999999;
-        background-color: #020A20;
+        background-image: url('/static/images/branding.png');
+        background-size: contain;
         font-size: 1.2rem;
     }
 </style>
@@ -156,9 +158,10 @@
 </div>
 <a href="#">
     <div class="toTop">
-        <i class="fa-solid fa-arrow-up" style="color: #ffffff;"></i>
+        <!-- <i class="fa-solid fa-arrow-up" style="color: #ffffff;"></i> -->
     </div>
 </a>
+
 <script>
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))

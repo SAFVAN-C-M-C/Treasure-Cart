@@ -17,11 +17,12 @@ const ReturnRequestSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 const OrdersSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId },
+  userId: { type: Schema.Types.ObjectId,ref:"Users" },
   status: { type: String, default:"Order Placed"},
   items: [{
      productId: { type: Schema.Types.ObjectId , ref: "products" },
      quantity: { type: Number },
+     unitPrice:{type:Number}
   }],
   payMethod: {type: String,default:"Online"},
   orderDate: { type: Date },

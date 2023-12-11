@@ -31,12 +31,12 @@
                 <div class="card mt-2 mb-2 ">
                     <div class="container-fluid ">
                         <div class="row">
-                            <div class="col-4"><img src="<%=item.images[0].mainimage?'/static/product-images/'+item.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="img" width="100px" height="100px"></div>
+                            <div class="col-4"><img src="<%=item.images[0].mainimage?'/static/CroppedImages/product-images/'+item.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="img" width="100px" height="100px"></div>
                             <div class="col-8">
                                 <span>ID: <%=item._id%></span><br>
                                 <span>Name: <%=item.name%></span><br>
-                                <span>Price: ₹<%=item.descountedPrice%>/-</span><br>
-                                <span>Quantity: ₹<%=item.quantity%>/-</span><br>
+                                <span>Price: ₹<%=item.unitPrice.toLocaleString()%>/-</span><br>
+                                <span>Quantity: <%=item.quantity%></span><br>
 
                             </div>
                         </div>

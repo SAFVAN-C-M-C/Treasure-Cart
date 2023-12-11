@@ -13,14 +13,14 @@ const Wishlist = require("../../Models/wishlist")
 const Orders = require("../../Models/order")
 const Banner = require("../../Models/banner")
 const moment = require("moment");
-
+const { cropImage } = require("../../util/cropImages");
 
 
 
 //=================================================================================================================
 
 const home_get = (req, res) => {
-
+    req.session.filter = false;
     res.render("./User/index", { title: "Login", errmsg: req.flash("errmsg") });
 
 }
@@ -45,6 +45,7 @@ const forgot_password_page = (req, res) => {
 //=================================================================================================================
 
 const home_logged = async (req, res) => {
+    req.session.filter = false;
     if (req.session.logged) {
         try {
             console.log(req.session.logged);
@@ -217,10 +218,13 @@ const get_contactUs = (req, res) => {
 //=================================================================================================================
 const get_profile = async (req, res) => {
     try {
-        const user = req.session.name;
+    req.session.filter = false;
+    const user = req.session.name;
         const UserId = req.session.userid;
         const UserData = await USER.findOne({ _id: UserId })
-        console.log(UserData.dob);
+        console.log(UserData);
+        // if(UserData.profile.le)
+        //console.log(UserData.dob);  
         res.render("./User/profile", { user, UserData, cartCount: req.session.cartCount })
     } catch (err) {
         req.session.err = true
@@ -232,7 +236,8 @@ const get_profile = async (req, res) => {
 //=================================================================================================================
 const get_manageAddress = async (req, res) => {
     try {
-        const user = req.session.name;
+    req.session.filter = false;
+    const user = req.session.name;
         const UserId = req.session.userid;
         const UserData = await USER.findOne({ _id: UserId })
         const address = UserData.address;
@@ -385,6 +390,9 @@ const userSignup = async (req, res) => {
                 email: req.body.email,
                 password: pass,
                 status: "Active",
+                profile:[{
+                    mainimage:"/static/images/img-bg.jpg"
+                }],
                 
             }
             const result = await USER.insertMany([data])
@@ -688,6 +696,8 @@ const edit_profile = async (req, res) => {
     }
 }
 const about=(req,res)=>{
+    req.session.filter = false;
+
     const user=req.session.name
     res.render("./User/About",{user,cartCount:req.session.cartCount})
 }

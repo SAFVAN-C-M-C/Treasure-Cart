@@ -8,6 +8,7 @@ const ReturnSchema = new Schema({
   // quantity:{type:Number},
   description: { type: String},
   totalPrice: { type: Number },
+  status:{type:String,default:"waiting"},
 });
 
 const Return = mongoose.model('return', ReturnSchema);

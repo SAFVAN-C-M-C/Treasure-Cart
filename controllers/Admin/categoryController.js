@@ -1,6 +1,6 @@
 const Categories = require("../../Models/category");
 const { ObjectId } = require("mongodb");
-
+const { cropImage } = require("../../util/cropImages");
 // ===========================================================================================================================================
 
 //category page
@@ -107,7 +107,7 @@ const category_edit = async (req, res) => {
             const id = req.params.id;
             console.log("hello it here on the edit post");
             const main = req.files["main"][0];
-
+            const Category=await Categories.findOne({_id: new ObjectId(id)});
             // Do whatever you want with these files.
             console.log("Uploaded files:");
             console.log(main);
@@ -117,17 +117,17 @@ const category_edit = async (req, res) => {
             } = req.body;
             const check = Categories.findOne({ name: Category_name })
             const images=[main.filename];
-        cropImage(images,"category-images")
+            console.log(main.filename);
+            cropImage(images,"category-images")
             if (!check) {
-                const data = {
-                    name: Category_name,
-                    images: {
-                        mainimage: main.filename,
-                    },
-                    timeStamp: Date.now(),
-                };
-                await Categories.updateOne({ _id: new ObjectId(id) }, { $set: data });
+                Category.name=Category_name;
+                Category.images[0].mainimage=main.filename;
+                Category.timeStamp=Date.now();
+            }else{
+                Category.images[0].mainimage=main.filename;
+                Category.timeStamp=Date.now();
             }
+            Category.save()
             console.log("name is " + Category_name);
 
             res.redirect("/admin/categories");

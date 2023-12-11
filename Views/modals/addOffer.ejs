@@ -1,0 +1,50 @@
+<div class="modal fade" id="addOfferModal" tabindex="-1" aria-labelledby="addOfferModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="addOfferModalLabel">Add Offer</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addCouponForm">
+                  <div class="mb-3">
+                    <label for="categoryName" class="form-label">Category Name</label>
+                    <select class="form-select" id="categoryName" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <% categories.forEach((category) => { %>
+                            <option value="<%= category.name %>"><%= category.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                  <div class="mb-3">
+                    <label for="offerPercentage" class="form-label"
+                      >Offer Percentage</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      min="0"
+                      max="100"
+                      id="offerPercentage"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="expiryDate" class="form-label">Expiry Date</label>
+                    <input type="date" class="form-control" id="expiryDate" required />
+                  </div>
+        
+                  <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-primary " onclick="addOffer()">
+                      Add Offer
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+
+
+        </div>
+    </div>
+</div>

@@ -123,7 +123,7 @@
                                         <%= orderDate.getFullYear() %>
                                             <%= orderDate.toLocaleTimeString([], {
                                                 hour: '2-digit' , minute: '2-digit' }) %></td>
-                              <td><%=data.totalPrice%></td>
+                              <td><%=data.totalPrice.toLocaleString()%></td>
                               <td>
                                 <%if(data.paymentStatus==="Paid"){%>
                                   <span class="bg-success text-white p-2 rounded-2 "><%=data.paymentStatus%></span>

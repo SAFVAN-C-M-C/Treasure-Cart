@@ -1,5 +1,5 @@
 const Banner = require("../../Models/banner");
-
+const { cropImage } = require("../../util/cropImages");
 const getBanner = async (req, res) => {
     try {
         const pageNum = req.query.page ? req.query.page : 1;

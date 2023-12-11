@@ -1,6 +1,8 @@
 const Coupon = require("../../Models/coupon");
 const { ObjectId } = require('mongodb')
 const getMycoupons=async(req,res)=>{
+  req.session.filter = false;
+
     const user=req.session.name;
     const coupon=await Coupon.find({couponType:"public"})
 

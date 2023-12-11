@@ -99,7 +99,7 @@
                   <tr>
                     <td> <div class="table-data"><%=++x%></div> </td>
 
-                    <td><div class="table-data"><img src="<%=data.images[0].mainimage?'/static/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%;"><%=data.name%> </div> </td>
+                    <td><div class="table-data"><img src="<%=data.images[0].mainimage?'/static/CroppedImages/product-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%;"><%=data.name%> </div> </td>
                     <td> <div class="table-data"><%=data.stock%></div> </td>
                     <td> <div class="table-data">₹<%=data.basePrice.toLocaleString()%></div> </td>
                     <td> <div class="table-data">₹<%=data.descountedPrice.toLocaleString()%></div> </td>

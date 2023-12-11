@@ -105,7 +105,7 @@
                           <td>
                             <div class="table-data1">
                               <%if(data.profile.length>0){%>
-                                <img src="<%=data.profile[0].mainimage?'/static/profile-images/'+data.profile[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.userName%></span>
+                                <img src="<%=data.profile[0].mainimage?'/static/CroppedImages/profile-images/'+data.profile[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.userName%></span>
                               <%}else{%>
                                 <img src="/static/images/img-bg.jpg" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.userName%></span>
                                 

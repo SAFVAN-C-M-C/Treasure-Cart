@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 const Users = require("../../Models/user");
-
+const { cropImage } = require("../../util/cropImages");
 
 // ===========================================================================================================================================
 

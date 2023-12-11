@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const connection=require("../config/connection")
+require("../config/connection")
 
 const { Schema, ObjectId } = mongoose;
 const addressSchema=mongoose.Schema(
@@ -29,24 +29,10 @@ const UsersSchema = new Schema({
   joined:{type:Date},
   profile:[imageSchema],
   veified:{type:Boolean,default:false},
-  referralLink: {
-    type: String,
-    unique: true,
-  },
-  referredBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users',
-  },
   wallet: {
     type: Number,
     default: 0
   },
-  referredUsers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Users',
-    },
-  ],
 });
 
 const Users = mongoose.model('Users', UsersSchema);

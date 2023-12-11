@@ -44,7 +44,7 @@
                             <a href="/product/details/<%= product._id%>" style="text-decoration: none;">
                               <div class="d-flex justify-content-center mt-2 " >
                                 <img style="width: 70%; max-height: 270px;"
-                                    src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                                    src="<%=product.images[0].mainimage?'/static/CroppedImages/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
                                     alt="">
                               </div>
                               <div class="product-card-body">
@@ -113,7 +113,7 @@
                             <a href="/product/details/<%= product._id%>" style="text-decoration: none;">
                               <div class="product-card-img d-flex justify-content-center  " style="padding: 30px;">
                                 <td><img style="width: 70%;max-height: 150px;"
-                                    src="<%=product.images[0].mainimage?'/static/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                                    src="<%=product.images[0].mainimage?'/static/CroppedImages/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
                                     alt=""></td>
                               </div>
                               <div class="product-card-body">
@@ -182,7 +182,7 @@
                               <a href="/products/category/<%=data._id%>" style="text-decoration: none;">
                                 <div class="product-card-img d-flex  justify-content-center " style="padding: 30px;">
                                   <img style="width: 70%;max-height: 270px;"
-                                      src="<%=data.images[0].mainimage?'/static/category-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                                      src="<%=data.images[0].mainimage?'/static/CroppedImages/category-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>"
                                       alt="">
                                 </div>
                                 <div class="product-card-body">
@@ -213,7 +213,7 @@
                                 <a href="/products/brand/<%=data._id%>" style="text-decoration: none;">
                                   <div class="product-card-img d-flex  justify-content-center align-items-center " style="padding: 30px; min-height: 287px;">
                                     <img style="width: 70%;max-height: 270px; height: auto;"
-                                        src="<%=data.images[0].mainimage?'/static/brand-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                                        src="<%=data.images[0].mainimage?'/static/CroppedImages/brand-images/'+data.images[0].mainimage:'/static/images/img-bg.jpg'%>"
                                         alt="">
                                   </div>
                                   <div class="product-card-body">

@@ -57,11 +57,12 @@ const addtoWishList=async(req,res)=>{
 //wishlist
 const get_wishlist = async(req, res) => {
   try {
-      const data = req.session.name
+    req.session.filter = false;
+    const data = req.session.name
      const userId=req.session.userid
     const wishlist = await Wishlist.findOne({ userId: userId }).populate('products.productId');
-    console.log(wishlist.products);
-      res.render("./User/user-wishlist", { user: data,wishlist: wishlist.products,cartCount:req.session.cartCount })
+    // console.log(wishlist.products);
+      res.render("./User/user-wishlist", { user: data,wishlist: wishlist?wishlist.products:[],cartCount:req.session.cartCount })
   } catch (err) {
       req.session.err = true
       res.redirect("/404")

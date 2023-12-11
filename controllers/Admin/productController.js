@@ -3,7 +3,8 @@ const Categories = require("../../Models/category");
 const Products = require("../../Models/product");
 const { ObjectId } = require("mongodb");
 const { cropImage } = require("../../util/cropImages");
-
+const fs=require("fs");
+const { deleteImageFile } = require("../../util/deleteImage");
 
 // ===========================================================================================================================================
 const product_list = async (req, res) => {
@@ -500,9 +501,11 @@ const deleteimage=async (req,res)=>{
     if (imageIndex === "1") {
       imageField = "images.0.image1";
       deletedImage = product.images[0].image1;
+      deleteImageFile(deletedImage)
     } else if (imageIndex === "2") {
       imageField = "images.0.image2";
       deletedImage = product.images[0].image2;
+      deleteImageFile(deletedImage)
     } else {
       return res.status(404).send("Image not found");
     }

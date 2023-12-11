@@ -23,6 +23,9 @@ const ProductsSchema = new Schema({
   timeStamp: { type: Date },
   brandId: { type: Schema.Types.ObjectId, ref: 'brands'  },
   categoryId: { type: Schema.Types.ObjectId,ref: 'categories' },
+  IsInCategoryOffer :{ type:Boolean, default: false},
+  categoryOffer: {offerPercentage: { type: Number }},  
+  beforeOffer:{ type: Number },
 });
 
 const Products = mongoose.model('products', ProductsSchema);

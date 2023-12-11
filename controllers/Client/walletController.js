@@ -5,6 +5,8 @@ const { ObjectId } = require("mongodb");
 
 const getWallet = async (req, res) => {
     try {
+      req.session.filter = false;
+
       const Email = req.session.email;
       const user=req.session.name
       const USER = await Users.findOne({ email: Email }).populate('referredUsers');

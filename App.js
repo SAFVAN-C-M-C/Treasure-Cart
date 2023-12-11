@@ -11,7 +11,7 @@ const passport = require("passport");
 const adminRouter = require("./routers/adminRoutes");
 const flash = require("connect-flash")
 const nocache = require("nocache");
-
+require("./util/corn");
 
 app.set("view engine", "ejs");
 

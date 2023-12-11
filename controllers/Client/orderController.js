@@ -53,14 +53,22 @@ const WalletTransaction = require("../../Models/walletTransaction");
 const getOrderSuccess = async (req, res) => {
     const user = req.session.name;
 
+    req.session.filter = false;
+
     const User = await Users.findOne({ _id: req.session.userid });
+
     if (req.session.walletbalance >= 0) {
         User.wallet = req.session.walletbalance
     }
     User.save();
-    if(req.session.transactionsData){
+    if (req.session.transactionsData) {
         await WalletTransaction.insertMany([req.session.transactionsData]);
+        const usedWalletAmount = req.session.transactionsData.amount;
+        const order = await Orders.findOne({ _id: new ObjectId(req.session.orderId) });
+        order.totalPrice = Math.round(order.totalPrice + usedWalletAmount);
+        order.save();
     }
+
     const couponId = req.session.couponid
     const couponmatch = await Coupon.findOne({ _id: couponId });
     console.log(couponmatch);
@@ -91,7 +99,7 @@ const placeOrder = async (req, res) => {
         const cart = await CART.findOne({ userId: userId }).populate(
             "products.productId"
         );
-        // console.log(cart.products);
+        console.log("safvan", cart.products);
 
         const address = await Users.findOne(
             { _id: userId },
@@ -114,8 +122,6 @@ const placeOrder = async (req, res) => {
             items: cart.products,
             // orderDate: moment(new Date()).format("llll"),
             orderDate: currentDate,
-
-            // expectedDeliveryDate: moment().add(7, "days").format("llll"),
             expectedDeliveryDate: new Date(
                 Date.now() + 7 * 24 * 60 * 60 * 1000
             ).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
@@ -446,13 +452,13 @@ const cancelorder = async (req, res) => {
             if (order.payMethod === "online") {
                 User.wallet += order.totalPrice
             }
-            const transactionData={
-                user:new ObjectId(req.session.userid),
-                amount:order.totalPrice,
-                description:"Canceled Order",
-                transactionType:'credit',
+            const transactionData = {
+                user: new ObjectId(req.session.userid),
+                amount: order.totalPrice,
+                description: "Canceled Order",
+                transactionType: 'credit',
             }
-            const insert=await WalletTransaction.insertMany([transactionData]);
+            const insert = await WalletTransaction.insertMany([transactionData]);
             await order.save();
             await User.save();
 
@@ -489,11 +495,104 @@ const verifypayment = async (req, res) => {
                 req.body.order.createdOrder.receipt
             );
             console.log("reciept", req.body.order.createdOrder.receipt);
-            const updateOrderDocument = await Orders.findByIdAndUpdate(orderId, {
-                paymentStatus: "Paid",
-                paymentMethod: "Online",
-            });
+            const Order = await Orders.findOne({ _id: new ObjectId(orderId) });
+            Order.paymentStatus = "Paid";
+            Order.payMethod = "online";
+            Order.save()
             // console.log("hmac success");
+            const mailOptions = {
+                from: AUTH_EMAIL,
+                to: req.session.email,
+                subject: "Your Orders!",
+                html: `<!DOCTYPE html>
+                <html lang="en">
+                
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Order Confirmation</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            margin: 0;
+                            padding: 0;
+                            background-color: #f4f4f4;
+                        }
+                
+                        .container {
+                            max-width: 600px;
+                            margin: 20px auto;
+                            padding: 20px;
+                            background-color: #fff;
+                            border-radius: 8px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        }
+                
+                        h1 {
+                            color: #333;
+                        }
+                
+                        p {
+                            color: #555;
+                        }
+                
+                        .order-details {
+                            margin-top: 20px;
+                            border-top: 2px solid #ddd;
+                            padding-top: 10px;
+                        }
+                
+                        .footer {
+                            margin-top: 20px;
+                            text-align: center;
+                            color: #888;
+                        }
+                
+                        .logo {
+                            display: flex;
+                            justify-content: center;
+                            width: 100%;
+                        }
+                
+                        .logo img {
+                            width: 200px;
+                            height: auto;
+                        }
+                    </style>
+                </head>
+                
+                <body>
+                
+                    <div class="container">
+                        <div class="logo">
+                            <img src="http://localhost:7000/static/images/logo.png" alt="img">
+                        </div>
+                        <h1>Order Confirmation</h1>
+                        <p>Dear ${req.session.name},</p>
+                        <p>Thank you for your order. We're processing it and will notify you once it's shipped.</p>
+                
+                        <div class="order-details">
+                            <h2>Order Details</h2>
+                            <p><strong>Order ID:</strong> ${Order._id}</p>
+                            <p><strong>Order Date:</strong> ${Order.orderDate}</p>
+                            <p><strong>Total Amount:</strong> ${Order.totalPrice.toLocaleString()}</p>
+                        </div>
+                
+                        <div class="footer">
+                            <p>Thank you for choosing Treasure Cart!</p>
+                            <p>For any queries contact <a href="mailto:
+                                        treasurecart05@gmail.com">
+                                    treasurecart05@gmail.com</a></p>
+                        </div>
+                    </div>
+                
+                </body>
+                
+                </html>`
+            }
+            await sendEmail(mailOptions);
+            console.log("order email sended");
             updateQuantity(req.session.items, req.session.cartId)
 
             res.json({ success: true });
@@ -555,43 +654,59 @@ const downloadInvoice = async (req, res) => {
     }
 };
 
-const returnProduct = async (req, res) => {
-    try {
-        const { orderId, productId, quantity, reason } = req.body;
-        const product = await Products.findOne({ _id: new ObjectId(productId) });
-        const order = await Orders.findOne({ _id: new ObjectId(orderId) });
-        if (product && order) {
-            const totalPrice = product.descountedPrice * quantity;
-            const data = {
-                orderId: orderId,
-                productId: productId,
-                quantity: quantity,
-                description: reason,
-                totalPrice: totalPrice
-            }
-            await Return.insertMany([data])
+// const returnProduct = async (req, res) => {
+//     try {
+//         const { orderId, productId, quantity, reason } = req.body;
+//         const existingRequest = await Return.find({ _id: new ObjectId(orderId) })
+//         console.log("heeeeeeeeeeeee",existingRequest);
+//         if (existingRequest.length > 0) {
+//             res.status(200).json({
+//                 success: false,
+//                 msg:"Request already sented"
+//             });
+//         } else {
+//             const product = await Products.findOne({ _id: new ObjectId(productId) });
+//             const order = await Orders.findOne({ _id: new ObjectId(orderId) });
+//             if (product && order) {
+//                 const totalPrice = product.descountedPrice * quantity;
+//                 const data = {
+//                     orderId: orderId,
+//                     productId: productId,
+//                     quantity: quantity,
+//                     description: reason,
+//                     totalPrice: totalPrice
+//                 }
+//                 await Return.insertMany([data])
 
+//                 res.status(200).json({
+//                     success: true,
+//                 });
+//             } else {
+//                 res.status(500).json({ success: false, message: "Error in returning " });
+//             }
+//         }
+//     }
+//     catch (error) {
+//         console.error("error in invoice downloading", error);
+//         res
+//             .status(500)
+//             .json({ success: false, message: "Error in generating the invoice" });
+//     }
+// };
+const returnOrder = async (req, res) => {
+    try {
+        const { orderId, totalPrice, reason } = req.body;
+        const existingRequest = await Return.find({ orderId: new ObjectId(orderId) })
+        console.log("heeeeeeeeeeeee",existingRequest);
+        if (existingRequest.length > 0) {
             res.status(200).json({
-                success: true,
+                success: false,
+                msg:"Request already sented"
             });
         } else {
-            res.status(500).json({ success: false, message: "Error in generating the invoice" });
-        }
-    }
-    catch (error) {
-        console.error("error in invoice downloading", error);
-        res
-            .status(500)
-            .json({ success: false, message: "Error in generating the invoice" });
-    }
-};
-const returnOrder=async(req,res)=>{
-    try {
-        const { orderId, totalPrice,reason } = req.body;
-        
         const order = await Orders.findOne({ _id: new ObjectId(orderId) });
         if (order) {
-            
+
             const data = {
                 orderId: orderId,
                 description: reason,
@@ -605,6 +720,7 @@ const returnOrder=async(req,res)=>{
         } else {
             res.status(500).json({ success: false, message: "Error in generating the invoice" });
         }
+    }
     }
     catch (error) {
         console.error("error in invoice downloading", error);
@@ -622,6 +738,6 @@ module.exports = {
     getOrderDetails,
     generateInvoices,
     downloadInvoice,
-    returnProduct,
+    // returnProduct,
     returnOrder
 }
