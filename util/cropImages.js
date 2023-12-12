@@ -4,14 +4,14 @@ const path = require("path");
 
 function cropImage(files,location) {
   files.forEach((ob) => {
-    sharp(`./public/${location}/${ob}`)
+    sharp(`./Public/${location}/${ob}`)
     .resize({
       width: 200,
       height: 200,
       fit: "cover",
       withoutEnlargement: true,
     })
-    .toFile(`public/CroppedImages/${location}/${ob}`, (err) => {
+    .toFile(`Public/CroppedImages/${location}/${ob}`, (err) => {
       if (!err) {
         console.log(`Cropping image ${ob}`);
       } else {

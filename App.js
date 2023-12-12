@@ -14,7 +14,7 @@ const nocache = require("nocache");
 require("./util/corn");
 
 app.set("view engine", "ejs");
-
+app.set("views", path.join(__dirname, "Views"));
 
 //middlewares
 app.use(nocache());

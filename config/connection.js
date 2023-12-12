@@ -8,5 +8,5 @@ mongoose.connect(process.env.URI)
     console.log("DB connected......");
 })
 .catch(err=>{
-    console.log("Not connected....",err);
+    console.log("Not connected....",process.env.URI,err);
 })

@@ -7,7 +7,7 @@ const crypto = require("crypto");
 //file upload
 const storage_product_image = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/product-images/");
+    cb(null, "./Public/product-images/");
   },
   filename: function (req, file, cb) {
     const randomeString = crypto.randomBytes(3).toString("hex");
@@ -19,7 +19,7 @@ const storage_product_image = multer.diskStorage({
 
 const storage_profile_image = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/profile-images/");
+    cb(null, "./Public/profile-images/");
   },
   filename: function (req, file, cb) {
     const randomeString = crypto.randomBytes(3).toString("hex");
@@ -33,7 +33,7 @@ const storage_profile_image = multer.diskStorage({
 
 const storage_banner_image = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/banner-images/");
+    cb(null, "./Public/banner-images/");
   },
   filename: function (req, file, cb) {
     const randomeString = crypto.randomBytes(3).toString("hex");
@@ -44,7 +44,7 @@ const storage_banner_image = multer.diskStorage({
 });
 const storage_category_image = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/category-images/");
+    cb(null, "./Public/category-images/");
   },
   filename: function (req, file, cb) {
     const randomeString = crypto.randomBytes(3).toString("hex");
@@ -55,7 +55,7 @@ const storage_category_image = multer.diskStorage({
 });
 const storage_brand_image = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/brand-images/");
+    cb(null, "./Public/brand-images/");
   },
   filename: function (req, file, cb) {
     const randomeString = crypto.randomBytes(3).toString("hex");
