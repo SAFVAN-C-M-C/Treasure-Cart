@@ -1,5 +1,5 @@
 const Categories = require("../../Models/category");
-const { ObjectId } = require("mongodb");
+const { ObjectId,Types } = require("mongoose");
 const { cropImage } = require("../../util/cropImages");
 // ===========================================================================================================================================
 
@@ -61,7 +61,7 @@ const category_add = async (req, res) => {
             const data = {
                 name: Category_name,
                 images: {
-                    mainimage: main.filename,
+                    mainimage: `https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`,
                 },
                 timeStamp: Date.now(),
             };
@@ -78,7 +78,7 @@ const category_edit_get = async (req, res) => {
     // if (req.session.admin) {
     try {
         const id = req.params.id;
-        const category = await Categories.findOne({ _id: new ObjectId(id) });
+        const category = await Categories.findOne({ _id: new Types.ObjectId(id) });
         console.log(category);
         res.render("./Admin/edit-category", {
             category: category,
@@ -100,7 +100,7 @@ const category_edit = async (req, res) => {
         if (req.files["main"]) {
             const id = req.params.id;
             const main = req.files["main"][0];
-            const Category=await Categories.findOne({_id: new ObjectId(id)});
+            const Category=await Categories.findOne({_id: new Types.ObjectId(id)});
 
             const {
                 Category_name,
@@ -111,10 +111,10 @@ const category_edit = async (req, res) => {
             cropImage(images)
             if (!check) {
                 Category.name=Category_name;
-                Category.images[0].mainimage=main.filename;
+                Category.images[0].mainimage=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`;
                 Category.timeStamp=Date.now();
             }else{
-                Category.images[0].mainimage=main.filename;
+                Category.images[0].mainimage=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`;
                 Category.timeStamp=Date.now();
             }
             Category.save()
@@ -135,7 +135,7 @@ const category_edit = async (req, res) => {
                     name: Category_name,
                     timeStamp: Date.now(),
                 };
-                await Categories.updateOne({ _id: new ObjectId(id) }, { $set: data });
+                await Categories.updateOne({ _id: new Types.ObjectId(id) }, { $set: data });
             }
 
             res.redirect("/admin/categories");
@@ -149,7 +149,7 @@ const category_edit = async (req, res) => {
 const category_delete = async (req, res) => {
     try {
         const id = req.params.id;
-        let deleted = await Categories.deleteOne({ _id: new ObjectId(id) });
+        let deleted = await Categories.deleteOne({ _id: new Types.ObjectId(id) });
         console.log("deleted");
         res.redirect("/admin/categories");
     } catch (err) {

@@ -33,7 +33,7 @@
       <label for="main">
 
         <div class="img-main">
-          <img class="priview" src="<%=brand.images[0].mainimage?'/static/CroppedImages/brand-images/'+brand.images[0].mainimage:'/static/images/img-bg.jpg'%>"  id="mn">
+          <img class="priview" src="<%=brand.images[0].mainimage?brand.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="previewImage" id="mn">
         </div>
       </label>
     </div>

@@ -6,7 +6,7 @@ const USER = require("../../Models/user")
 const { sendOTP } = require("./otpController");
 const OTP = require("../../Models/otp");
 const Products = require("../../Models/product");
-const { ObjectId } = require('mongodb')
+const { ObjectId,Types } = require("mongoose");
 const Brands = require("../../Models/brand")
 const Categories = require("../../Models/category")
 const Wishlist = require("../../Models/wishlist")
@@ -678,7 +678,7 @@ const edit_profile = async (req, res) => {
                 mainimage: main.location,
             }],
         };
-        await USER.updateOne({ _id: new ObjectId(userId) }, { $set: data });
+        await USER.updateOne({ _id: new Types.ObjectId(userId) }, { $set: data });
         res.redirect("/profile");
     } catch (err) {
         console.log(err);

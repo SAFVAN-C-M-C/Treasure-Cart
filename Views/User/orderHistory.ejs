@@ -21,7 +21,7 @@
                     <a href="/order/order-details/<%=data._id%>" style="text-decoration: none;">
                         <div class="card border-0 order-card shadow-lg p-3 bg-body rounded-3">
                             <div class="product-card-img d-flex  justify-content-center align-items-center " style="padding: 30px; min-height: 287px;">
-                                <img style="width: 70%;max-height: 270px; height: auto;" src="<%=data.itemsDetails[0].images[0].mainimage?'/static/CroppedImages/product-images/'+data.itemsDetails[0].images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="">
+                                <img style="width: 70%;max-height: 270px; height: auto;" src="<%=data.itemsDetails[0].images[0].mainimage?data.itemsDetails[0].images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="">
                             </div>
                             <div class="card-body ">
                                 <h5 class="card-title">Order #<%=data._id%></h5>

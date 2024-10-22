@@ -1,5 +1,5 @@
 const Brands = require("../../Models/brand");
-const { ObjectId } = require("mongodb");
+const { ObjectId,Types } = require("mongoose");
 const { cropImage } = require("../../util/cropImages");
 
 const brand_list = async (req, res) => {
@@ -32,12 +32,14 @@ const brand_add = async (req, res) => {
     } = req.body;
     const images = [main.key]
     const check = await Brands.findOne({ name: Brand_name })
-    await cropImage(images)
+    await cropImage(images);
+    console.log(main);
+
     if (!check) {
       const data = {
         name: Brand_name,
         images: {
-          mainimage: main.location,
+          mainimage: `https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`,
         },
         timeStamp: Date.now(),
       };
@@ -51,19 +53,22 @@ const brand_add = async (req, res) => {
 const brand_edit_get = async (req, res) => {
   try {
     const id = req.params.id;
-    const brand = await Brands.findOne({ _id: new ObjectId(id) });
+
+    const brand = await Brands.findOne({ _id: new Types.ObjectId(String(id)) });
+    console.log("brand:",brand);
+    
     res.render("./Admin/edit-brand", {
       brand: brand,
     });
   } catch (err) {
-    throw err;
+    console.log(err.message);
   }
 }
 const brand_edit = async (req, res) => {
   try {
     if (req.files["main"]) {
       const id = req.params.id;
-      const brand = await Brands.findOne({ _id: new ObjectId(id) });
+      const brand = await Brands.findOne({ _id: new Types.ObjectId(id) });
       const main = req.files["main"][0];
       const {
         Brand_name,
@@ -73,10 +78,10 @@ const brand_edit = async (req, res) => {
       cropImage(images)
       if (!check) {
         brand.name = Brand_name;
-        brand.images[0].mainimage = main.location;
+        brand.images[0].mainimage = `https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`;
         brand.timeStamp = Date.now();
       } else {
-        brand.images[0].mainimage = main.location;
+        brand.images[0].mainimage = `https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`;
         brand.timeStamp = Date.now();
       }
       brand.save()
@@ -92,12 +97,12 @@ const brand_edit = async (req, res) => {
           name: Brand_name,
           timeStamp: Date.now(),
         };
-        await Brands.updateOne({ _id: new ObjectId(id) }, { $set: data });
+        await Brands.updateOne({ _id: new Types.ObjectId(id) }, { $set: data });
       }
       res.redirect("/admin/brand");
     }
   } catch (err) {
-    throw err;
+    console.log(err.message);
   }
 };
 const brand_search = async (req, res) => {
@@ -113,16 +118,18 @@ const brand_search = async (req, res) => {
     var count = Math.floor(brand.length / 10) + 1;
     res.render("./Admin/Brand", { brand: brand, count: count, x });
   } catch (err) {
-    throw err;
+    console.log(err.message);
   }
 }
 const brand_delete = async (req, res) => {
   try {
     const id = req.params.id;
-    let deleted = await Brands.deleteOne({ _id: new ObjectId(id) });
+    let deleted = await Brands.deleteOne({ _id: new Types.ObjectId(id) });
     res.redirect("/admin/Brand");
   } catch (err) {
-    throw err;
+    console.log("err",err.message);
+    
+    // throw err;
   }
 }
 module.exports = {

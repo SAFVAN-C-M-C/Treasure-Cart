@@ -1,4 +1,4 @@
-const { ObjectId } = require("mongodb");
+const { ObjectId,Types } = require("mongoose");
 const { cropImage } = require("../../util/cropImages");
 const Orders = require("../../Models/order");
 const Return = require("../../Models/returnSchema");
@@ -39,17 +39,17 @@ const acceptRequest=async(req,res)=>{
   try{
     const {reqId}=req.body;
     
-    const reqs=await Return.findOne({_id:new ObjectId(reqId)});
+    const reqs=await Return.findOne({_id:new Types.ObjectId(reqId)});
     console.log(reqs);
-    const order=await Orders.findOne({_id:new ObjectId(reqs.orderId)});
+    const order=await Orders.findOne({_id:new Types.ObjectId(reqs.orderId)});
     const total=order.totalPrice
-    const User = await Users.findOne({_id:new ObjectId(order.userId)});
+    const User = await Users.findOne({_id:new Types.ObjectId(order.userId)});
     order.status="Returned";
     order.save()
     User.wallet+=total;
 
     const transactionData={
-      user:new ObjectId(order.userId),
+      user:new Types.ObjectId(order.userId),
       amount:total,
       description:"Returned Order",
       transactionType:'credit',
@@ -67,10 +67,10 @@ const acceptRequest=async(req,res)=>{
 const rejectRequest=async(req,res)=>{
   try {
     const {reqId}=req.body;
-    const reqs=await Return.findOne({_id:new ObjectId(reqId)})
+    const reqs=await Return.findOne({_id:new Types.ObjectId(reqId)})
     reqs.status="Rejected";
     reqs.save();
-    const Order=await Orders.findOne({_id:new ObjectId(reqs.orderId)}).populate("userId");
+    const Order=await Orders.findOne({_id:new Types.ObjectId(reqs.orderId)}).populate("userId");
     const userEmail=Order.userId.email;
     const mailOptions = {
       from: AUTH_EMAIL,

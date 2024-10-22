@@ -5,7 +5,7 @@ const sendEmail = require("../../util/mail");
 const moment = require("moment");
 const { AUTH_EMAIL } = process.env;
 const Products = require("../../Models/product");
-const { ObjectId } = require('mongodb')
+const { ObjectId,Types } = require("mongoose");
 const razorpay = require("../../util/RazorPay");
 const crypto = require('crypto');
 const { updateQuantity } = require("../../helper/updateQuantity");
@@ -64,7 +64,7 @@ const getOrderSuccess = async (req, res) => {
     if (req.session.transactionsData) {
         await WalletTransaction.insertMany([req.session.transactionsData]);
         const usedWalletAmount = req.session.transactionsData.amount;
-        const order = await Orders.findOne({ _id: new ObjectId(req.session.orderId) });
+        const order = await Orders.findOne({ _id: new Types.ObjectId(req.session.orderId) });
         order.totalPrice = Math.round(order.totalPrice + usedWalletAmount);
         order.save();
     }
@@ -267,7 +267,7 @@ const orderHistory = async (req, res) => {
         const orders = await Orders.aggregate([
             {
                 $match: {
-                    userId: new ObjectId(userId)
+                    userId: new Types.ObjectId(userId)
                 }
             },
             {
@@ -351,8 +351,8 @@ const getOrderDetails = async (req, res) => {
         const orders = await Orders.aggregate([
             {
                 $match: {
-                    userId: new ObjectId(userId),
-                    _id: new ObjectId(orderId)
+                    userId: new Types.ObjectId(userId),
+                    _id: new Types.ObjectId(orderId)
                 }
             },
             {
@@ -453,7 +453,7 @@ const cancelorder = async (req, res) => {
                 User.wallet += order.totalPrice
             }
             const transactionData = {
-                user: new ObjectId(req.session.userid),
+                user: new Types.ObjectId(req.session.userid),
                 amount: order.totalPrice,
                 description: "Canceled Order",
                 transactionType: 'credit',
@@ -491,11 +491,11 @@ const verifypayment = async (req, res) => {
 
         hmac = hmac.digest("hex");
         if (hmac === req.body.payment.razorpay_signature) {
-            const orderId = new ObjectId(
+            const orderId = new Types.ObjectId(
                 req.body.order.createdOrder.receipt
             );
             console.log("reciept", req.body.order.createdOrder.receipt);
-            const Order = await Orders.findOne({ _id: new ObjectId(orderId) });
+            const Order = await Orders.findOne({ _id: new Types.ObjectId(orderId) });
             Order.paymentStatus = "Paid";
             Order.payMethod = "online";
             Order.save()
@@ -657,7 +657,7 @@ const downloadInvoice = async (req, res) => {
 // const returnProduct = async (req, res) => {
 //     try {
 //         const { orderId, productId, quantity, reason } = req.body;
-//         const existingRequest = await Return.find({ _id: new ObjectId(orderId) })
+//         const existingRequest = await Return.find({ _id: new Types.ObjectId(orderId) })
 //         console.log("heeeeeeeeeeeee",existingRequest);
 //         if (existingRequest.length > 0) {
 //             res.status(200).json({
@@ -665,8 +665,8 @@ const downloadInvoice = async (req, res) => {
 //                 msg:"Request already sented"
 //             });
 //         } else {
-//             const product = await Products.findOne({ _id: new ObjectId(productId) });
-//             const order = await Orders.findOne({ _id: new ObjectId(orderId) });
+//             const product = await Products.findOne({ _id: new Types.ObjectId(productId) });
+//             const order = await Orders.findOne({ _id: new Types.ObjectId(orderId) });
 //             if (product && order) {
 //                 const totalPrice = product.descountedPrice * quantity;
 //                 const data = {
@@ -696,7 +696,7 @@ const downloadInvoice = async (req, res) => {
 const returnOrder = async (req, res) => {
     try {
         const { orderId, totalPrice, reason } = req.body;
-        const existingRequest = await Return.find({ orderId: new ObjectId(orderId) })
+        const existingRequest = await Return.find({ orderId: new Types.ObjectId(orderId) })
         console.log("heeeeeeeeeeeee",existingRequest);
         if (existingRequest.length > 0) {
             res.status(200).json({
@@ -704,7 +704,7 @@ const returnOrder = async (req, res) => {
                 msg:"Request already sented"
             });
         } else {
-        const order = await Orders.findOne({ _id: new ObjectId(orderId) });
+        const order = await Orders.findOne({ _id: new Types.ObjectId(orderId) });
         if (order) {
 
             const data = {

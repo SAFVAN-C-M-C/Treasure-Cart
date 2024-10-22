@@ -1,6 +1,6 @@
 const Users = require("../../Models/user");
 const WalletTransaction = require("../../Models/walletTransaction");
-const { ObjectId } = require("mongodb");
+const { ObjectId,Types } = require("mongoose");
 
 
 const getWallet = async (req, res) => {
@@ -47,7 +47,7 @@ const useWallet=async(req,res)=>{
         req.session.walletbalance=walletbalance
         req.session.discount_price-=total
         req.session.transactionsData={
-          user:new ObjectId(userId),
+          user:new Types.ObjectId(userId),
           amount:total,
           description:"Used On Purchase",
           transactionType:'debit',
@@ -58,7 +58,7 @@ const useWallet=async(req,res)=>{
         req.session.walletbalance=walletbalance
         req.session.discount_price-=(total-req.session.totalAmount)
         req.session.transactionsData={
-          user:new ObjectId(userId),
+          user:new Types.ObjectId(userId),
           amount:total-req.session.totalAmount,
           description:"Used On Purchase",
           transactionType:'debit',

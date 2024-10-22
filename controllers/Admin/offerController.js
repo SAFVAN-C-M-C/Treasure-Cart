@@ -1,7 +1,7 @@
 const Categories = require("../../Models/category");
 const offer = require("../../Models/offers");
 const Products = require("../../Models/product");
-const { ObjectId } = require("mongodb");
+const { ObjectId,Types } = require("mongoose");
 
 const getOffers=async(req,res)=>{
     try {
@@ -62,7 +62,7 @@ const deleteOffer=async(req,res)=>{
     try {
         const offerId = req.params.offerId;
 
-        const Offer = await offer.findOne({_id:new ObjectId(offerId)});
+        const Offer = await offer.findOne({_id:new Types.ObjectId(offerId)});
         if (!Offer) {
             return res.status(404).json({ error: 'Offer not found' });
         }

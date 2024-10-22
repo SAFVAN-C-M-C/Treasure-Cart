@@ -179,7 +179,7 @@
                           <%bestSeller.forEach((data,i)=>{%>
                         <tr>
                           <td>#<%=++i%></td>
-                          <td><div class="table-data1"><img src="<%=data.productDetails.images[0].mainimage?'/static/product-images/'+data.productDetails.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.productDetails.name%></span></div> </td>
+                          <td><div class="table-data1"><img src="<%=data.productDetails.images[0].mainimage?data.productDetails.images[0].mainimage:'/static/images/img-bg.jpg'%>" style="height:44px;width: 44px; border-radius: 50%; margin-right: 10px;"><span style="font-family: 700;"><%=data.productDetails.name%></span></div> </td>
                           <td><%=data.productDetails.descountedPrice%></td>
                           <td><%=data.totalCount%></td>
                         </tr>

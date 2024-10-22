@@ -1,6 +1,6 @@
 
 const Products = require("../../Models/product");
-const { ObjectId } = require('mongodb')
+const { ObjectId,Types } = require("mongoose");
 const Brands = require("../../Models/brand")
 const Categories = require("../../Models/category");
 const Wishlist = require("../../Models/wishlist");
@@ -12,7 +12,7 @@ const get_product_details = async (req, res) => {
 
         const id = req.params.id;
         const userId = req.session.userid
-        const data = await Products.findOne({ _id: new ObjectId(id) });
+        const data = await Products.findOne({ _id: new Types.ObjectId(id) });
         // console.log(data);
         const brandId = data.brandId
         const brand = await Brands.findOne({ _id: brandId })

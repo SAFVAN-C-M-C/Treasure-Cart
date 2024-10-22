@@ -31,8 +31,9 @@ async function cropBanner(files) {
 
     // Step 1: Download the image from S3
     const getParams = { Bucket: String(process.env.S3_BUCKET), Key: fullKey };
+  
     const imageData = await s3Client.send(new GetObjectCommand(getParams));
-
+    
     const imageBuffer = await streamToBuffer(imageData.Body);
 
     // Step 2: Crop the image using sharp

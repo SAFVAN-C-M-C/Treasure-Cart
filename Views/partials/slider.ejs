@@ -15,7 +15,7 @@
     <%if(banner.length>0){%>
         <%banner.forEach((data,i)=>{%>
             <div class="carousel-item <%if(i==0){%>active<%}%>">
-                <img src="<%=data.image?'/static/banner-images/'+data.image:'/static/images/img-bg.jpg'%>" class="d-block w-100" alt="...">
+                <img src="<%=data.image?data.image:'/static/images/img-bg.jpg'%>" class="d-block w-100" alt="...">
             </div>
         <%})%>
     <%}else{%>

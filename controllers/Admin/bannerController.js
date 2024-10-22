@@ -31,11 +31,13 @@ const banner_add = async (req, res) => {
             title
         } = req.body;
         const check = await Banner.findOne({ title: title })
-        await cropBanner(main.key)
+
+        
+        await cropBanner([main.key])
         if (!check) {
             const data = {
                 title: title,
-                image: main.location,
+                image: `https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`,
                 status:"Active",
                 timeStamp: Date.now(),
             };

@@ -1,5 +1,5 @@
 const Coupon = require("../../Models/coupon");
-const { ObjectId } = require('mongodb')
+const { ObjectId,Types } = require("mongoose");
 const getMycoupons=async(req,res)=>{
   req.session.filter = false;
 
@@ -68,7 +68,7 @@ const applyCoupon = async (req, res) => {
                   req.session.totalAmount = total - Math.round(discount);
   
                   
-                  req.session.couponid.push(new ObjectId(couponMatch._id));
+                  req.session.couponid.push(new Types.ObjectId(couponMatch._id));
                   console.log("=====================",req.session.couponid);
                 //   couponMatch.usedBy.push({
                 //     userId: userId,

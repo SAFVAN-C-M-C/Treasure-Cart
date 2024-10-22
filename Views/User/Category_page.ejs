@@ -61,7 +61,7 @@
                             <a href="/product/details/<%= product._id%>" style="text-decoration: none;">
                               <div class="d-flex justify-content-center mt-2 " >
                                 <img width="200px" height="200px"
-                                    src="<%=product.images[0].mainimage?'/static/CroppedImages/product-images/'+product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
+                                    src="<%=product.images[0].mainimage?product.images[0].mainimage:'/static/images/img-bg.jpg'%>"
                                     alt="">
                               </div>
                               <div class="product-card-body">

@@ -1,7 +1,7 @@
 const CART = require("../../Models/cart");
 const Products = require("../../Models/product");
 const Users = require("../../Models/user");
-const { ObjectId } = require('mongodb');
+const { ObjectId,Types } = require("mongoose");
 const moment = require("moment");
 
 // const { getUserCartData, getCartCount, getTotalAmount } = require("../../helper/cart-helper");
@@ -211,8 +211,8 @@ const addtoCart = async (req, res) => {
         const userId = req.session.userid;
         console.log(userId);
         console.log(productId);
-        const product = await Products.findOne({ _id: new ObjectId(productId) })
-        const check = await CART.findOne({ userId: new ObjectId(userId) });
+        const product = await Products.findOne({ _id: new Types.ObjectId(productId) })
+        const check = await CART.findOne({ userId: new Types.ObjectId(userId) });
         
         console.log(check);
 

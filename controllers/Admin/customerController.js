@@ -1,4 +1,4 @@
-const { ObjectId } = require("mongodb");
+const { ObjectId,Types } = require("mongoose");
 const Users = require("../../Models/user");
 const { cropImage } = require("../../util/cropImages");
 
@@ -36,7 +36,7 @@ const customers_list = async (req, res) => {
 const customers_block = async (req, res) => {
     try {
         const id = req.params.id;
-        await Users.updateOne({ _id: new ObjectId(id) }, { $set: { "status": "blocked" } });
+        await Users.updateOne({ _id: new Types.ObjectId(id) }, { $set: { "status": "blocked" } });
         res.redirect("/admin/customers");
         console.log("blocked");
 
@@ -49,7 +49,7 @@ const customers_block = async (req, res) => {
 const customers_unblock = async (req, res) => {
     try {
         const id = req.params.id;
-        await Users.updateOne({ _id: new ObjectId(id) }, { $set: { "status": "Active" } });
+        await Users.updateOne({ _id: new Types.ObjectId(id) }, { $set: { "status": "Active" } });
         console.log("unblocked");
         res.redirect("/admin/customers");
 

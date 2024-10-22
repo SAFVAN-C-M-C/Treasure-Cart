@@ -1,7 +1,7 @@
 const Brands = require("../../Models/brand");
 const Categories = require("../../Models/category");
 const Products = require("../../Models/product");
-const { ObjectId } = require("mongodb");
+const { ObjectId,Types } = require("mongoose");
 const { cropImage } = require("../../util/cropImages");
 const fs=require("fs");
 const { deleteImageFile } = require("../../util/deleteImage");
@@ -77,9 +77,9 @@ const add_product = async (req, res) => {
     const data = {
       name: Product_Name,
       images: {
-        mainimage: main.location,
-        image1: img2.location,
-        image2: img3.location,
+        mainimage: `https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`,
+        image1: `https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img2.key}`,
+        image2: `https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img3.key}`,
       },
       description: Description,
       stock: stock,
@@ -87,8 +87,8 @@ const add_product = async (req, res) => {
       descountedPrice: descountedPrice,
       timeStamp: Date.now(),
       status:"Active",
-      brandId: new ObjectId(brand),
-      categoryId: new ObjectId(category),
+      brandId: new Types.ObjectId(brand),
+      categoryId: new Types.ObjectId(category),
     };
     const insert = await Products.insertMany([data]);
     req.flash("msg", "Product added successfully");
@@ -103,10 +103,11 @@ const edit_product = async (req, res) => {
   // if (req.session.admin) {
   try {
     const id = req.params.id;
+    
     let products = await Products.aggregate([
       {
         $match: {
-          _id: new ObjectId(id),
+          _id: new Types.ObjectId(id),
         },
       },
       {
@@ -154,7 +155,7 @@ const edit_product = async (req, res) => {
 const edit = async (req,res)=>{
   try {
     const id = req.params.id;
-    const product=await Products.findOne({ _id: new ObjectId(id) });
+    const product=await Products.findOne({ _id: new Types.ObjectId(id) });
 
     if (req.files["main"] && req.files["image1"] && req.files["image2"]) {
       const main = req.files["main"][0];
@@ -177,16 +178,16 @@ const edit = async (req,res)=>{
 
       //setting new value
       product.name=Product_Name;
-      product.images[0].mainimage=main.location
-      product.images[0].image1=img2.location
-      product.images[0].image2=img3.location
+      product.images[0].mainimage=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`
+      product.images[0].image1=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img2.key}`
+      product.images[0].image2=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img3.key}`
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
       product.descountedPrice= descountedPrice
       product.timeStamp= Date.now()
-      product.brandId= new ObjectId(brand)
-      product.categoryId= new ObjectId(category)
+      product.brandId= new Types.ObjectId(brand)
+      product.categoryId= new Types.ObjectId(category)
       
    
       
@@ -213,15 +214,15 @@ const edit = async (req,res)=>{
       //setting new value
 
       product.name=Product_Name;
-      product.images[0].mainimage=main.location
-      product.images[0].image1=img2.location
+      product.images[0].mainimage=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`
+      product.images[0].image1=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img2.key}`
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
       product.descountedPrice= descountedPrice
       product.timeStamp= Date.now()
-      product.brandId= new ObjectId(brand)
-      product.categoryId= new ObjectId(category)
+      product.brandId= new Types.ObjectId(brand)
+      product.categoryId= new Types.ObjectId(category)
       
       
 
@@ -247,15 +248,15 @@ const edit = async (req,res)=>{
       //setting new value
 
       product.name=Product_Name;
-      product.images[0].mainimage=main.location
-      product.images[0].image2=img3.location
+      product.images[0].mainimage=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`
+      product.images[0].image2=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img3.key}`
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
       product.descountedPrice= descountedPrice
       product.timeStamp= Date.now()
-      product.brandId= new ObjectId(brand)
-      product.categoryId= new ObjectId(category)
+      product.brandId= new Types.ObjectId(brand)
+      product.categoryId= new Types.ObjectId(category)
       
       
     }else if(req.files["main"] && !req.files["image1"] && !req.files["image2"]){
@@ -280,14 +281,14 @@ const edit = async (req,res)=>{
       //setting new value
 
       product.name=Product_Name;
-      product.images[0].mainimage=main.location
+      product.images[0].mainimage=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${main.key}`
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
       product.descountedPrice= descountedPrice
       product.timeStamp= Date.now()
-      product.brandId= new ObjectId(brand)
-      product.categoryId= new ObjectId(category)
+      product.brandId= new Types.ObjectId(brand)
+      product.categoryId= new Types.ObjectId(category)
       
       
     }else if(!req.files["main"] && req.files["image1"] && req.files["image2"]){
@@ -314,15 +315,15 @@ const edit = async (req,res)=>{
 
       product.name=Product_Name;
 
-      product.images[0].image1=img2.location
-      product.images[0].image2=img3.location
+      product.images[0].image1=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img2.key}`
+      product.images[0].image2=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img3.key}`
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
       product.descountedPrice= descountedPrice
       product.timeStamp= Date.now()
-      product.brandId= new ObjectId(brand)
-      product.categoryId= new ObjectId(category)
+      product.brandId= new Types.ObjectId(brand)
+      product.categoryId= new Types.ObjectId(category)
       
     }else if(!req.files["main"] && req.files["image1"] && !req.files["image2"]){
       console.log("hello it here on the edit with only image1");
@@ -348,15 +349,15 @@ const edit = async (req,res)=>{
 
       product.name=Product_Name;
 
-      product.images[0].image1=img2.location
+      product.images[0].image1=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img2.key}`
 
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
       product.descountedPrice= descountedPrice
       product.timeStamp= Date.now()
-      product.brandId= new ObjectId(brand)
-      product.categoryId= new ObjectId(category)
+      product.brandId= new Types.ObjectId(brand)
+      product.categoryId= new Types.ObjectId(category)
       
     }else if(!req.files["main"] && !req.files["image1"] && req.files["image2"]){
       console.log("hello it here on the edit with only images2");
@@ -380,14 +381,14 @@ const edit = async (req,res)=>{
       //setting new value
 
       product.name=Product_Name;
-      product.images[0].image2=img3.location
+      product.images[0].image2=`https://s3.ap-south-1.amazonaws.com/projects.safvancmc/${img3.key}`
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
       product.descountedPrice= descountedPrice
       product.timeStamp= Date.now()
-      product.brandId= new ObjectId(brand)
-      product.categoryId= new ObjectId(category)
+      product.brandId= new Types.ObjectId(brand)
+      product.categoryId= new Types.ObjectId(category)
       
     }else{
       console.log("hello it here on the edit with no images");
@@ -411,8 +412,8 @@ const edit = async (req,res)=>{
       product.basePrice= basePrice
       product.descountedPrice= descountedPrice
       product.timeStamp= Date.now()
-      product.brandId= new ObjectId(brand)
-      product.categoryId= new ObjectId(category)
+      product.brandId= new Types.ObjectId(brand)
+      product.categoryId= new Types.ObjectId(category)
       
     }
     product.save();
@@ -429,7 +430,7 @@ const edit = async (req,res)=>{
 const product_delete = async (req, res) => {
   try {
     const id = req.params.id;
-    await Products.updateOne({ _id: new ObjectId(id) },{$set:{status:"Blocked"}});
+    await Products.updateOne({ _id: new Types.ObjectId(id) },{$set:{status:"Blocked"}});
     console.log("deleted");
     res.redirect("/admin/products");
   } catch (err) {
@@ -439,7 +440,7 @@ const product_delete = async (req, res) => {
 const product_reupload = async (req, res) => {
   try {
     const id = req.params.id;
-    await Products.updateOne({ _id: new ObjectId(id) },{$set:{status:"Active"}});
+    await Products.updateOne({ _id: new Types.ObjectId(id) },{$set:{status:"Active"}});
     console.log("Active");
     res.redirect("/admin/products");
   } catch (err) {
@@ -480,7 +481,7 @@ const deleteimage=async (req,res)=>{
     console.log("hello");
     const productId = req.params.id;
     const imageIndex = req.params.index;
-    const product = await Products.findOne({_id:new ObjectId(productId)});
+    const product = await Products.findOne({_id:new Types(productId)});
 
     if (!product) {
       return res.status(404).send("Product not found");
@@ -492,11 +493,11 @@ const deleteimage=async (req,res)=>{
     if (imageIndex === "1") {
       imageField = "images.0.image1";
       deletedImage = product.images[0].image1;
-      deleteImageFile(deletedImage)
+      // deleteImageFile(deletedImage)
     } else if (imageIndex === "2") {
       imageField = "images.0.image2";
       deletedImage = product.images[0].image2;
-      deleteImageFile(deletedImage)
+      // deleteImageFile(deletedImage)
     } else {
       return res.status(404).send("Image not found");
     }
