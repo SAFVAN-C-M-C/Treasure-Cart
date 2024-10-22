@@ -63,11 +63,6 @@ const add_product = async (req, res) => {
     const main = req.files["main"][0];
     const img2 = req.files["image1"][0];
     const img3 = req.files["image2"][0];
-
-    console.log("Uploaded files:");
-    console.log(main);
-    console.log(img2);
-    console.log(img3);
     const {
       Product_Name,
       basePrice,
@@ -77,16 +72,14 @@ const add_product = async (req, res) => {
       Description,
       stock,
     } = req.body;
-
-    console.log("name is " + Product_Name);
-    const images=[main.filename,img2.filename,img3.filename];
-    cropImage(images,"product-images")
+    const images=[main.key,img2.key,img3.key];
+    cropImage(images)
     const data = {
       name: Product_Name,
       images: {
-        mainimage: main.filename,
-        image1: img2.filename,
-        image2: img3.filename,
+        mainimage: main.location,
+        image1: img2.location,
+        image2: img3.location,
       },
       description: Description,
       stock: stock,
@@ -164,7 +157,6 @@ const edit = async (req,res)=>{
     const product=await Products.findOne({ _id: new ObjectId(id) });
 
     if (req.files["main"] && req.files["image1"] && req.files["image2"]) {
-      console.log("hello it here on the edit with all images");
       const main = req.files["main"][0];
       const img2 = req.files["image1"][0];
       const img3 = req.files["image2"][0];
@@ -179,15 +171,15 @@ const edit = async (req,res)=>{
       } = req.body;
       console.log("name is " + Product_Name);
       //cropping image
-      const images=[main.filename,img2.filename,img3.filename];
-      cropImage(images,"product-images")
+      const images=[main.key,img2.key,img3.key];
+      cropImage(images)
 
 
       //setting new value
       product.name=Product_Name;
-      product.images[0].mainimage=main.filename
-      product.images[0].image1=img2.filename
-      product.images[0].image2=img3.filename
+      product.images[0].mainimage=main.location
+      product.images[0].image1=img2.location
+      product.images[0].image2=img3.location
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
@@ -215,14 +207,14 @@ const edit = async (req,res)=>{
       } = req.body;
       console.log("name is " + Product_Name);
       //cropping image
-      const images=[main.filename,img2.filenamee];
-      cropImage(images,"product-images")
+      const images=[main.key,img2.key];
+      cropImage(images)
 
       //setting new value
 
       product.name=Product_Name;
-      product.images[0].mainimage=main.filename
-      product.images[0].image1=img2.filename
+      product.images[0].mainimage=main.location
+      product.images[0].image1=img2.location
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
@@ -249,14 +241,14 @@ const edit = async (req,res)=>{
       console.log("name is " + Product_Name);
 
       //cropping image
-      const images=[main.filename,img3.filename];
-      cropImage(images,"product-images")
+      const images=[main.key,img3.key];
+      cropImage(images)
       
       //setting new value
 
       product.name=Product_Name;
-      product.images[0].mainimage=main.filename
-      product.images[0].image2=img3.filename
+      product.images[0].mainimage=main.location
+      product.images[0].image2=img3.location
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
@@ -282,13 +274,13 @@ const edit = async (req,res)=>{
       } = req.body;
       console.log("name is " + Product_Name);
       //cropping image
-      const images=[main.filename];
-      cropImage(images,"product-images")
+      const images=[main.key];
+      cropImage(images)
       
       //setting new value
 
       product.name=Product_Name;
-      product.images[0].mainimage=main.filename
+      product.images[0].mainimage=main.location
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
@@ -315,15 +307,15 @@ const edit = async (req,res)=>{
       console.log("name is " + Product_Name);
 
       //cropping image
-      const images=[img2.filename,img3.filename];
-      cropImage(images,"product-images")
+      const images=[img2.key,img3.key];
+      cropImage(images)
       
       //setting new value
 
       product.name=Product_Name;
 
-      product.images[0].image1=img2.filename
-      product.images[0].image2=img3.filename
+      product.images[0].image1=img2.location
+      product.images[0].image2=img3.location
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice
@@ -349,14 +341,14 @@ const edit = async (req,res)=>{
       console.log("name is " + Product_Name);
 
       //cropping image
-      const images=[img2.filename];
-      cropImage(images,"product-images")
+      const images=[img2.key];
+      cropImage(images)
       
       //setting new value
 
       product.name=Product_Name;
 
-      product.images[0].image1=img2.filename
+      product.images[0].image1=img2.location
 
       product.description= Description
       product.stock= stock
@@ -382,14 +374,13 @@ const edit = async (req,res)=>{
       console.log("name is " + Product_Name);
 
       //cropping image
-      const images=[img3.filename];
-      cropImage(images,"product-images")
+      const images=[img3.key];
+      cropImage(images)
       
       //setting new value
 
       product.name=Product_Name;
-
-      product.images[0].image2=img3.filename
+      product.images[0].image2=img3.location
       product.description= Description
       product.stock= stock
       product.basePrice= basePrice

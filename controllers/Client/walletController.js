@@ -9,7 +9,7 @@ const getWallet = async (req, res) => {
 
       const Email = req.session.email;
       const user=req.session.name
-      const USER = await Users.findOne({ email: Email }).populate('referredUsers');
+      const USER = await Users.findOne({ email: Email });
       console.log(USER);
       const userReferred = user.referredBy;
       const transactions = await WalletTransaction.find({ user: USER._id }).sort({ _id:-1 });

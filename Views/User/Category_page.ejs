@@ -46,7 +46,14 @@
 
                     <div class="product-card shadow-lg p-3 bg-body rounded-3">
                       <% if (product.stock> 0) { %>
-                        <span class="bg-success z-3   text-white p-2 rounded ">In Stock</span>
+                        <%if(product.IsInCategoryOffer){%>
+                          <div class="d-flex justify-content-between ">
+                            <span class="bg-success z-3   text-white p-2 rounded ">In Stock</span>
+                            <span class="text-success" style="font-weight: 700;"><%=product.categoryOffer.offerPercentage%>% off</span>
+                          </div>                        
+                        <%}else{%>
+                          <span class="bg-success z-3   text-white p-2 rounded ">In Stock</span>
+                        <%}%>
                         <% } else { %>
                           <span class="bg-danger z-3 text-white p-2 rounded ">Out of Stock</span>
 

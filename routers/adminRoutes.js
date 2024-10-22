@@ -26,29 +26,6 @@ const { err } = require("../middlewares/err");
 const Banner = require("../Models/banner");
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ADMIN GENERAL===========================================================================================================================================
 
 admin.get("/", existingadmin, adminController.admin_login_get)

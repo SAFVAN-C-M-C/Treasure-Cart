@@ -1,8 +1,121 @@
 const ejs = require('ejs');
-const pdf = require('html-pdf');
+// const pdf = require('html-pdf');
 const fs = require('fs');
 const exceljs = require('exceljs');
 const dateFormat = require('date-fns/format');
+const puppeteer = require('puppeteer');
+const PDFDocument = require('pdfkit');
+// const salesPdf = require('./pdfgenerator')
+
+// Table Row with Bottom Line
+function generateTableRow(doc, y, c1, c2, c3, c4, c5,c6,c7) {
+  doc
+    .fontSize(7)
+    .text(c1, 40, y)
+    .text(c2, 70, y)
+    .text(c3, 180, y)
+    .text(c4, 300, y)
+    .text(c5, 400, y)
+    .text(c6, 470, y)
+    .text(c7, 0, y, { align: "right" })
+    .moveTo(50, y + 15)
+    .lineTo(560, y + 15)
+    .lineWidth(0.5)
+    .strokeColor("#ccc")
+    .stroke();
+}
+
+// Table row without bottom line
+function generateTableRowNoLine(doc, y, c1, c2, c3, c4, c5) {
+  doc
+    .fontSize(7)
+    .text(c1, 100, y)
+    .text(c2, 100, y)
+    .text(c3, 420, y, { width: 90, align: "right" })
+    .text(c4, 200, y, { width: 90, align: "right" })
+    .text(c5, 0, y, { align: "right" });
+}
+
+// Generating Invoice for customers
+const generateSalesPDF = async (order, startDate, endDate) => {
+    console.log(startDate,'--');
+  return new Promise((resolve, reject) => {
+    try {
+       
+    
+      const doc = new PDFDocument({ margin: 50 });
+
+      const buffers = [];
+      doc.on("data", (buffer) => buffers.push(buffer));
+      doc.on("end", () => resolve(Buffer.concat(buffers)));
+      doc.on("error", (error) => reject(error));
+
+      // Products
+      // Footer for the PDF
+      doc
+        .fontSize(15)
+        .text(
+          `Treassure Cart`,
+          50,
+          50,
+          {
+            align: "center",
+            width: 500,
+            color: "white",
+            backgroundColor: "gray",
+          }
+        );
+ 
+      const invoiceTableTop = 100;
+
+      // Table Header 
+      generateTableRow(
+        doc,
+        invoiceTableTop,
+        "SL No",
+        "Order ID",
+        "User ID",
+        "Order Date",
+        "Payment Method",
+        
+        "Amount"
+      );
+
+      let i = 0;
+      let sum = 0;
+      order.forEach((x) => {
+        var position = invoiceTableTop + (i + 1) * 30;
+        sum += x.totalPrice;
+     
+        generateTableRow(
+          doc,
+          position,
+          i + 1,
+          x._id,
+          x.userId,
+          x.orderDate.toDateString(),
+          x.payMethod,
+          x.totalPrice.toLocaleString() 
+        );
+        i++;
+      });
+
+      // Summary rows
+      const subtotalPosition = invoiceTableTop + order.length * 30;
+
+      const paidToDatePosition = subtotalPosition + 30;
+
+      const duePosition = paidToDatePosition + 30;
+      generateTableRowNoLine(doc, duePosition, "", "", "Total", "   ", sum.toLocaleString());
+
+      // End the document
+      doc.end();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 
 
 module.exports = {
@@ -17,20 +130,15 @@ module.exports = {
       const html = ejs.render(template, { orders, startDate, endDate, totalAmount });
       console.log(typeof (totalAmount));
       if (format === 'pdf') {
-        const pdfOptions = {
-          format: 'Letter',
-          orientation: 'portrait',
-        };
-
-        const filePath = `public/SALE-PDF/sales-report-${formattedStartDate}-${formattedEndDate}.pdf`;
-        pdf.create(html, pdfOptions).toFile(filePath, (err, response) => {
-          if (err) {
-            console.error('Error generating PDF:', err);
-            res.status(500).send('Internal Server Error');
-          } else {
-            res.status(200).download(response.filename);
-          }
-        });
+        const pdfGenarate=await  generateSalesPDF(orders,startDate,endDate)
+        console.log("pdf generated successfully");
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=sales Report.pdf"
+        );
+        console.log('pdf....');
+        res.status(200).end(pdfGenarate);
       } else if (format === 'excel') {
         const workbook = new exceljs.Workbook();
           const worksheet = workbook.addWorksheet('Sales Report');
@@ -68,7 +176,7 @@ module.exports = {
           
           worksheet.addRow({ totalamount: 'Total Sales Amount', paymentmethod: totalSalesAmount.toFixed(2) });
   
-          const excelFilePath = `public/SALE-EXCEL/sales-report-${formattedStartDate}-${formattedEndDate}.xlsx`;
+          const excelFilePath = `Public/SALE-EXCEL/sales-report-${formattedStartDate}-${formattedEndDate}.xlsx`;
           await workbook.xlsx.writeFile(excelFilePath);
         
         

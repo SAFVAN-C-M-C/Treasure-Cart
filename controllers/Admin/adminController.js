@@ -17,14 +17,9 @@ const admin_login_get = (req, res) => {
 const adminLogin = async (req, res) => {
   try {
     const check = await ADMIN.findOne({ email: req.body.email });
-    // console.log(check);
-    // console.log(check.password);
-    // console.log(check.email);
-    // console.log(req.body);
     const hashed = check.password;
     const pass = req.body.password;
-    // console.log("hashed", hashed);
-    // console.log("pass", pass);
+
     let isMatch = await bcrypt.compare(pass, hashed, (err, result) => {
       if (err) {
         console.log(err);

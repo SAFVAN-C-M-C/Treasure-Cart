@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: treasure-cart-deployment
+  labels:
+    app: treasure-cart
+spec:
+  selector:
+    matchLabels:
+      app: treasure-cart
+  template:
+    metadata:
+      labels:
+        app: treasure-cart
+    spec:
+      containers:
+      - name: node-server
+        image: safvancmc/treasure-cart:latest
+        ports:
+        - containerPort: 7000
+        envFrom:
+        - configMapRef:
+            name: treasurecart-configmap
+        

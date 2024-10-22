@@ -1,71 +1,81 @@
 const multer = require("multer");
 const crypto = require("crypto");
+const multerS3 = require("multer-s3");
+const { S3Client } = require("@aws-sdk/client-s3");
+require("dotenv").config()
 
-
-
-
-//file upload
-const storage_product_image = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./Public/product-images/");
-  },
-  filename: function (req, file, cb) {
-    const randomeString = crypto.randomBytes(3).toString("hex");
-    const timestamp = Date.now();
-    const uniqueFile = `${timestamp}-${randomeString}`;
-    cb(null, uniqueFile + ".png");
-  },
-});
-
-const storage_profile_image = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./Public/profile-images/");
-  },
-  filename: function (req, file, cb) {
-    const randomeString = crypto.randomBytes(3).toString("hex");
-    const timestamp = Date.now();
-    const uniqueFile = `${timestamp}-${randomeString}`;
-    cb(null, uniqueFile + ".png");
+// Initialize S3 client
+const s3Client = new S3Client({
+  region: String(process.env.S3_REGION),
+  credentials: {
+    accessKeyId: String(process.env.S3_ACCESS_KEY),
+    secretAccessKey: String(process.env.S3_SECRET_KEY),
   },
 });
 
 
-
-const storage_banner_image = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./Public/banner-images/");
-  },
-  filename: function (req, file, cb) {
+const storage_product_image = multerS3({
+  s3: s3Client,
+  bucket: String(process.env.S3_BUCKET),
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+  // acl: "public-read", // Optional: Set permissions for uploaded files
+  key: function (req, file, cb) {
     const randomeString = crypto.randomBytes(3).toString("hex");
     const timestamp = Date.now();
-    const uniqueFile = `${timestamp}-${randomeString}`;
-    cb(null, uniqueFile + ".jpg");
+    const uniqueFile = `${timestamp}-${randomeString}.jpg`;
+    cb(null, `/treasure-cart/product-images/${uniqueFile}`); // Adjust folder structure as needed
   },
-});
-const storage_category_image = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./Public/category-images/");
-  },
-  filename: function (req, file, cb) {
+})
+const storage_profile_image = multerS3({
+  s3: s3Client,
+  bucket: String(process.env.S3_BUCKET),
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+  // acl: "public-read", // Optional: Set permissions for uploaded files
+  key: function (req, file, cb) {
+    const userId=req.session.userId
     const randomeString = crypto.randomBytes(3).toString("hex");
     const timestamp = Date.now();
-    const uniqueFile = `${timestamp}-${randomeString}`;
-    cb(null, uniqueFile + ".jpg");
+    const uniqueFile = `${timestamp}-${randomeString}.jpg`;
+    const location=userId?`/treasure-cart/profile-images/${userId}/${uniqueFile}`:`/treasure-cart/profile-images/name/${uniqueFile}`
+    cb(null, location); // Adjust folder structure as needed
   },
-});
-const storage_brand_image = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./Public/brand-images/");
-  },
-  filename: function (req, file, cb) {
+})
+const storage_banner_image = multerS3({
+  s3: s3Client,
+  bucket: String(process.env.S3_BUCKET),
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+  // acl: "public-read", // Optional: Set permissions for uploaded files
+  key: function (req, file, cb) {
     const randomeString = crypto.randomBytes(3).toString("hex");
     const timestamp = Date.now();
-    const uniqueFile = `${timestamp}-${randomeString}`;
-    cb(null, uniqueFile + ".jpg");
+    const uniqueFile = `${timestamp}-${randomeString}.jpg`;
+    cb(null, `/treasure-cart/banner-images/${uniqueFile}`); // Adjust folder structure as needed
   },
-});
-
-
+})
+const storage_category_image = multerS3({
+  s3: s3Client,
+  bucket: String(process.env.S3_BUCKET),
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+  // acl: "public-read", // Optional: Set permissions for uploaded files
+  key: function (req, file, cb) {
+    const randomeString = crypto.randomBytes(3).toString("hex");
+    const timestamp = Date.now();
+    const uniqueFile = `${timestamp}-${randomeString}.jpg`;
+    cb(null, `/treasure-cart/category-images/${uniqueFile}`); // Adjust folder structure as needed
+  },
+})
+const storage_brand_image = multerS3({
+  s3: s3Client,
+  bucket: String(process.env.S3_BUCKET),
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+  // acl: "public-read", // Optional: Set permissions for uploaded files
+  key: function (req, file, cb) {
+    const randomeString = crypto.randomBytes(3).toString("hex");
+    const timestamp = Date.now();
+    const uniqueFile = `${timestamp}-${randomeString}.jpg`;
+    cb(null, `/treasure-cart/brand-images/${uniqueFile}`); // Adjust folder structure as needed
+  },
+})
 
 
 
@@ -104,4 +114,5 @@ module.exports = {
   banner,
   category,
   brand,
+  s3Client
  }

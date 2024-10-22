@@ -18,7 +18,8 @@ const CheckTheExpireDateOfOffer = async () => {
                 const categoryId = fetchCategoryId._id;
                 const productsBeforeOffer = await Products.find({ categoryId });
                 for (const product of productsBeforeOffer) {
-                    product.descountedPrice = product.beforeOffer || 0;
+                    product.descountedPrice = product.basePrice || 0;
+                    product.basePrice=product.beforeOffer ||0;
                     product.IsInCategoryOffer = false;
                     product.categoryOffer.offerPercentage = undefined
                     product.save()

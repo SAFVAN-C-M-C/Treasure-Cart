@@ -40,7 +40,8 @@ const addCategoryOffer = async (req, res) => {
         const offerMultiplier = 1 - percentage / 100;
 
         for (const product of products) {
-            product.beforeOffer = product.descountedPrice;
+            product.beforeOffer = product.basePrice;
+            product.basePrice=product.descountedPrice
             product.IsInCategoryOffer=true;
             product.categoryOffer.offerPercentage=percentage;
             product.descountedPrice=Math.floor(product.descountedPrice*offerMultiplier)
@@ -75,7 +76,9 @@ const deleteOffer=async(req,res)=>{
         const productsBeforeOffer = await Products.find({ categoryId });
 
          for (const product of productsBeforeOffer) {
-            product.descountedPrice = product.beforeOffer || 0; 
+            product.descountedPrice = product.basePrice || 1;
+            product.basePrice=product.beforeOffer|| 0
+            product.beforeOffer=0;
             product.IsInCategoryOffer=false;
             product.categoryOffer.offerPercentage=undefined
             product.save()
@@ -130,15 +133,15 @@ const checkOfferExists = async (req, res) => {
 
 
  //edit category Offer
- const EditOffer=async(req,res)=>{
-    try {
-        const categoryId= req.params.categoryId;
-        const offer= await Offer.findOne({_id: categoryId})
-        res.render('admin/editOffer',{offer})
-    } catch (error) {
-        console.error('error while editing category offer:',error)
-    }
- }
+//  const EditOffer=async(req,res)=>{
+//     try {
+//         const categoryId= req.params.categoryId;
+//         const offer= await Offer.findOne({_id: categoryId})
+//         res.render('admin/editOffer',{offer})
+//     } catch (error) {
+//         console.error('error while editing category offer:',error)
+//     }
+//  }
 
 
 
@@ -172,7 +175,7 @@ const updateOffer = async (req, res) => {
         const offerMultiplier = 1 - percentage / 100;
         
         for (const product of productsBeforeOffer) {
-            const discountPrice = product.beforeOffer || 0; 
+            const discountPrice = product.basePrice || 0; 
             const newDiscountedPrice = Math.floor(offerMultiplier * discountPrice);
             product.descountedPrice=newDiscountedPrice;
             product.IsInCategoryOffer=true;
@@ -204,7 +207,5 @@ module.exports={
     deleteOffer,
     getCategoryName,
     checkOfferExists,
-
-    EditOffer,
     updateOffer
 }

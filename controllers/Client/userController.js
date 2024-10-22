@@ -660,31 +660,22 @@ const getcheckout = async (req, res) => {
 const edit_profile = async (req, res) => {
     try {
         const userId = req.session.userid
-        console.log("hello it here on the edit post");
         const main = req.files["main"][0];
-
-        // Do whatever you want with these files.
-        console.log("Uploaded files:");
-        console.log(main);
-        console.log(req.body);
-
-        const images=[main.filename];
-        cropImage(images,"profile-images")
+        const images=[main.key];
+        cropImage(images)
         const {
             name,
             email,
             phone,
             dob
         } = req.body;
-
-        console.log("name is " + name);
         const data = {
             userName: name,
             email: email,
             phone: phone,
             dob: dob,
             profile: [{
-                mainimage: main.filename,
+                mainimage: main.location,
             }],
         };
         await USER.updateOne({ _id: new ObjectId(userId) }, { $set: data });

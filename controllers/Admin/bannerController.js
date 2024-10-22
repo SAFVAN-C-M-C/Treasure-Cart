@@ -1,4 +1,5 @@
 const Banner = require("../../Models/banner");
+const { cropBanner } = require("../../util/cropBanner");
 const { cropImage } = require("../../util/cropImages");
 const getBanner = async (req, res) => {
     try {
@@ -26,18 +27,15 @@ const getBanner = async (req, res) => {
 const banner_add = async (req, res) => {
     try {
         const main = req.files["main"][0];
-
-        // console.log("Uploaded files:");
-        // console.log(main);
         const {
             title
         } = req.body;
         const check = await Banner.findOne({ title: title })
-        // console.log("name is " + title);
+        await cropBanner(main.key)
         if (!check) {
             const data = {
                 title: title,
-                image: main.filename,
+                image: main.location,
                 status:"Active",
                 timeStamp: Date.now(),
             };

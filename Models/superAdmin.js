@@ -7,7 +7,6 @@ const SuperAdminSchema = mongoose.Schema({
   userName: String ,
   password: String ,
 });
-
 const SuperAdmin = mongoose.model('SuperAdmin', SuperAdminSchema);
 
 module.exports=SuperAdmin;

@@ -49,20 +49,14 @@ const category_add_get = (req, res) => {
 const category_add = async (req, res) => {
     try {
         const main = req.files["main"][0];
-
-        console.log("Uploaded files:");
-        console.log(main);
         const {
             Category_name
         } = req.body;
         const check = await Categories.findOne({
             name: { $regex: `^${Category_name}$`, $options: "i" },
         });
-        console.log("name is " + Category_name);
-
-
-        const images=[main.filename];
-        cropImage(images,"category-images")
+        const images=[main.key];
+        cropImage(images)
         if (!check) {
             const data = {
                 name: Category_name,
@@ -105,20 +99,16 @@ const category_edit = async (req, res) => {
     try {
         if (req.files["main"]) {
             const id = req.params.id;
-            console.log("hello it here on the edit post");
             const main = req.files["main"][0];
             const Category=await Categories.findOne({_id: new ObjectId(id)});
-            // Do whatever you want with these files.
-            console.log("Uploaded files:");
-            console.log(main);
 
             const {
                 Category_name,
             } = req.body;
             const check = Categories.findOne({ name: Category_name })
-            const images=[main.filename];
+            const images=[main.key];
             console.log(main.filename);
-            cropImage(images,"category-images")
+            cropImage(images)
             if (!check) {
                 Category.name=Category_name;
                 Category.images[0].mainimage=main.filename;
