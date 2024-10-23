@@ -1,5 +1,4 @@
 #files extentions
 *.env
-node_modules
 .env
 configmap.yaml
