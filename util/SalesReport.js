@@ -1,15 +1,14 @@
 const ejs = require('ejs');
-// const pdf = require('html-pdf');
 const fs = require('fs');
 const exceljs = require('exceljs');
 const dateFormat = require('date-fns/format');
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer');
 const PDFDocument = require('pdfkit');
 const { s3Client } = require('./upload');
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
 require("dotenv").config()
 // const salesPdf = require('./pdfgenerator')
-const { PassThrough } = require('stream');
+// const { PassThrough } = require('stream');
 
 
 // Table Row with Bottom Line

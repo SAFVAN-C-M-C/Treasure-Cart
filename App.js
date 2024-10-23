@@ -21,7 +21,6 @@ app.use(nocache());
 app.use("/static", express.static(path.join(__dirname, "Public")));
 app.use(
   session({
-
     secret: uuidv4(),
     resave: false,
     saveUninitialized: false,
