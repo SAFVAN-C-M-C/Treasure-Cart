@@ -7,7 +7,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "https://www.treasure-cart.shop/auth/google/callback",
+      callbackURL: "https://www.treasure-cart.safvancmc.in/auth/google/callback",
       scope: ["profile", "email"],
     },
     async function (request, accessToken, refreshToken, profile, done) {
