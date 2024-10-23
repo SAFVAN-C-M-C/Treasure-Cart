@@ -132,8 +132,6 @@ const genereatesalesReport = async (req, res) => {
      const endDate = new Date(req.body.endDate);
      endDate.setHours(23, 59, 59, 999);
      
- log("starting",startDate);
- log("ending",endDate)
      const orders = await Orders.find({
        paymentStatus: "Paid",
        status:"Delivered",
