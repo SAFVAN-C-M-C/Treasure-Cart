@@ -8,9 +8,9 @@
 <%-include('../partials/header')-%>
 <div class="container-xl px-2 mt-4">
     <nav class="nav nav-borders">
-        <a class="nav-link  ms-0" href="/profile" >Profile</a>
-        <a class="nav-link  " href="/manage-address" >Addresses</a>
-        <a class="nav-link active" href="/order-history" >My Orders</a>
+        <a class="nav-link  ms-0" href="/profile">Profile</a>
+        <a class="nav-link  " href="/manage-address">Addresses</a>
+        <a class="nav-link active" href="/order-history">My Orders</a>
   
     </nav>
     <hr class="mt-0 mb-4">
@@ -48,7 +48,7 @@
                                     <a href="/product/details/<%=item._id%>" style="text-decoration: none;">
                                         <div class="card border-0 order-card shadow-lg p-3 bg-body rounded-3">
                                             <div class="product-card-img d-flex  justify-content-center align-items-center " style="padding: 30px; min-height: 287px;">
-                                                <img style="width: 70%;max-height: 270px; height: auto;" src="<%=item.images[0].mainimage?'item.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="">
+                                                <img style="width: 70%;max-height: 270px; height: auto;" src="<%=item.images[0].mainimage?item.images[0].mainimage:'/static/images/img-bg.jpg'%>" alt="">
                                             </div>
                                           </a>
                                             <div class="card-body ">
