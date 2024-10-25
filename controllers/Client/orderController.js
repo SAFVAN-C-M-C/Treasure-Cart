@@ -474,7 +474,7 @@ const cancelorder = async (req, res) => {
 
 
 //verify paymment
-const verifyqpayment = async (req, res) => {
+const verifypayment = async (req, res) => {
     try {
 
         let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
